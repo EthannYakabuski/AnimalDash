@@ -1,0 +1,26 @@
+[gd_scene load_steps=3 format=3 uid="uid://checsqe14agle"]
+
+[ext_resource type="PackedScene" uid="uid://h0fryho40mr0" path="res://player.tscn" id="1_bfbfr"]
+[ext_resource type="Script" path="res://background.gd" id="1_ulvn5"]
+
+[node name="Background" type="Node2D"]
+script = ExtResource("1_ulvn5")
+
+[node name="Player" parent="." instance=ExtResource("1_bfbfr")]
+
+[node name="StartPosition" type="Marker2D" parent="."]
+position = Vector2(75, 400)
+
+[node name="SpikeTimer" type="Timer" parent="."]
+wait_time = 5.0
+
+[node name="StartTimer" type="Timer" parent="."]
+wait_time = 2.0
+one_shot = true
+
+[node name="ParallaxBackground" type="ParallaxBackground" parent="."]
+
+[node name="ParallaxLayer" type="ParallaxLayer" parent="ParallaxBackground"]
+
+[connection signal="timeout" from="SpikeTimer" to="." method="_on_spike_timer_timeout"]
+[connection signal="timeout" from="StartTimer" to="." method="_on_start_timer_timeout"]
