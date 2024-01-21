@@ -7,17 +7,13 @@ var screen_size
 func new_game(): 
 	score = 0
 	$Player.position = $StartPosition.position
-	var background_background = ParallaxBackground.new()
-	add_child(background_background)
 	
-	var background_layer = ParallaxLayer.new()
-	background_background.add_child(background_layer)
-	var backgroundSprite = Sprite2D.new()
-	backgroundSprite.texture = preload("res://images/snowTiger_background.png")
-	background_layer.add_child(backgroundSprite)
-	background_background.add_child(background_layer)
+	var background_layer = $Parallax_Background/parallax_lay_one
+	var backgroundSprite = $Parallax_Background/parallax_lay_one/layone_sprite
 	
-	#$Player.start($StartPosition.position)
+	var foreground_layer = $Parallax_Background/parallax_lay_two
+	var foregroundSprite = $Parallax_Background/parallax_lay_one/laytwo_sprite
+
 	$StartTimer.start()
 	
 func game_over(): 
@@ -31,7 +27,8 @@ func _ready():
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta):
-	pass
+	var background_background = $Parallax_Background
+	background_background.scroll_base_offset -= Vector2(5,0) * delta
 
 
 func _on_start_timer_timeout():
