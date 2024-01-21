@@ -13,6 +13,7 @@ func _ready():
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta):
 	var velocity
+	var gravity = 40000
 	if previousVelocity: 
 		velocity = previousVelocity
 	else: 
@@ -21,15 +22,15 @@ func _process(delta):
 	$PlayerSprite.play()
 	
 	if Input.is_action_just_pressed("jump") || isJumping:
-		velocity.y -= 1
-		velocity = velocity.normalized() * speed
+		velocity.y -= 20
+		#velocity = velocity.normalized() * speed
 		previousVelocity = velocity
 		isJumping = true
 		$PlayerSprite.animation = "Jump"
 	elif isGravity: 
 		velocity = Vector2.ZERO
-		velocity.y += 1
-		velocity = velocity.normalized() * speed
+		velocity.y += 1 + gravity * delta
+		#velocity = velocity.normalized() * speed
 		if position.y >= 400: 
 			isGravity = false
 			velocity = Vector2.ZERO
