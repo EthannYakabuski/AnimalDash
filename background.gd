@@ -12,7 +12,7 @@ func new_game():
 	var backgroundSprite = $Parallax_Background/parallax_lay_one/layone_sprite
 	
 	var foreground_layer = $Parallax_Background/parallax_lay_two
-	var foregroundSprite = $Parallax_Background/parallax_lay_one/laytwo_sprite
+	var foregroundSprite = $Parallax_Background/parallax_lay_two/laytwo_sprite
 
 	$StartTimer.start()
 	

@@ -3,7 +3,7 @@
 [ext_resource type="PackedScene" uid="uid://h0fryho40mr0" path="res://player.tscn" id="1_bfbfr"]
 [ext_resource type="Script" path="res://background.gd" id="1_ulvn5"]
 [ext_resource type="Texture2D" uid="uid://crnyy3aybyxy5" path="res://images/snowTiger_backgroundClouds.png" id="3_bsfhd"]
-[ext_resource type="Texture2D" uid="uid://cxysirff7rjoq" path="res://images/snowTiger_foregroundLarge.png" id="4_t411p"]
+[ext_resource type="Texture2D" uid="uid://1io33wnpboh8" path="res://images/snowTiger_foregroundLarge.png" id="4_t411p"]
 
 [node name="Background" type="Node2D"]
 script = ExtResource("1_ulvn5")
@@ -21,16 +21,17 @@ wait_time = 2.0
 one_shot = true
 
 [node name="Parallax_Background" type="ParallaxBackground" parent="."]
-scroll_offset = Vector2(10, 0)
 
 [node name="parallax_lay_one" type="ParallaxLayer" parent="Parallax_Background"]
-motion_scale = Vector2(10, 10)
+motion_scale = Vector2(4, 4)
+motion_mirroring = Vector2(1500, 0)
 
 [node name="layone_sprite" type="Sprite2D" parent="Parallax_Background/parallax_lay_one"]
 texture = ExtResource("3_bsfhd")
 
 [node name="parallax_lay_two" type="ParallaxLayer" parent="Parallax_Background"]
-motion_scale = Vector2(10, 10)
+motion_scale = Vector2(20, 20)
+motion_mirroring = Vector2(1200, 0)
 
 [node name="laytwo_sprite" type="Sprite2D" parent="Parallax_Background/parallax_lay_two"]
 texture = ExtResource("4_t411p")
