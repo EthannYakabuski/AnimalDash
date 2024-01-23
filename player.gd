@@ -4,6 +4,7 @@ extends Area2D
 var screen_size
 var isJumping = false
 var isGravity = false
+var jumped = 0
 var previousVelocity
 
 # Called when the node enters the scene tree for the first time.
@@ -21,11 +22,22 @@ func _process(delta):
 		
 	$PlayerSprite.play()
 	
-	if Input.is_action_just_pressed("jump") || isJumping:
-		velocity.y -= 20
+	if Input.is_action_just_pressed("jump") && jumped < 2 && isJumping: 
+		isJumping = false
+		isGravity = false
+		velocity = Vector2.ZERO
+		jumped = jumped + 1
+		$PlayerSprite.animation = "Run"
+		$PlayerSprite.animation = "Jump"
+	
+	if (Input.is_action_just_pressed("jump") && jumped < 2 || isJumping):
+		velocity = Vector2.ZERO
+		velocity.y -= 500
 		#velocity = velocity.normalized() * speed
 		previousVelocity = velocity
 		isJumping = true
+		if(Input.is_action_just_pressed("jump")): 
+			jumped = jumped + 1
 		$PlayerSprite.animation = "Jump"
 	elif isGravity: 
 		velocity = Vector2.ZERO
@@ -39,6 +51,7 @@ func _process(delta):
 		velocity = Vector2.ZERO
 		previousVelocity = velocity
 		isJumping = false
+		jumped = 0
 		$PlayerSprite.animation = "Run"
 		
 	if position.y >= 600: 
