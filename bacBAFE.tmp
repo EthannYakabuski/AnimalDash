@@ -8,9 +8,9 @@
 
 [sub_resource type="Curve2D" id="Curve2D_gqxnl"]
 _data = {
-"points": PackedVector2Array(0, 0, 0, 0, 711, 357, 0, 0, 0, 0, 711, 460, 0, 0, 0, 0, -895, 467)
+"points": PackedVector2Array(0, 0, 0, 0, 711, 460, 0, 0, 0, 0, 711, 357)
 }
-point_count = 3
+point_count = 2
 
 [node name="Background" type="Node2D"]
 script = ExtResource("1_ulvn5")
@@ -48,8 +48,8 @@ texture = ExtResource("4_t411p")
 curve = SubResource("Curve2D_gqxnl")
 
 [node name="SpikeSpawnLocation" type="PathFollow2D" parent="SpikeSpawn"]
-position = Vector2(711, 357)
-rotation = 1.5708
+position = Vector2(711, 460)
+rotation = -1.5708
 
 [connection signal="body_entered" from="Player" to="." method="_on_player_body_entered"]
 [connection signal="hit" from="Player" to="." method="_on_player_hit"]

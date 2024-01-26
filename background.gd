@@ -1,4 +1,5 @@
 extends Node2D
+signal hit
 
 @export var spike_scene: PackedScene
 var score
@@ -36,4 +37,19 @@ func _on_start_timer_timeout():
 
 
 func _on_spike_timer_timeout():
-	pass # spawn a spike/set of spikes on the screen
+	print("spike spawned")
+	var spike = spike_scene.instantiate()
+	
+	var spike_loc = $SpikeSpawn/SpikeSpawnLocation
+	spike_loc.progress_ratio = randf()
+	
+	var velocity = Vector2(-25, 0.0)
+	var direction = 2*PI
+	spike.rotation = direction
+	spike.linear_velocity = velocity.rotated(direction)
+	add_child(spike)
+	
+
+
+func _on_player_hit():
+	pass # Replace with function body.
