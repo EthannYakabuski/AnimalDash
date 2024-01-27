@@ -1,4 +1,5 @@
 extends Area2D
+signal hit
 
 @export var speed = 400 #(pixels/sec)
 var screen_size
@@ -23,8 +24,8 @@ func _process(delta):
 	$PlayerSprite.play()
 	
 	if Input.is_action_just_pressed("jump") && jumped < 2 && isJumping: 
-		isJumping = false
-		isGravity = false
+		isJumping = true
+		isGravity = true
 		velocity = Vector2.ZERO
 		jumped = jumped + 1
 		$PlayerSprite.animation = "Run"
@@ -72,3 +73,11 @@ func _on_player_sprite_animation_looped():
 		isGravity = true
 		isJumping = false
 		$PlayerSprite.animation = "Fall"
+
+
+func _on_body_entered(body):
+	hide() # Player disappears after being hit.
+	hit.emit()
+	print("body entered")
+	# Must be deferred as we can't change physics properties on a physics callback.
+	# $CollisionShape2D.set_deferred("disabled", true)

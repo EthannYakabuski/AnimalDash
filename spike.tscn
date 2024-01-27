@@ -1,0 +1,40 @@
+[gd_scene load_steps=5 format=3 uid="uid://w0n47un36qmy"]
+
+[ext_resource type="Texture2D" uid="uid://crw8gr6fbck3y" path="res://images/spikeFinal.png" id="1_5k81s"]
+[ext_resource type="Script" path="res://spike.gd" id="1_dl06m"]
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_1exf8"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("1_5k81s")
+}],
+"loop": true,
+"name": &"Base",
+"speed": 5.0
+}]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_vqfd6"]
+radius = 78.0256
+
+[node name="Spike" type="RigidBody2D"]
+gravity_scale = 0.0
+script = ExtResource("1_dl06m")
+
+[node name="SpikeImage" type="AnimatedSprite2D" parent="."]
+position = Vector2(654, 457)
+scale = Vector2(3.01, 3.4475)
+sprite_frames = SubResource("SpriteFrames_1exf8")
+animation = &"Base"
+
+[node name="SpikeCollision" type="CollisionShape2D" parent="."]
+position = Vector2(642, 450)
+shape = SubResource("CircleShape2D_vqfd6")
+
+[node name="VisibleOnScreenNotifier2D" type="VisibleOnScreenNotifier2D" parent="."]
+position = Vector2(362, 240)
+scale = Vector2(37.2, 25)
+
+[connection signal="body_entered" from="." to="." method="_on_body_entered"]
+[connection signal="body_shape_entered" from="." to="." method="_on_body_shape_entered"]
+[connection signal="screen_exited" from="VisibleOnScreenNotifier2D" to="." method="_on_visible_on_screen_notifier_2d_screen_exited"]
