@@ -73,3 +73,11 @@ func _on_player_sprite_animation_looped():
 		isGravity = true
 		isJumping = false
 		$PlayerSprite.animation = "Fall"
+
+
+func _on_body_entered(body):
+	hide() # Player disappears after being hit.
+	hit.emit()
+	print("body entered")
+	# Must be deferred as we can't change physics properties on a physics callback.
+	# $CollisionShape2D.set_deferred("disabled", true)

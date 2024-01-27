@@ -43,13 +43,8 @@ func _on_spike_timer_timeout():
 	var spike_loc = $SpikeSpawn/SpikeSpawnLocation
 	spike_loc.progress_ratio = randf()
 	
-	var velocity = Vector2(-25, 0.0)
+	var velocity = Vector2(-250, 0.0)
 	var direction = 2*PI
 	spike.rotation = direction
 	spike.linear_velocity = velocity.rotated(direction)
 	add_child(spike)
-	
-
-
-func _on_player_hit():
-	pass # Replace with function body.
