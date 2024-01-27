@@ -24,8 +24,8 @@ func _process(delta):
 	$PlayerSprite.play()
 	
 	if Input.is_action_just_pressed("jump") && jumped < 2 && isJumping: 
-		isJumping = false
-		isGravity = false
+		isJumping = true
+		isGravity = true
 		velocity = Vector2.ZERO
 		jumped = jumped + 1
 		$PlayerSprite.animation = "Run"
