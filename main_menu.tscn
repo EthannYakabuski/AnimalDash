@@ -1,0 +1,26 @@
+[gd_scene load_steps=4 format=3 uid="uid://dfuovebu8mle8"]
+
+[ext_resource type="Script" path="res://main_menu.gd" id="1_ao6ml"]
+[ext_resource type="PackedScene" uid="uid://checsqe14agle" path="res://background.tscn" id="2_32us4"]
+[ext_resource type="Texture2D" uid="uid://dxpiwwvp2iy4r" path="res://images/snowTiger_stand.png" id="2_fl8td"]
+
+[node name="MainMenu" type="Node"]
+script = ExtResource("1_ao6ml")
+game_scene = ExtResource("2_32us4")
+
+[node name="CharacterImage" type="TextureRect" parent="."]
+offset_left = 264.0
+offset_top = 136.0
+offset_right = 564.0
+offset_bottom = 436.0
+scale = Vector2(0.65, 0.65)
+texture = ExtResource("2_fl8td")
+
+[node name="StartGame" type="Button" parent="."]
+offset_left = 292.0
+offset_top = 384.0
+offset_right = 440.0
+offset_bottom = 444.0
+text = "Dash"
+
+[connection signal="pressed" from="StartGame" to="." method="_on_button_pressed"]
