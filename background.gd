@@ -48,3 +48,8 @@ func _on_spike_timer_timeout():
 	spike.rotation = direction
 	spike.linear_velocity = velocity.rotated(direction)
 	add_child(spike)
+
+
+
+func _on_hit():
+	pass # Replace with function body.

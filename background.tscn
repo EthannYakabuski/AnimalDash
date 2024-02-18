@@ -51,6 +51,7 @@ curve = SubResource("Curve2D_gqxnl")
 position = Vector2(711, 357)
 rotation = 1.5708
 
+[connection signal="hit" from="." to="." method="_on_hit"]
 [connection signal="body_entered" from="Player" to="." method="_on_player_body_entered"]
 [connection signal="hit" from="Player" to="." method="_on_player_hit"]
 [connection signal="timeout" from="SpikeTimer" to="." method="_on_spike_timer_timeout"]
