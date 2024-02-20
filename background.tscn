@@ -1,7 +1,8 @@
-[gd_scene load_steps=7 format=3 uid="uid://checsqe14agle"]
+[gd_scene load_steps=9 format=3 uid="uid://checsqe14agle"]
 
 [ext_resource type="PackedScene" uid="uid://h0fryho40mr0" path="res://player.tscn" id="1_bfbfr"]
 [ext_resource type="Script" path="res://background.gd" id="1_ulvn5"]
+[ext_resource type="PackedScene" uid="uid://b5g33heurtwer" path="res://coin.tscn" id="2_bmhpb"]
 [ext_resource type="Texture2D" uid="uid://crnyy3aybyxy5" path="res://images/snowTiger_backgroundClouds.png" id="3_bsfhd"]
 [ext_resource type="Texture2D" uid="uid://1io33wnpboh8" path="res://images/snowTiger_foregroundLarge.png" id="4_t411p"]
 [ext_resource type="PackedScene" uid="uid://w0n47un36qmy" path="res://spike.tscn" id="5_wo8yf"]
@@ -12,8 +13,15 @@ _data = {
 }
 point_count = 3
 
+[sub_resource type="Curve2D" id="Curve2D_dnhif"]
+_data = {
+"points": PackedVector2Array(0, 0, 0, 0, 644, 42, 0, 0, 0, 0, -761, 41)
+}
+point_count = 2
+
 [node name="Background" type="Node2D"]
 script = ExtResource("1_ulvn5")
+coin_scene = ExtResource("2_bmhpb")
 spike_scene = ExtResource("5_wo8yf")
 
 [node name="Player" parent="." instance=ExtResource("1_bfbfr")]
@@ -27,6 +35,9 @@ wait_time = 5.0
 [node name="StartTimer" type="Timer" parent="."]
 wait_time = 2.0
 one_shot = true
+
+[node name="CoinTimer" type="Timer" parent="."]
+wait_time = 6.0
 
 [node name="Parallax_Background" type="ParallaxBackground" parent="."]
 
@@ -51,8 +62,14 @@ curve = SubResource("Curve2D_gqxnl")
 position = Vector2(711, 357)
 rotation = 1.5708
 
-[connection signal="hit" from="." to="." method="_on_hit"]
+[node name="CoinPath" type="Path2D" parent="."]
+curve = SubResource("Curve2D_dnhif")
+
+[node name="CoinPathFollow" type="PathFollow2D" parent="CoinPath"]
+position = Vector2(644, 42)
+rotation = -3.14088
+
 [connection signal="body_entered" from="Player" to="." method="_on_player_body_entered"]
-[connection signal="hit" from="Player" to="." method="_on_player_hit"]
 [connection signal="timeout" from="SpikeTimer" to="." method="_on_spike_timer_timeout"]
 [connection signal="timeout" from="StartTimer" to="." method="_on_start_timer_timeout"]
+[connection signal="timeout" from="CoinTimer" to="." method="_on_coin_timer_timeout"]

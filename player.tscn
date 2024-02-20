@@ -78,6 +78,7 @@ frame_progress = 0.455531
 [node name="PlayerHitBox" type="CollisionShape2D" parent="."]
 shape = SubResource("CircleShape2D_sx04a")
 
+[connection signal="area_entered" from="." to="." method="_on_area_entered"]
 [connection signal="body_entered" from="." to="." method="_on_body_entered"]
 [connection signal="animation_finished" from="PlayerSprite" to="." method="_on_player_sprite_animation_finished"]
 [connection signal="animation_looped" from="PlayerSprite" to="." method="_on_player_sprite_animation_looped"]

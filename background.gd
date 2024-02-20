@@ -1,6 +1,6 @@
 extends Node2D
-signal hit
 
+@export var coin_scene: PackedScene
 @export var spike_scene: PackedScene
 var score
 var screen_size
@@ -19,6 +19,7 @@ func new_game():
 	
 func game_over(): 
 	$SpikeTimer.stop()
+	$CoinTimer.stop()
 	
 # Called when the node enters the scene tree for the first time.
 func _ready():
@@ -34,11 +35,13 @@ func _process(delta):
 
 func _on_start_timer_timeout():
 	$SpikeTimer.start()
+	$CoinTimer.start()
 
 
 func _on_spike_timer_timeout():
 	print("spike spawned")
 	var spike = spike_scene.instantiate()
+	spike.add_to_group("Spike")
 	
 	var spike_loc = $SpikeSpawn/SpikeSpawnLocation
 	spike_loc.progress_ratio = randf()
@@ -50,6 +53,24 @@ func _on_spike_timer_timeout():
 	add_child(spike)
 
 
+func _on_coin_timer_timeout():
+	print("coin spawned")
+	var coin = coin_scene.instantiate()
+	coin.add_to_group("Coin")
+	
+	var coin_loc = $CoinPath/CoinPathFollow
+	coin_loc.progress_ratio = randf()
+	
+	var velocity = Vector2(-350, 0.0)
+	var direction = 2*PI
+	coin.rotation = direction
+	coin.linear_velocity = velocity.rotated(direction)
+	add_child(coin)
+
+
+func _on_collect():
+	print("coin collected in main")
+
 
 func _on_hit():
-	pass # Replace with function body.
+	print("spike hit in main")

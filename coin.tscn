@@ -1,0 +1,36 @@
+[gd_scene load_steps=5 format=3 uid="uid://b5g33heurtwer"]
+
+[ext_resource type="Texture2D" uid="uid://6pxvtxww65pu" path="res://images/coin.png" id="1_3j3f3"]
+[ext_resource type="Script" path="res://coin.gd" id="1_kdm57"]
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_n7lpc"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("1_3j3f3")
+}],
+"loop": true,
+"name": &"Standard",
+"speed": 5.0
+}]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_ep5mm"]
+radius = 43.0116
+
+[node name="Coin" type="RigidBody2D"]
+gravity_scale = 0.0
+script = ExtResource("1_kdm57")
+
+[node name="CoinSprite" type="AnimatedSprite2D" parent="."]
+position = Vector2(666, 130)
+scale = Vector2(0.1, 0.1)
+sprite_frames = SubResource("SpriteFrames_n7lpc")
+animation = &"Standard"
+
+[node name="CoinCollision" type="CollisionShape2D" parent="."]
+position = Vector2(668, 131)
+shape = SubResource("CircleShape2D_ep5mm")
+
+[node name="VisibleOnScreenNotifier2D" type="VisibleOnScreenNotifier2D" parent="."]
+position = Vector2(360.5, 239.5)
+scale = Vector2(35.85, 23.95)
