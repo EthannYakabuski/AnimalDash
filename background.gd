@@ -5,6 +5,7 @@ extends Node2D
 @export var player_scene: PackedScene
 var score
 var screen_size
+var coinArray = []
 
 signal collect
 signal hit
@@ -63,6 +64,7 @@ func _on_coin_timer_timeout():
 	print("coin spawned")
 	var coin = coin_scene.instantiate()
 	coin.add_to_group("Coin")
+	coinArray.push_back(coin)
 	
 	var coin_loc = $CoinPath/CoinPathFollow
 	coin_loc.progress_ratio = randf()
@@ -76,6 +78,8 @@ func _on_coin_timer_timeout():
 
 func _on_collect():
 	print("coin collected in main")
+	for coin in coinArray: 
+		remove_child(coin)
 
 
 func _on_hit():
