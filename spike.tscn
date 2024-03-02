@@ -15,20 +15,20 @@ animations = [{
 }]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_vqfd6"]
-radius = 78.0256
+radius = 47.0106
 
 [node name="Spike" type="RigidBody2D"]
 gravity_scale = 0.0
 script = ExtResource("1_dl06m")
 
 [node name="SpikeImage" type="AnimatedSprite2D" parent="."]
-position = Vector2(654, 457)
-scale = Vector2(3.01, 3.4475)
+position = Vector2(651, 464)
+scale = Vector2(2.005, 2.41826)
 sprite_frames = SubResource("SpriteFrames_1exf8")
 animation = &"Base"
 
 [node name="SpikeCollision" type="CollisionShape2D" parent="."]
-position = Vector2(642, 450)
+position = Vector2(643, 461)
 shape = SubResource("CircleShape2D_vqfd6")
 
 [node name="VisibleOnScreenNotifier2D" type="VisibleOnScreenNotifier2D" parent="."]

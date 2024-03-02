@@ -1,5 +1,4 @@
 extends Area2D
-signal hit
 
 @export var speed = 400 #(pixels/sec)
 var screen_size
@@ -7,6 +6,9 @@ var isJumping = false
 var isGravity = false
 var jumped = 0
 var previousVelocity
+
+signal collect
+signal hit
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
@@ -63,7 +65,6 @@ func _process(delta):
 	position = position.clamp(Vector2.ZERO, screen_size)
 
 
-
 func _on_player_sprite_animation_finished(): 
 	pass
 
@@ -74,10 +75,13 @@ func _on_player_sprite_animation_looped():
 		isJumping = false
 		$PlayerSprite.animation = "Fall"
 
-
 func _on_body_entered(body):
-	hide() # Player disappears after being hit.
-	hit.emit()
-	print("body entered")
-	# Must be deferred as we can't change physics properties on a physics callback.
-	# $CollisionShape2D.set_deferred("disabled", true)
+	if body.is_in_group("Coin"): 
+		print("coin collected")
+		collect.emit()
+		emit_signal("collect")
+	elif body.is_in_group("Spike"): 
+		print("spike hit")
+		hide()
+		hit.emit()
+		emit_signal("hit")
