@@ -79,7 +79,9 @@ func _on_body_entered(body):
 	if body.is_in_group("Coin"): 
 		print("coin collected")
 		collect.emit()
+		emit_signal("collect")
 	elif body.is_in_group("Spike"): 
 		print("spike hit")
 		hide()
 		hit.emit()
+		emit_signal("hit")

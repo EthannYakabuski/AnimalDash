@@ -2,8 +2,12 @@ extends Node2D
 
 @export var coin_scene: PackedScene
 @export var spike_scene: PackedScene
+@export var player_scene: PackedScene
 var score
 var screen_size
+
+signal collect
+signal hit
 
 func new_game(): 
 	score = 0
@@ -24,6 +28,8 @@ func game_over():
 # Called when the node enters the scene tree for the first time.
 func _ready():
 	screen_size = get_viewport_rect().size
+	$Player.connect("hit", _on_hit)
+	$Player.connect("collect", _on_collect)
 	new_game()
 
 

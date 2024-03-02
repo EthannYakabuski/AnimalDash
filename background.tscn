@@ -23,6 +23,7 @@ point_count = 2
 script = ExtResource("1_ulvn5")
 coin_scene = ExtResource("2_bmhpb")
 spike_scene = ExtResource("5_wo8yf")
+player_scene = ExtResource("1_bfbfr")
 
 [node name="Player" parent="." instance=ExtResource("1_bfbfr")]
 
