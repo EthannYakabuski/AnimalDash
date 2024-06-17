@@ -6,6 +6,7 @@ var isJumping = false
 var isGravity = false
 var jumped = 0
 var previousVelocity
+@export var energy = 100;
 
 signal collect
 signal hit
@@ -61,6 +62,9 @@ func _process(delta):
 		isGravity = false
 		velocity = Vector2.ZERO
 	
+	if velocity.y > 0: 
+		energy = energy - 1
+		
 	position += velocity*delta
 	position = position.clamp(Vector2.ZERO, screen_size)
 

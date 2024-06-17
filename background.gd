@@ -38,7 +38,7 @@ func _ready():
 func _process(delta):
 	var background_background = $Parallax_Background
 	background_background.scroll_base_offset -= Vector2(5,0) * delta
-
+	$EnergyBar.value = $Player.energy
 
 func _on_start_timer_timeout():
 	$SpikeTimer.start()
