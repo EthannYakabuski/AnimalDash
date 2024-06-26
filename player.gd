@@ -6,7 +6,7 @@ var isJumping = false
 var isGravity = false
 var jumped = 0
 var previousVelocity
-@export var energy = 100;
+@export var energy = 1000;
 
 signal collect
 signal hit
@@ -37,6 +37,7 @@ func _process(delta):
 	if (Input.is_action_just_pressed("jump") && jumped < 2 || isJumping):
 		velocity = Vector2.ZERO
 		velocity.y -= 500
+		energy = energy - 5
 		#velocity = velocity.normalized() * speed
 		previousVelocity = velocity
 		isJumping = true
@@ -61,10 +62,12 @@ func _process(delta):
 	if position.y >= 600: 
 		isGravity = false
 		velocity = Vector2.ZERO
-	
-	if velocity.y > 0: 
-		energy = energy - 1
 		
+	if $PlayerSprite.animation == "Run": 
+		energy = energy + 1
+		if energy > 1000: 
+			energy = 1000
+	
 	position += velocity*delta
 	position = position.clamp(Vector2.ZERO, screen_size)
 

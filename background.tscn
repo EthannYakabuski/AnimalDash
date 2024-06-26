@@ -77,6 +77,7 @@ offset_top = 46.0
 offset_right = 290.0
 offset_bottom = 159.0
 scale = Vector2(0.5, 0.5)
+max_value = 1000.0
 texture_under = ExtResource("7_pn1h5")
 texture_progress = ExtResource("7_pn1h5")
 tint_progress = Color(0.282353, 0.862745, 0.309804, 1)

@@ -78,7 +78,7 @@ func _on_coin_timer_timeout():
 
 func _on_collect():
 	print("coin collected in main")
-	$Player.energy = $Player.energy + 10; 
+	$Player.energy = $Player.energy + 10
 	for coin in coinArray: 
 		remove_child(coin)
 
