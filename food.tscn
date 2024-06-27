@@ -1,0 +1,35 @@
+[gd_scene load_steps=5 format=3 uid="uid://cmdfexdrrd3df"]
+
+[ext_resource type="Texture2D" uid="uid://bp53j8ct75x7x" path="res://images/slabofmeat.png" id="1_2l06j"]
+[ext_resource type="Script" path="res://food.gd" id="1_516ws"]
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_udydm"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("1_2l06j")
+}],
+"loop": true,
+"name": &"Standard",
+"speed": 5.0
+}]
+
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_w4lgc"]
+radius = 37.0
+height = 112.0
+
+[node name="Food" type="RigidBody2D"]
+gravity_scale = 0.0
+script = ExtResource("1_516ws")
+
+[node name="FoodSprite" type="AnimatedSprite2D" parent="."]
+position = Vector2(630, 124)
+scale = Vector2(0.5, 0.5)
+sprite_frames = SubResource("SpriteFrames_udydm")
+animation = &"Standard"
+
+[node name="FoodCollision" type="CollisionShape2D" parent="."]
+position = Vector2(628, 120)
+shape = SubResource("CapsuleShape2D_w4lgc")
+
+[node name="VisibleOnScreenNotifier2D" type="VisibleOnScreenNotifier2D" parent="."]

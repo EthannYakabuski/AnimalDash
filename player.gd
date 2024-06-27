@@ -10,7 +10,7 @@ var previousVelocity
 
 signal collect
 signal hit
-
+signal eat
 # Called when the node enters the scene tree for the first time.
 func _ready():
 	screen_size = get_viewport_rect().size
@@ -18,7 +18,7 @@ func _ready():
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta):
 	var velocity
-	var gravity = 40000
+	gravity = 40000
 	if previousVelocity: 
 		velocity = previousVelocity
 	else: 
@@ -85,10 +85,13 @@ func _on_player_sprite_animation_looped():
 func _on_body_entered(body):
 	if body.is_in_group("Coin"): 
 		print("coin collected")
-		collect.emit()
+		#collect.emit()
 		emit_signal("collect")
 	elif body.is_in_group("Spike"): 
 		print("spike hit")
 		hide()
-		hit.emit()
+		#hit.emit()
 		emit_signal("hit")
+	elif body.is_in_group("Food"): 
+		print("food collected"); 
+		emit_signal("eat")
