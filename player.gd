@@ -6,10 +6,11 @@ var isJumping = false
 var isGravity = false
 var jumped = 0
 var previousVelocity
+@export var energy = 1000;
 
 signal collect
 signal hit
-
+signal eat
 # Called when the node enters the scene tree for the first time.
 func _ready():
 	screen_size = get_viewport_rect().size
@@ -17,7 +18,7 @@ func _ready():
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta):
 	var velocity
-	var gravity = 40000
+	gravity = 40000
 	if previousVelocity: 
 		velocity = previousVelocity
 	else: 
@@ -36,6 +37,7 @@ func _process(delta):
 	if (Input.is_action_just_pressed("jump") && jumped < 2 || isJumping):
 		velocity = Vector2.ZERO
 		velocity.y -= 500
+		energy = energy - 5
 		#velocity = velocity.normalized() * speed
 		previousVelocity = velocity
 		isJumping = true
@@ -60,6 +62,11 @@ func _process(delta):
 	if position.y >= 600: 
 		isGravity = false
 		velocity = Vector2.ZERO
+		
+	if $PlayerSprite.animation == "Run": 
+		energy = energy + 1
+		if energy > 1000: 
+			energy = 1000
 	
 	position += velocity*delta
 	position = position.clamp(Vector2.ZERO, screen_size)
@@ -78,10 +85,13 @@ func _on_player_sprite_animation_looped():
 func _on_body_entered(body):
 	if body.is_in_group("Coin"): 
 		print("coin collected")
-		collect.emit()
+		#collect.emit()
 		emit_signal("collect")
 	elif body.is_in_group("Spike"): 
 		print("spike hit")
 		hide()
-		hit.emit()
+		#hit.emit()
 		emit_signal("hit")
+	elif body.is_in_group("Food"): 
+		print("food collected"); 
+		emit_signal("eat")
