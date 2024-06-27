@@ -92,7 +92,7 @@ func _on_collect():
 		
 func _on_eat(): 
 	print("eat in main")
-	$Player.energy = $Player.energy + 150
+	$Player.energy = $Player.energy + 200
 	for food in foodArray: 
 		remove_child(food)
 
