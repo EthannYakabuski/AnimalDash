@@ -7,7 +7,7 @@
 [ext_resource type="Texture2D" uid="uid://1io33wnpboh8" path="res://images/snowTiger_foregroundLarge.png" id="4_t411p"]
 [ext_resource type="PackedScene" uid="uid://b5espwtionjie" path="res://food.tscn" id="5_50w5t"]
 [ext_resource type="PackedScene" uid="uid://c3oschgq7a4ct" path="res://spike.tscn" id="5_wo8yf"]
-[ext_resource type="Texture2D" path="res://images/Semi-Circle (no background 2).png" id="7_pn1h5"]
+[ext_resource type="Texture2D" uid="uid://b64hy0myqx2xj" path="res://images/Semi-Circle (no background 2).png" id="7_pn1h5"]
 
 [sub_resource type="Curve2D" id="Curve2D_gqxnl"]
 _data = {

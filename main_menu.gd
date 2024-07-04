@@ -1,6 +1,6 @@
 extends Node
 signal hit
-var characters = ["res://images/snowTiger_stand.png"]
+var characters = ["res://images/snowTiger_stand.png","res://images/panda_stand_base.png"]
 var currentCharacter = 0
 
 @export var game_scene: PackedScene
@@ -27,7 +27,9 @@ func updateCharacter():
 	$CharacterImage.texture = load(characters[currentCharacter])
 	
 func _on_left_button_pressed():
+	currentCharacter = (currentCharacter - 1) % 2
 	updateCharacter()
 
-func _on_right_button_pressed():
+func _on_right_button_pressed(): 
+	currentCharacter = (currentCharacter + 1) % 2
 	updateCharacter()

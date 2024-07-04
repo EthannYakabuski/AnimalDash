@@ -1,6 +1,6 @@
 [gd_scene load_steps=5 format=3 uid="uid://b5espwtionjie"]
 
-[ext_resource type="Texture2D" path="res://images/slabofmeat.png" id="1_2l06j"]
+[ext_resource type="Texture2D" uid="uid://bp53j8ct75x7x" path="res://images/slabofmeat.png" id="1_2l06j"]
 [ext_resource type="Script" path="res://food.gd" id="1_516ws"]
 
 [sub_resource type="SpriteFrames" id="SpriteFrames_udydm"]

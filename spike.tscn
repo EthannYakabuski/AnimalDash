@@ -1,6 +1,6 @@
 [gd_scene load_steps=5 format=3 uid="uid://c3oschgq7a4ct"]
 
-[ext_resource type="Texture2D" path="res://images/spikeFinal.png" id="1_5k81s"]
+[ext_resource type="Texture2D" uid="uid://crw8gr6fbck3y" path="res://images/spikeFinal.png" id="1_5k81s"]
 [ext_resource type="Script" path="res://spike.gd" id="1_dl06m"]
 
 [sub_resource type="SpriteFrames" id="SpriteFrames_1exf8"]
