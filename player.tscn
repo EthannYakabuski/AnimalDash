@@ -1,66 +1,6 @@
-[gd_scene load_steps=11 format=3 uid="uid://h0fryho40mr0"]
+[gd_scene load_steps=3 format=3 uid="uid://h0fryho40mr0"]
 
 [ext_resource type="Script" path="res://player.gd" id="1_3vx8m"]
-[ext_resource type="Texture2D" uid="uid://dxpiwwvp2iy4r" path="res://images/snowTiger_stand.png" id="1_6fny1"]
-[ext_resource type="Texture2D" uid="uid://6sqlows8cetp" path="res://images/snowTiger_falling_one.png" id="2_lumfr"]
-[ext_resource type="Texture2D" uid="uid://cuy7p7d5qx4qh" path="res://images/snowTiger_jump_one.png" id="2_r6ln6"]
-[ext_resource type="Texture2D" uid="uid://bpim80k3rplm6" path="res://images/snowTiger_jump_two.png" id="3_akrpd"]
-[ext_resource type="Texture2D" uid="uid://spuakhk05f7w" path="res://images/snowTiger_jump_three.png" id="4_4ur3s"]
-[ext_resource type="Texture2D" uid="uid://c5b2lj12fenqd" path="res://images/snowTiger_falling_new_differentPaws.png" id="6_lud88"]
-[ext_resource type="Texture2D" uid="uid://cojlxrn47ybwy" path="res://images/snowTiger_falling_new.png" id="8_vuhqg"]
-
-[sub_resource type="SpriteFrames" id="SpriteFrames_nvamh"]
-animations = [{
-"frames": [{
-"duration": 1.0,
-"texture": ExtResource("4_4ur3s")
-}],
-"loop": true,
-"name": &"Fall",
-"speed": 5.0
-}, {
-"frames": [{
-"duration": 1.0,
-"texture": ExtResource("1_6fny1")
-}, {
-"duration": 1.0,
-"texture": ExtResource("2_r6ln6")
-}, {
-"duration": 1.0,
-"texture": ExtResource("3_akrpd")
-}, {
-"duration": 1.0,
-"texture": ExtResource("4_4ur3s")
-}],
-"loop": true,
-"name": &"Jump",
-"speed": 6.0
-}, {
-"frames": [{
-"duration": 1.0,
-"texture": ExtResource("1_6fny1")
-}, {
-"duration": 1.0,
-"texture": ExtResource("2_r6ln6")
-}],
-"loop": true,
-"name": &"Run",
-"speed": 8.0
-}, {
-"frames": [{
-"duration": 1.0,
-"texture": ExtResource("6_lud88")
-}, {
-"duration": 1.0,
-"texture": ExtResource("2_lumfr")
-}, {
-"duration": 1.0,
-"texture": ExtResource("8_vuhqg")
-}],
-"loop": true,
-"name": &"Scratch",
-"speed": 6.0
-}]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_sx04a"]
 radius = 80.2247
@@ -69,15 +9,8 @@ radius = 80.2247
 script = ExtResource("1_3vx8m")
 metadata/_edit_group_ = true
 
-[node name="PlayerSprite" type="AnimatedSprite2D" parent="."]
-scale = Vector2(0.5, 0.5)
-sprite_frames = SubResource("SpriteFrames_nvamh")
-animation = &"Run"
-
 [node name="PlayerHitBox" type="CollisionShape2D" parent="."]
 shape = SubResource("CircleShape2D_sx04a")
 
 [connection signal="area_entered" from="." to="." method="_on_area_entered"]
 [connection signal="body_entered" from="." to="." method="_on_body_entered"]
-[connection signal="animation_finished" from="PlayerSprite" to="." method="_on_player_sprite_animation_finished"]
-[connection signal="animation_looped" from="PlayerSprite" to="." method="_on_player_sprite_animation_looped"]

@@ -6,7 +6,11 @@ var isJumping = false
 var isGravity = false
 var jumped = 0
 var previousVelocity
+var animationHandle
 @export var energy = 1000;
+
+var panda_falling_frames = [];
+var snowTiger_falling_frames = [];
 
 signal collect
 signal hit
@@ -14,6 +18,39 @@ signal eat
 # Called when the node enters the scene tree for the first time.
 func _ready():
 	screen_size = get_viewport_rect().size
+	loadCharacterFramesBasedOnChosenCharacter("snowTiger")
+	
+func loadCharacterFramesBasedOnChosenCharacter(character_name): 
+	print(character_name + "has been chosen")
+	var dynamicallyCreatedAnimatedSprite = createCharacterFrames(character_name)
+	self.add_child(dynamicallyCreatedAnimatedSprite)
+	animationHandle = dynamicallyCreatedAnimatedSprite
+
+func createCharacterFrames(character_name):
+	var fallFrames = [character_name+"_jump_three.png"]
+	var jumpFrames = [character_name+"_stand.png",character_name+"_jump_one.png",character_name+"_jump_two.png",character_name+"_jump_three.png"]
+	var runFrames = [character_name+"_stand.png",character_name+"_jump_one.png"]
+	var animatedSprite = AnimatedSprite2D.new()
+	var frames = SpriteFrames.new()
+	frames.add_animation("Fall")
+	for frame_name in fallFrames:
+		var texture = load("res://images/"+frame_name) as Texture
+		frames.add_frame("Fall", texture)
+	frames.add_animation("Jump")
+	for frame_name in jumpFrames: 
+		var texture = load("res://images/"+frame_name) as Texture
+		frames.add_frame("Jump", texture)
+	frames.add_animation("Run")
+	for frame_name in runFrames: 
+		var texture = load("res://images/"+frame_name) as Texture
+		frames.add_frame("Run", texture)
+	animatedSprite.sprite_frames = frames
+	animatedSprite.scale.x = 0.5
+	animatedSprite.scale.y = 0.5
+	animatedSprite.connect("animation_finished", on_player_sprite_animation_finished)
+	animatedSprite.connect("animation_looped", on_player_sprite_animation_looped)
+	return animatedSprite
+	
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta):
@@ -24,15 +61,16 @@ func _process(delta):
 	else: 
 		velocity = Vector2.ZERO
 		
-	$PlayerSprite.play()
+	#animationHandle.play()
+	animationHandle.play()
 	
 	if Input.is_action_just_pressed("jump") && jumped < 2 && isJumping: 
 		isJumping = true
 		isGravity = true
 		velocity = Vector2.ZERO
 		jumped = jumped + 1
-		$PlayerSprite.animation = "Run"
-		$PlayerSprite.animation = "Jump"
+		animationHandle.animation = "Run"
+		animationHandle.animation = "Jump"
 	
 	if (Input.is_action_just_pressed("jump") && jumped < 2 || isJumping):
 		velocity = Vector2.ZERO
@@ -43,7 +81,7 @@ func _process(delta):
 		isJumping = true
 		if(Input.is_action_just_pressed("jump")): 
 			jumped = jumped + 1
-		$PlayerSprite.animation = "Jump"
+		animationHandle.animation = "Jump"
 	elif isGravity: 
 		velocity = Vector2.ZERO
 		velocity.y += 1 + gravity * delta
@@ -57,13 +95,13 @@ func _process(delta):
 		previousVelocity = velocity
 		isJumping = false
 		jumped = 0
-		$PlayerSprite.animation = "Run"
+		animationHandle.animation = "Run"
 		
 	if position.y >= 600: 
 		isGravity = false
 		velocity = Vector2.ZERO
 		
-	if $PlayerSprite.animation == "Run": 
+	if animationHandle.animation == "Run": 
 		energy = energy + 1
 		if energy > 1000: 
 			energy = 1000
@@ -72,15 +110,15 @@ func _process(delta):
 	position = position.clamp(Vector2.ZERO, screen_size)
 
 
-func _on_player_sprite_animation_finished(): 
-	pass
+func on_player_sprite_animation_finished(): 
+	print("animation finished")
 
 
-func _on_player_sprite_animation_looped():
-	if $PlayerSprite.animation == "Jump": 
+func on_player_sprite_animation_looped():
+	if animationHandle.animation == "Jump": 
 		isGravity = true
 		isJumping = false
-		$PlayerSprite.animation = "Fall"
+		animationHandle.animation = "Fall"
 
 func _on_body_entered(body):
 	if body.is_in_group("Coin"): 
