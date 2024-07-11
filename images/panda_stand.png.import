@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://b8o5qdfw10rc4"
-path="res://.godot/imported/panda_stand_base.png-77cdfd2ae70af4f870b80f9f100fe37d.ctex"
+uid="uid://cirsgbknkqspi"
+path="res://.godot/imported/panda_stand.png-8de0817e720d2ada2ee4eae320006154.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://images/panda_stand_base.png"
-dest_files=["res://.godot/imported/panda_stand_base.png-77cdfd2ae70af4f870b80f9f100fe37d.ctex"]
+source_file="res://images/panda_stand.png"
+dest_files=["res://.godot/imported/panda_stand.png-8de0817e720d2ada2ee4eae320006154.ctex"]
 
 [params]
 

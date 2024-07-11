@@ -1,5 +1,6 @@
 extends Node
 signal hit
+signal characterSelect
 var characters = ["res://images/snowTiger_stand.png","res://images/panda_stand_base.png"]
 var currentCharacter = 0
 
@@ -8,8 +9,7 @@ var currentCharacter = 0
 # Called when the node enters the scene tree for the first time.
 func _ready():
 	updateCharacter()
-
-
+	
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(_delta):
 	pass
@@ -22,6 +22,7 @@ func _on_button_pressed():
 	remove_child($RightButton)
 	var game = game_scene.instantiate()
 	add_child(game)
+	emit_signal("characterSelect")
 
 func updateCharacter(): 
 	$CharacterImage.texture = load(characters[currentCharacter])

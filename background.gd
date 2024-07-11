@@ -12,6 +12,7 @@ var foodArray = []
 signal collect
 signal hit
 signal eat
+signal characterSelect
 
 func new_game(): 
 	score = 0
@@ -36,6 +37,7 @@ func _ready():
 	$Player.connect("hit", _on_hit)
 	$Player.connect("collect", _on_collect)
 	$Player.connect("eat", _on_eat)
+	self.connect("characterSelect", _on_characterSelect)
 	new_game()
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
@@ -51,7 +53,6 @@ func _on_start_timer_timeout():
 	$SpikeTimer.start()
 	$CoinTimer.start()
 	$FoodTimer.start()
-
 
 func _on_spike_timer_timeout():
 	print("spike spawned")
@@ -95,6 +96,9 @@ func _on_eat():
 	$Player.energy = $Player.energy + 200
 	for food in foodArray: 
 		remove_child(food)
+		
+func _on_characterSelect(): 
+	print("character selected")
 
 func _on_hit():
 	print("spike hit in main")

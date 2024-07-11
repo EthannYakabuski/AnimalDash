@@ -9,14 +9,21 @@ var previousVelocity
 var animationHandle
 @export var energy = 1000;
 
+var characters = ["snowTiger", "panda"]
 var panda_falling_frames = [];
 var snowTiger_falling_frames = [];
 
 signal collect
 signal hit
 signal eat
+signal characterSelect
+
+func _on_character_select(): 
+	print("character selected")
+
 # Called when the node enters the scene tree for the first time.
 func _ready():
+	self.connect("characterSelect", _on_character_select)
 	screen_size = get_viewport_rect().size
 	loadCharacterFramesBasedOnChosenCharacter("snowTiger")
 	
