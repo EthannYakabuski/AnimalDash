@@ -22,7 +22,8 @@ func _on_button_pressed():
 	remove_child($RightButton)
 	var game = game_scene.instantiate()
 	add_child(game)
-	emit_signal("characterSelect")
+	game.get_node("Player").call("_on_character_select", characters[currentCharacter].replace("res://images/","").replace("_stand.png","").replace("_stand_base.png","")); 
+	#emit_signal("characterSelect")
 
 func updateCharacter(): 
 	$CharacterImage.texture = load(characters[currentCharacter])

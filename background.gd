@@ -97,8 +97,9 @@ func _on_eat():
 	for food in foodArray: 
 		remove_child(food)
 		
-func _on_characterSelect(): 
+func _on_characterSelect(characterSelected): 
 	print("character selected")
+	print(characterSelected)
 
 func _on_hit():
 	print("spike hit in main")

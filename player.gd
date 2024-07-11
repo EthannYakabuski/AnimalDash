@@ -12,20 +12,23 @@ var animationHandle
 var characters = ["snowTiger", "panda"]
 var panda_falling_frames = [];
 var snowTiger_falling_frames = [];
+var chosenCharacter = "snowTiger"
 
 signal collect
 signal hit
 signal eat
 signal characterSelect
 
-func _on_character_select(): 
-	print("character selected")
+func _on_character_select(characterSelected): 
+	print("character selected in Player " + characterSelected)
+	chosenCharacter = characterSelected
+	self.call("_ready")
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
-	self.connect("characterSelect", _on_character_select)
+	#self.connect("characterSelect", _on_character_select)
 	screen_size = get_viewport_rect().size
-	loadCharacterFramesBasedOnChosenCharacter("snowTiger")
+	loadCharacterFramesBasedOnChosenCharacter(chosenCharacter)
 	
 func loadCharacterFramesBasedOnChosenCharacter(character_name): 
 	print(character_name + "has been chosen")
