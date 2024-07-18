@@ -14,6 +14,19 @@ signal hit
 signal eat
 signal characterSelect
 
+var spike_patterns = [
+	[1, 1, 1, 1, 1],       
+	[3, 3, 1, 3, 4],  
+	[3, 0.5, 0.5, 1, 3], 
+	[0.5, 0.5, 3, 0.5, 3],  
+	[0.25, 0.25, 0.25, 3, 3],
+	[0.5, 0.5, 3, 1, 1],  
+	[0.5, 0.5, 0.5, 3, 1] 
+]
+var spikePointer = 0
+var currentPattern = 0
+var resolveSpikePattern = false
+
 func new_game(): 
 	score = 0
 	$Player.position = $StartPosition.position
@@ -56,6 +69,7 @@ func _on_start_timer_timeout():
 
 func _on_spike_timer_timeout():
 	print("spike spawned")
+	spikePointer = spikePointer + 1
 	spike = spike_scene.instantiate()
 	spike.add_to_group("Spike")
 	
@@ -67,6 +81,25 @@ func _on_spike_timer_timeout():
 	spike.rotation = direction
 	spike.linear_velocity = velocity.rotated(direction)
 	add_child(spike)
+	var newWaitTime = randf_range(1.0,3.0)
+	
+	if(!resolveSpikePattern): 
+		var randomRoll = randi() % 3 #33% chance to select and start a pattern of spikes
+		if(randomRoll == 0): 
+			print("pattern started")
+			currentPattern = randi() % 7
+			spikePointer = 0
+			resolveSpikePattern = true
+			
+	if(resolveSpikePattern): 
+		if(spikePointer == 4): 
+			resolveSpikePattern = false
+			currentPattern = 0
+		$SpikeTimer.wait_time = spike_patterns[currentPattern][spikePointer]
+		spikePointer = spikePointer + 1
+	else: 
+		$SpikeTimer.wait_time = newWaitTime
+		$SpikeTimer.start()
 
 
 func _on_coin_timer_timeout():
@@ -87,13 +120,13 @@ func _on_coin_timer_timeout():
 
 func _on_collect():
 	print("coin collected in main")
-	$Player.energy = $Player.energy + 10
+	$Player.energy = $Player.energy + 50
 	for coin in coinArray: 
 		remove_child(coin)
 		
 func _on_eat(): 
 	print("eat in main")
-	$Player.energy = $Player.energy + 200
+	$Player.energy = $Player.energy + 500
 	for food in foodArray: 
 		remove_child(food)
 		
@@ -106,7 +139,7 @@ func _on_hit():
 
 
 func _on_food_timer_timeout():
-	print("food spawned")
+	print("food spawned")	
 	var food = food_scene.instantiate(); 
 	food.add_to_group("Food"); 
 	foodArray.push_back(food);
@@ -119,6 +152,9 @@ func _on_food_timer_timeout():
 	food.rotation = direction
 	food.linear_velocity = velocity.rotated(direction)
 	add_child(food)
+	var newWaitTime = randf_range(10.0,15.0)
+	$FoodTimer.wait_time = newWaitTime
+	$FoodTimer.start()
 	
 	
 	

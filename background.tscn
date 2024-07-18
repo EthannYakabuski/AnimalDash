@@ -39,7 +39,7 @@ food_scene = ExtResource("5_50w5t")
 position = Vector2(75, 400)
 
 [node name="SpikeTimer" type="Timer" parent="."]
-wait_time = 5.0
+wait_time = 2.0
 
 [node name="StartTimer" type="Timer" parent="."]
 wait_time = 2.0
@@ -49,7 +49,7 @@ one_shot = true
 wait_time = 6.0
 
 [node name="FoodTimer" type="Timer" parent="."]
-wait_time = 14.0
+wait_time = 13.0
 
 [node name="Parallax_Background" type="ParallaxBackground" parent="."]
 
