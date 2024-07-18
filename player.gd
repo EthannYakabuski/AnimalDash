@@ -85,7 +85,7 @@ func _process(delta):
 	if (Input.is_action_just_pressed("jump") && jumped < 2 || isJumping):
 		velocity = Vector2.ZERO
 		velocity.y -= 500
-		energy = energy - 3
+		energy = energy - 2
 		#velocity = velocity.normalized() * speed
 		previousVelocity = velocity
 		isJumping = true
