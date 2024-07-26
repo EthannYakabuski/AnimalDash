@@ -34,3 +34,6 @@ shape = SubResource("CircleShape2D_ep5mm")
 [node name="VisibleOnScreenNotifier2D" type="VisibleOnScreenNotifier2D" parent="."]
 position = Vector2(360.5, 239.5)
 scale = Vector2(35.85, 23.95)
+
+[connection signal="body_entered" from="." to="." method="_on_body_entered"]
+[connection signal="body_shape_entered" from="." to="." method="_on_body_shape_entered"]

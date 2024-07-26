@@ -33,3 +33,6 @@ position = Vector2(628, 120)
 shape = SubResource("CapsuleShape2D_w4lgc")
 
 [node name="VisibleOnScreenNotifier2D" type="VisibleOnScreenNotifier2D" parent="."]
+
+[connection signal="body_entered" from="." to="." method="_on_body_entered"]
+[connection signal="body_shape_entered" from="." to="." method="_on_body_shape_entered"]
