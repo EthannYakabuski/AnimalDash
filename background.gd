@@ -13,13 +13,14 @@ signal collect
 signal hit
 signal eat
 signal characterSelect
+signal foodcoincollision
 
 var spike_patterns = [
 	[1, 1, 1, 1, 1],       
 	[3, 3, 1, 3, 4],  
 	[3, 0.5, 0.5, 1, 3], 
-	[0.5, 0.5, 3, 0.5, 3],  
-	[0.25, 0.25, 0.25, 3, 3],
+	[0.5, 0.5, 3, 3, 3],  
+	[0.25, 0.25, 1, 3, 3],
 	[0.5, 0.5, 3, 1, 1],  
 	[0.5, 0.5, 0.5, 3, 1] 
 ]
@@ -50,6 +51,7 @@ func _ready():
 	$Player.connect("hit", _on_hit)
 	$Player.connect("collect", _on_collect)
 	$Player.connect("eat", _on_eat)
+	self.connect("foodcoincollision", _on_foodcoincollision)
 	self.connect("characterSelect", _on_characterSelect)
 	new_game()
 
@@ -81,7 +83,7 @@ func _on_spike_timer_timeout():
 	spike.rotation = direction
 	spike.linear_velocity = velocity.rotated(direction)
 	add_child(spike)
-	var newWaitTime = randf_range(1.0,3.0)
+	var newWaitTime = randf_range(2.0,4.0)
 	
 	if(!resolveSpikePattern): 
 		var randomRoll = randi() % 3 #33% chance to select and start a pattern of spikes
@@ -115,6 +117,8 @@ func _on_coin_timer_timeout():
 	var direction = 2*PI
 	coin.rotation = direction
 	coin.linear_velocity = velocity.rotated(direction)
+	coin.collision_layer = 2
+	coin.collision_mask = 0b00000101
 	add_child(coin)
 
 
@@ -133,11 +137,16 @@ func _on_eat():
 func _on_characterSelect(characterSelected): 
 	print("character selected")
 	print(characterSelected)
+	
+func _on_foodcoincollision(): 
+	print("food coin collision in main")
 
 func _on_hit():
 	print("spike hit in main")
 
-
+func _on_food_Entered(): 
+	print("food entered in main")
+	
 func _on_food_timer_timeout():
 	print("food spawned")	
 	var food = food_scene.instantiate(); 
@@ -147,10 +156,14 @@ func _on_food_timer_timeout():
 	var food_loc = $Foodpath/FoodPathFollow
 	food_loc.progress_ratio = randf()
 	
+	food.connect("body_entered", _on_food_Entered)
+	
 	var velocity = Vector2(-150,0.0)
 	var direction = 2*PI
 	food.rotation = direction
 	food.linear_velocity = velocity.rotated(direction)
+	food.collision_layer = 2
+	food.collision_mask = 0b00000101
 	add_child(food)
 	var newWaitTime = randf_range(10.0,15.0)
 	$FoodTimer.wait_time = newWaitTime

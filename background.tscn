@@ -34,6 +34,7 @@ spike_scene = ExtResource("5_wo8yf")
 food_scene = ExtResource("5_50w5t")
 
 [node name="Player" parent="." instance=ExtResource("1_bfbfr")]
+collision_mask = 7
 
 [node name="StartPosition" type="Marker2D" parent="."]
 position = Vector2(75, 400)
@@ -99,6 +100,7 @@ curve = SubResource("Curve2D_ykk1t")
 position = Vector2(651, 239)
 rotation = -3.13126
 
+[connection signal="foodcoincollision" from="." to="." method="_on_foodcoincollision"]
 [connection signal="body_entered" from="Player" to="." method="_on_player_body_entered"]
 [connection signal="timeout" from="SpikeTimer" to="." method="_on_spike_timer_timeout"]
 [connection signal="timeout" from="StartTimer" to="." method="_on_start_timer_timeout"]
