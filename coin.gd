@@ -1,6 +1,7 @@
 extends RigidBody2D
 
 signal foodcoincollision
+var alreadyRemoved = true
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
@@ -12,8 +13,9 @@ func _process(_delta):
 	pass
 
 
-func _on_body_entered(body):
+func _on_body_entered(_body):
 	print("food collided with coin")
 	#collect.emit()
+	alreadyRemoved = false
 	emit_signal("foodcoincollision")
 

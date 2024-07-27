@@ -51,7 +51,7 @@ func _ready():
 	$Player.connect("hit", _on_hit)
 	$Player.connect("collect", _on_collect)
 	$Player.connect("eat", _on_eat)
-	self.connect("foodcoincollision", _on_foodcoincollision)
+	#self.connect("foodcoincollision", _on_foodcoincollision)
 	self.connect("characterSelect", _on_characterSelect)
 	new_game()
 
@@ -126,7 +126,8 @@ func _on_collect():
 	print("coin collected in main")
 	$Player.energy = $Player.energy + 50
 	for coin in coinArray: 
-		remove_child(coin)
+		if coin.alreadyRemoved: 
+			remove_child(coin)
 		
 func _on_eat(): 
 	print("eat in main")
