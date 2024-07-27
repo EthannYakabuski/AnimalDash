@@ -16,11 +16,11 @@ signal characterSelect
 signal foodcoincollision
 
 var spike_patterns = [
-	[1, 1, 1, 1, 1],       
-	[3, 3, 1, 3, 4],  
+	[1, 1, 1, 0.5, 0.5],       
+	[3, 3, 1, 1, 2],  
 	[3, 0.5, 0.5, 1, 3], 
 	[0.5, 0.5, 3, 3, 3],  
-	[0.25, 0.25, 1, 3, 3],
+	[0.25, 0.25, 1, 2, 2],
 	[0.5, 0.5, 3, 1, 1],  
 	[0.5, 0.5, 0.5, 3, 1] 
 ]
@@ -78,12 +78,12 @@ func _on_spike_timer_timeout():
 	var spike_loc = $SpikeSpawn/SpikeSpawnLocation
 	spike_loc.progress_ratio = randf()
 	
-	var velocity = Vector2(-300, 0.0)
+	var velocity = Vector2(-400, 0.0)
 	var direction = 2*PI
 	spike.rotation = direction
 	spike.linear_velocity = velocity.rotated(direction)
 	add_child(spike)
-	var newWaitTime = randf_range(2.0,4.0)
+	var newWaitTime = randf_range(1.0,3.0)
 	
 	if(!resolveSpikePattern): 
 		var randomRoll = randi() % 3 #33% chance to select and start a pattern of spikes
@@ -130,7 +130,7 @@ func _on_collect():
 		
 func _on_eat(): 
 	print("eat in main")
-	$Player.energy = $Player.energy + 500
+	$Player.energy = $Player.energy + 600
 	for food in foodArray: 
 		remove_child(food)
 		

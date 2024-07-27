@@ -8,4 +8,4 @@ func _ready():
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(_delta):
-	scroll_base_offset -= Vector2(100,0)
+	scroll_base_offset -= Vector2(150,0)
