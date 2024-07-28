@@ -85,7 +85,7 @@ func _process(delta):
 	if (Input.is_action_just_pressed("jump") && jumped < 2 || isJumping):
 		velocity = Vector2.ZERO
 		velocity.y -= 500
-		energy = energy - 2
+		energy = energy - 2.5
 		#velocity = velocity.normalized() * speed
 		previousVelocity = velocity
 		isJumping = true
@@ -94,7 +94,7 @@ func _process(delta):
 		animationHandle.animation = "Jump"
 	elif isGravity: 
 		velocity = Vector2.ZERO
-		velocity.y += 1 + gravity * delta
+		velocity.y += 1 + gravity * 1.5 * delta
 		#velocity = velocity.normalized() * speed
 		if position.y >= 400: 
 			isGravity = false
