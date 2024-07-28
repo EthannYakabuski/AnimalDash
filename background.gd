@@ -126,8 +126,9 @@ func _on_collect():
 	print("coin collected in main")
 	$Player.energy = $Player.energy + 50
 	for coin in coinArray: 
-		if coin.alreadyRemoved: 
+		if coin.position.x < 0:
 			remove_child(coin)
+	coinArray = []
 		
 func _on_eat(): 
 	print("eat in main")
