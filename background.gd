@@ -73,11 +73,16 @@ func checkSpikePoints():
 		if spikeItem.position.x < -580 and not spikeItem.passed: 
 			print("spike point")
 			spikeItem.passed = true
+			addPoints(1)
 	
 func _on_start_timer_timeout():
 	$SpikeTimer.start()
 	$CoinTimer.start()
 	$FoodTimer.start()
+
+func addPoints(pointsToAdd): 
+	points = points + pointsToAdd
+	print(points)
 
 func _on_spike_timer_timeout():
 	print("spike spawned")
@@ -135,7 +140,7 @@ func _on_coin_timer_timeout():
 
 func _on_collect():
 	print("coin collected in main")
-	points = points + 10
+	addPoints(3)
 	$Player.energy = $Player.energy + 50
 	for coin in coinArray: 
 		if coin.position.x < 0:
@@ -144,7 +149,7 @@ func _on_collect():
 		
 func _on_eat(): 
 	print("eat in main")
-	points = points + 5
+	addPoints(2)
 	$Player.energy = $Player.energy + 600
 	for food in foodArray: 
 		remove_child(food)
