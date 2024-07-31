@@ -6,8 +6,10 @@ extends Node2D
 @export var food_scene: PackedScene
 var score
 var spike
+var spikeArray = []
 var coinArray = []
 var foodArray = []
+var points = 0
 
 signal collect
 signal hit
@@ -63,7 +65,15 @@ func _process(delta):
 	if $Player.energy < 0: 
 		$Player.hide()
 		game_over()
-
+	checkSpikePoints()
+	
+func checkSpikePoints():
+	for spikeItem in spikeArray:
+		#print(spikeItem.position.x)
+		if spikeItem.position.x < -580 and not spikeItem.passed: 
+			print("spike point")
+			spikeItem.passed = true
+	
 func _on_start_timer_timeout():
 	$SpikeTimer.start()
 	$CoinTimer.start()
@@ -82,6 +92,7 @@ func _on_spike_timer_timeout():
 	var direction = 2*PI
 	spike.rotation = direction
 	spike.linear_velocity = velocity.rotated(direction)
+	spikeArray.push_back(spike)
 	add_child(spike)
 	var newWaitTime = randf_range(1.0,3.0)
 	
@@ -124,6 +135,7 @@ func _on_coin_timer_timeout():
 
 func _on_collect():
 	print("coin collected in main")
+	points = points + 10
 	$Player.energy = $Player.energy + 50
 	for coin in coinArray: 
 		if coin.position.x < 0:
@@ -132,6 +144,7 @@ func _on_collect():
 		
 func _on_eat(): 
 	print("eat in main")
+	points = points + 5
 	$Player.energy = $Player.energy + 600
 	for food in foodArray: 
 		remove_child(food)
