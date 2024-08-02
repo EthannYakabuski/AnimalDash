@@ -83,6 +83,9 @@ func _on_start_timer_timeout():
 func addPoints(pointsToAdd): 
 	points = points + pointsToAdd
 	print(points)
+	
+func addIndicator(positX, positY): 
+	print("adding + indicator to the UI")
 
 func _on_spike_timer_timeout():
 	print("spike spawned")
