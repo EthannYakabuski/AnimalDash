@@ -12,6 +12,8 @@ var coinArray = []
 var foodArray = []
 var points = 0
 
+var sound_coinCollect
+
 signal collect
 signal hit
 signal eat
@@ -56,6 +58,8 @@ func _ready():
 	$Player.connect("eat", _on_eat)
 	#self.connect("foodcoincollision", _on_foodcoincollision)
 	self.connect("characterSelect", _on_characterSelect)
+	
+	sound_coinCollect = $CoinSound
 	new_game()
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
@@ -151,6 +155,7 @@ func _on_coin_timer_timeout():
 func _on_collect():
 	print("coin collected in main")
 	addPoints(3)
+	sound_coinCollect.play()
 	$Player.energy = $Player.energy + 50
 	for coin in coinArray: 
 		if coin.position.x < 0:
