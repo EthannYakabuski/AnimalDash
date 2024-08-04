@@ -1,4 +1,4 @@
-[gd_scene load_steps=14 format=3 uid="uid://checsqe14agle"]
+[gd_scene load_steps=15 format=3 uid="uid://checsqe14agle"]
 
 [ext_resource type="PackedScene" uid="uid://h0fryho40mr0" path="res://player.tscn" id="1_bfbfr"]
 [ext_resource type="Script" path="res://background.gd" id="1_ulvn5"]
@@ -10,6 +10,7 @@
 [ext_resource type="PackedScene" uid="uid://c3oschgq7a4ct" path="res://spike.tscn" id="5_wo8yf"]
 [ext_resource type="Texture2D" uid="uid://b64hy0myqx2xj" path="res://images/Semi-Circle (no background 2).png" id="7_pn1h5"]
 [ext_resource type="AudioStream" uid="uid://387wolenmks" path="res://sounds/coin.wav" id="10_8hkru"]
+[ext_resource type="AudioStream" uid="uid://b8vin0beu6deu" path="res://sounds/eat.wav" id="11_6f248"]
 
 [sub_resource type="Curve2D" id="Curve2D_gqxnl"]
 _data = {
@@ -105,6 +106,9 @@ rotation = -3.13126
 
 [node name="CoinSound" type="AudioStreamPlayer2D" parent="."]
 stream = ExtResource("10_8hkru")
+
+[node name="EatSound" type="AudioStreamPlayer2D" parent="."]
+stream = ExtResource("11_6f248")
 
 [connection signal="foodcoincollision" from="." to="." method="_on_foodcoincollision"]
 [connection signal="body_entered" from="Player" to="." method="_on_player_body_entered"]

@@ -13,6 +13,7 @@ var foodArray = []
 var points = 0
 
 var sound_coinCollect
+var sound_foodCollect
 
 signal collect
 signal hit
@@ -60,6 +61,7 @@ func _ready():
 	self.connect("characterSelect", _on_characterSelect)
 	
 	sound_coinCollect = $CoinSound
+	sound_foodCollect = $EatSound
 	new_game()
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
@@ -165,6 +167,7 @@ func _on_collect():
 func _on_eat(): 
 	print("eat in main")
 	addPoints(2)
+	sound_foodCollect.play()
 	$Player.energy = $Player.energy + 600
 	for food in foodArray: 
 		remove_child(food)
