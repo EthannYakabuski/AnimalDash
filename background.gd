@@ -4,6 +4,7 @@ extends Node2D
 @export var spike_scene: PackedScene
 @export var player_scene: PackedScene
 @export var food_scene: PackedScene
+@export var plus_scene: PackedScene
 var score
 var spike
 var spikeArray = []
@@ -74,7 +75,8 @@ func checkSpikePoints():
 			print("spike point")
 			spikeItem.passed = true
 			addPoints(1)
-	
+			addIndicator(spikeItem.position)
+			
 func _on_start_timer_timeout():
 	$SpikeTimer.start()
 	$CoinTimer.start()
@@ -84,8 +86,13 @@ func addPoints(pointsToAdd):
 	points = points + pointsToAdd
 	print(points)
 	
-func addIndicator(positX, positY): 
+func addIndicator(position): 
 	print("adding + indicator to the UI")
+	var newPlus = plus_scene.instantiate();
+	position.x = position.x + 300
+	position.y = $Player.position.y - 100
+	newPlus.position = position
+	add_child(newPlus)
 
 func _on_spike_timer_timeout():
 	print("spike spawned")
