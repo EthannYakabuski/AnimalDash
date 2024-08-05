@@ -14,6 +14,10 @@ var points = 0
 
 var sound_coinCollect
 var sound_foodCollect
+var sound_jump
+var sound_doubleJump
+var sound_hit
+var sound_land
 
 signal collect
 signal hit
@@ -57,11 +61,18 @@ func _ready():
 	$Player.connect("hit", _on_hit)
 	$Player.connect("collect", _on_collect)
 	$Player.connect("eat", _on_eat)
+	$Player.connect("jump", _on_jump)
+	$Player.connect("doubleJump", _on_doubleJump)
+	$Player.connect("land", _on_land)
 	#self.connect("foodcoincollision", _on_foodcoincollision)
 	self.connect("characterSelect", _on_characterSelect)
 	
 	sound_coinCollect = $CoinSound
 	sound_foodCollect = $EatSound
+	sound_jump = $JumpSound
+	sound_doubleJump = $DoubleJumpSound
+	sound_hit = $HitSound
+	sound_land = $LandSound
 	new_game()
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
@@ -163,6 +174,18 @@ func _on_collect():
 		if coin.position.x < 0:
 			remove_child(coin)
 	coinArray = []
+
+func _on_land(): 
+	print("land in main")
+	sound_land.play()
+
+func _on_doubleJump(): 
+	print("double jump in main")
+	sound_doubleJump.play()	
+	
+func _on_jump():
+	print("on jump in main")
+	sound_jump.play()
 		
 func _on_eat(): 
 	print("eat in main")
@@ -181,6 +204,7 @@ func _on_foodcoincollision():
 
 func _on_hit():
 	print("spike hit in main")
+	$HitSound.play()
 
 func _on_food_Entered(): 
 	print("food entered in main")
