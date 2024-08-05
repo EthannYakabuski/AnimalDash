@@ -58,6 +58,7 @@ func game_over():
 # Called when the node enters the scene tree for the first time.
 func _ready():
 	$BaselineKickin.play()
+	$Score.text = str(0)
 	#var screen_size = get_viewport_rect().size
 	$Player.connect("hit", _on_hit)
 	$Player.connect("collect", _on_collect)
@@ -102,6 +103,7 @@ func _on_start_timer_timeout():
 
 func addPoints(pointsToAdd): 
 	points = points + pointsToAdd
+	$Score.text = str(points)
 	print(points)
 	
 func addIndicator(position): 
