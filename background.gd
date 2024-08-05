@@ -11,6 +11,7 @@ var spikeArray = []
 var coinArray = []
 var foodArray = []
 var points = 0
+var coinsCollected = 0
 
 var sound_coinCollect
 var sound_foodCollect
@@ -171,6 +172,7 @@ func _on_coin_timer_timeout():
 func _on_collect():
 	print("coin collected in main")
 	addPoints(3)
+	coinsCollected = coinsCollected + 1
 	sound_coinCollect.play()
 	$Player.energy = $Player.energy + 50
 	for coin in coinArray: 
