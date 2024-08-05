@@ -1,4 +1,4 @@
-[gd_scene load_steps=19 format=3 uid="uid://checsqe14agle"]
+[gd_scene load_steps=20 format=3 uid="uid://checsqe14agle"]
 
 [ext_resource type="PackedScene" uid="uid://h0fryho40mr0" path="res://player.tscn" id="1_bfbfr"]
 [ext_resource type="Script" path="res://background.gd" id="1_ulvn5"]
@@ -15,6 +15,7 @@
 [ext_resource type="AudioStream" uid="uid://d035qq43nsolo" path="res://sounds/land.wav" id="13_lqkd3"]
 [ext_resource type="AudioStream" uid="uid://chpa5urjsbrq3" path="res://sounds/doublejump.wav" id="14_dkb00"]
 [ext_resource type="AudioStream" uid="uid://cjci3olbl0px7" path="res://sounds/hit.wav" id="15_mwnra"]
+[ext_resource type="AudioStream" uid="uid://dcrx8n5qk5080" path="res://sounds/baselineKickin.wav" id="16_1vhei"]
 
 [sub_resource type="Curve2D" id="Curve2D_gqxnl"]
 _data = {
@@ -126,9 +127,13 @@ stream = ExtResource("14_dkb00")
 [node name="HitSound" type="AudioStreamPlayer2D" parent="."]
 stream = ExtResource("15_mwnra")
 
+[node name="BaselineKickin" type="AudioStreamPlayer2D" parent="."]
+stream = ExtResource("16_1vhei")
+
 [connection signal="foodcoincollision" from="." to="." method="_on_foodcoincollision"]
 [connection signal="body_entered" from="Player" to="." method="_on_player_body_entered"]
 [connection signal="timeout" from="SpikeTimer" to="." method="_on_spike_timer_timeout"]
 [connection signal="timeout" from="StartTimer" to="." method="_on_start_timer_timeout"]
 [connection signal="timeout" from="CoinTimer" to="." method="_on_coin_timer_timeout"]
 [connection signal="timeout" from="FoodTimer" to="." method="_on_food_timer_timeout"]
+[connection signal="finished" from="BaselineKickin" to="." method="_on_baseline_kickin_finished"]

@@ -57,6 +57,7 @@ func game_over():
 	
 # Called when the node enters the scene tree for the first time.
 func _ready():
+	$BaselineKickin.play()
 	#var screen_size = get_viewport_rect().size
 	$Player.connect("hit", _on_hit)
 	$Player.connect("collect", _on_collect)
@@ -234,3 +235,7 @@ func _on_food_timer_timeout():
 	
 	
 	
+
+
+func _on_baseline_kickin_finished():
+	$BaselineKickin.play()
