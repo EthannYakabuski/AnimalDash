@@ -18,6 +18,9 @@ signal collect
 signal hit
 signal eat
 signal characterSelect
+signal jump
+signal doubleJump
+signal land
 
 func _on_character_select(characterSelected): 
 	print("character selected in Player " + characterSelected)
@@ -79,6 +82,7 @@ func _process(delta):
 		isGravity = true
 		velocity = Vector2.ZERO
 		jumped = jumped + 1
+		emit_signal("doubleJump")
 		animationHandle.animation = "Run"
 		animationHandle.animation = "Jump"
 	
@@ -91,6 +95,7 @@ func _process(delta):
 		isJumping = true
 		if(Input.is_action_just_pressed("jump")): 
 			jumped = jumped + 1
+			emit_signal("jump")
 		animationHandle.animation = "Jump"
 	elif isGravity: 
 		velocity = Vector2.ZERO
@@ -98,6 +103,7 @@ func _process(delta):
 		#velocity = velocity.normalized() * speed
 		if position.y >= 400: 
 			isGravity = false
+			emit_signal("land")
 			velocity = Vector2.ZERO
 		previousVelocity = velocity
 	else:

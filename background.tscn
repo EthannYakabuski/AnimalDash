@@ -1,4 +1,4 @@
-[gd_scene load_steps=12 format=3 uid="uid://checsqe14agle"]
+[gd_scene load_steps=23 format=3 uid="uid://checsqe14agle"]
 
 [ext_resource type="PackedScene" uid="uid://h0fryho40mr0" path="res://player.tscn" id="1_bfbfr"]
 [ext_resource type="Script" path="res://background.gd" id="1_ulvn5"]
@@ -6,8 +6,16 @@
 [ext_resource type="Texture2D" uid="uid://crnyy3aybyxy5" path="res://images/snowTiger_backgroundClouds.png" id="3_bsfhd"]
 [ext_resource type="Texture2D" uid="uid://1io33wnpboh8" path="res://images/snowTiger_foregroundLarge.png" id="4_t411p"]
 [ext_resource type="PackedScene" uid="uid://b5espwtionjie" path="res://food.tscn" id="5_50w5t"]
+[ext_resource type="PackedScene" uid="uid://dxld76dfsqvq2" path="res://plus.tscn" id="5_jb1cb"]
 [ext_resource type="PackedScene" uid="uid://c3oschgq7a4ct" path="res://spike.tscn" id="5_wo8yf"]
 [ext_resource type="Texture2D" uid="uid://b64hy0myqx2xj" path="res://images/Semi-Circle (no background 2).png" id="7_pn1h5"]
+[ext_resource type="AudioStream" uid="uid://387wolenmks" path="res://sounds/coin.wav" id="10_8hkru"]
+[ext_resource type="AudioStream" uid="uid://b8vin0beu6deu" path="res://sounds/eat.wav" id="11_6f248"]
+[ext_resource type="AudioStream" uid="uid://bu3uag5oil2ya" path="res://sounds/jump.wav" id="12_7kmbv"]
+[ext_resource type="AudioStream" uid="uid://d035qq43nsolo" path="res://sounds/land.wav" id="13_lqkd3"]
+[ext_resource type="AudioStream" uid="uid://chpa5urjsbrq3" path="res://sounds/doublejump.wav" id="14_dkb00"]
+[ext_resource type="AudioStream" uid="uid://cjci3olbl0px7" path="res://sounds/hit.wav" id="15_mwnra"]
+[ext_resource type="AudioStream" uid="uid://dcrx8n5qk5080" path="res://sounds/baselineKickin.wav" id="16_1vhei"]
 
 [sub_resource type="Curve2D" id="Curve2D_gqxnl"]
 _data = {
@@ -27,11 +35,25 @@ _data = {
 }
 point_count = 2
 
+[sub_resource type="SystemFont" id="SystemFont_34dpl"]
+
+[sub_resource type="FontVariation" id="FontVariation_6n8k2"]
+base_font = SubResource("SystemFont_34dpl")
+
+[sub_resource type="LabelSettings" id="LabelSettings_irf5v"]
+font = SubResource("FontVariation_6n8k2")
+font_size = 30
+font_color = Color(0.901961, 0.431373, 0.839216, 1)
+outline_size = 3
+outline_color = Color(0.0196078, 0.0196078, 0.0196078, 1)
+shadow_size = 5
+
 [node name="Background" type="Node2D"]
 script = ExtResource("1_ulvn5")
 coin_scene = ExtResource("2_bmhpb")
 spike_scene = ExtResource("5_wo8yf")
 food_scene = ExtResource("5_50w5t")
+plus_scene = ExtResource("5_jb1cb")
 
 [node name="Player" parent="." instance=ExtResource("1_bfbfr")]
 collision_mask = 7
@@ -100,9 +122,39 @@ curve = SubResource("Curve2D_ykk1t")
 position = Vector2(651, 239)
 rotation = -3.13126
 
+[node name="CoinSound" type="AudioStreamPlayer2D" parent="."]
+stream = ExtResource("10_8hkru")
+
+[node name="EatSound" type="AudioStreamPlayer2D" parent="."]
+stream = ExtResource("11_6f248")
+
+[node name="JumpSound" type="AudioStreamPlayer2D" parent="."]
+stream = ExtResource("12_7kmbv")
+
+[node name="LandSound" type="AudioStreamPlayer2D" parent="."]
+stream = ExtResource("13_lqkd3")
+
+[node name="DoubleJumpSound" type="AudioStreamPlayer2D" parent="."]
+stream = ExtResource("14_dkb00")
+
+[node name="HitSound" type="AudioStreamPlayer2D" parent="."]
+stream = ExtResource("15_mwnra")
+
+[node name="BaselineKickin" type="AudioStreamPlayer2D" parent="."]
+stream = ExtResource("16_1vhei")
+
+[node name="Score" type="Label" parent="."]
+offset_left = 508.0
+offset_top = 48.0
+offset_right = 676.0
+offset_bottom = 104.0
+label_settings = SubResource("LabelSettings_irf5v")
+horizontal_alignment = 2
+
 [connection signal="foodcoincollision" from="." to="." method="_on_foodcoincollision"]
 [connection signal="body_entered" from="Player" to="." method="_on_player_body_entered"]
 [connection signal="timeout" from="SpikeTimer" to="." method="_on_spike_timer_timeout"]
 [connection signal="timeout" from="StartTimer" to="." method="_on_start_timer_timeout"]
 [connection signal="timeout" from="CoinTimer" to="." method="_on_coin_timer_timeout"]
 [connection signal="timeout" from="FoodTimer" to="." method="_on_food_timer_timeout"]
+[connection signal="finished" from="BaselineKickin" to="." method="_on_baseline_kickin_finished"]

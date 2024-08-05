@@ -1,13 +1,13 @@
 [gd_scene load_steps=5 format=3 uid="uid://c7fen34vsu0xo"]
 
-[ext_resource type="Texture2D" uid="uid://6pxvtxww65pu" path="res://images/coin.png" id="1_3j3f3"]
 [ext_resource type="Script" path="res://coin.gd" id="1_kdm57"]
+[ext_resource type="Texture2D" uid="uid://bgt03lyusko8r" path="res://images/coinBase.png" id="2_kxv8r"]
 
 [sub_resource type="SpriteFrames" id="SpriteFrames_n7lpc"]
 animations = [{
 "frames": [{
 "duration": 1.0,
-"texture": ExtResource("1_3j3f3")
+"texture": ExtResource("2_kxv8r")
 }],
 "loop": true,
 "name": &"Standard",
@@ -23,7 +23,7 @@ script = ExtResource("1_kdm57")
 
 [node name="CoinSprite" type="AnimatedSprite2D" parent="."]
 position = Vector2(666, 130)
-scale = Vector2(0.1, 0.1)
+scale = Vector2(0.27, 0.27)
 sprite_frames = SubResource("SpriteFrames_n7lpc")
 animation = &"Standard"
 

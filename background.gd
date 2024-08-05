@@ -4,10 +4,21 @@ extends Node2D
 @export var spike_scene: PackedScene
 @export var player_scene: PackedScene
 @export var food_scene: PackedScene
+@export var plus_scene: PackedScene
 var score
 var spike
+var spikeArray = []
 var coinArray = []
 var foodArray = []
+var points = 0
+var coinsCollected = 0
+
+var sound_coinCollect
+var sound_foodCollect
+var sound_jump
+var sound_doubleJump
+var sound_hit
+var sound_land
 
 signal collect
 signal hit
@@ -47,12 +58,24 @@ func game_over():
 	
 # Called when the node enters the scene tree for the first time.
 func _ready():
+	$BaselineKickin.play()
+	$Score.text = str(0)
 	#var screen_size = get_viewport_rect().size
 	$Player.connect("hit", _on_hit)
 	$Player.connect("collect", _on_collect)
 	$Player.connect("eat", _on_eat)
+	$Player.connect("jump", _on_jump)
+	$Player.connect("doubleJump", _on_doubleJump)
+	$Player.connect("land", _on_land)
 	#self.connect("foodcoincollision", _on_foodcoincollision)
 	self.connect("characterSelect", _on_characterSelect)
+	
+	sound_coinCollect = $CoinSound
+	sound_foodCollect = $EatSound
+	sound_jump = $JumpSound
+	sound_doubleJump = $DoubleJumpSound
+	sound_hit = $HitSound
+	sound_land = $LandSound
 	new_game()
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
@@ -63,11 +86,34 @@ func _process(delta):
 	if $Player.energy < 0: 
 		$Player.hide()
 		game_over()
-
+	checkSpikePoints()
+	
+func checkSpikePoints():
+	for spikeItem in spikeArray:
+		#print(spikeItem.position.x)
+		if spikeItem.position.x < -580 and not spikeItem.passed: 
+			print("spike point")
+			spikeItem.passed = true
+			addPoints(1)
+			addIndicator(spikeItem.position)
+			
 func _on_start_timer_timeout():
 	$SpikeTimer.start()
 	$CoinTimer.start()
 	$FoodTimer.start()
+
+func addPoints(pointsToAdd): 
+	points = points + pointsToAdd
+	$Score.text = str(points)
+	print(points)
+	
+func addIndicator(position): 
+	print("adding + indicator to the UI")
+	var newPlus = plus_scene.instantiate();
+	position.x = position.x + 300
+	position.y = $Player.position.y - 100
+	newPlus.position = position
+	add_child(newPlus)
 
 func _on_spike_timer_timeout():
 	print("spike spawned")
@@ -82,6 +128,7 @@ func _on_spike_timer_timeout():
 	var direction = 2*PI
 	spike.rotation = direction
 	spike.linear_velocity = velocity.rotated(direction)
+	spikeArray.push_back(spike)
 	add_child(spike)
 	var newWaitTime = randf_range(1.0,3.0)
 	
@@ -124,14 +171,31 @@ func _on_coin_timer_timeout():
 
 func _on_collect():
 	print("coin collected in main")
+	addPoints(3)
+	coinsCollected = coinsCollected + 1
+	sound_coinCollect.play()
 	$Player.energy = $Player.energy + 50
 	for coin in coinArray: 
 		if coin.position.x < 0:
 			remove_child(coin)
 	coinArray = []
+
+func _on_land(): 
+	print("land in main")
+	sound_land.play()
+
+func _on_doubleJump(): 
+	print("double jump in main")
+	sound_doubleJump.play()	
+	
+func _on_jump():
+	print("on jump in main")
+	sound_jump.play()
 		
 func _on_eat(): 
 	print("eat in main")
+	addPoints(2)
+	sound_foodCollect.play()
 	$Player.energy = $Player.energy + 600
 	for food in foodArray: 
 		remove_child(food)
@@ -145,6 +209,7 @@ func _on_foodcoincollision():
 
 func _on_hit():
 	print("spike hit in main")
+	$HitSound.play()
 
 func _on_food_Entered(): 
 	print("food entered in main")
@@ -174,3 +239,7 @@ func _on_food_timer_timeout():
 	
 	
 	
+
+
+func _on_baseline_kickin_finished():
+	$BaselineKickin.play()
