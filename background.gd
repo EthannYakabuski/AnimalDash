@@ -25,6 +25,7 @@ signal hit
 signal eat
 signal characterSelect
 signal foodcoincollision
+signal gameOver
 
 var spike_patterns = [
 	[1, 1, 1, 0.5, 0.5],       
@@ -55,6 +56,10 @@ func game_over():
 	$SpikeTimer.stop()
 	$CoinTimer.stop()
 	$FoodTimer.stop()
+	for child in get_children():
+		if child is Node and !Timer:
+			child.queue_free()
+	emit_signal("gameOver")
 	
 # Called when the node enters the scene tree for the first time.
 func _ready():
@@ -210,6 +215,7 @@ func _on_foodcoincollision():
 func _on_hit():
 	print("spike hit in main")
 	$HitSound.play()
+	game_over()
 
 func _on_food_Entered(): 
 	print("food entered in main")

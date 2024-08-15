@@ -1,0 +1,46 @@
+[gd_scene load_steps=5 format=3 uid="uid://bou780e4w75un"]
+
+[ext_resource type="Script" path="res://main_menu.gd" id="1_ao6ml"]
+[ext_resource type="PackedScene" uid="uid://checsqe14agle" path="res://background.tscn" id="2_32us4"]
+[ext_resource type="Texture2D" uid="uid://b416mjk6ofs8d" path="res://leftArrowFinal.png" id="4_xmicy"]
+[ext_resource type="Texture2D" uid="uid://6m4jdx7gbthh" path="res://rightArrowFinal.png" id="5_krq6j"]
+
+[node name="MainMenu" type="Node"]
+script = ExtResource("1_ao6ml")
+game_scene = ExtResource("2_32us4")
+
+[node name="CharacterImage" type="TextureRect" parent="."]
+offset_left = 264.0
+offset_top = 136.0
+offset_right = 564.0
+offset_bottom = 436.0
+scale = Vector2(0.65, 0.65)
+
+[node name="StartGame" type="Button" parent="."]
+offset_left = 292.0
+offset_top = 384.0
+offset_right = 440.0
+offset_bottom = 444.0
+text = "Dash"
+
+[node name="LeftButton" type="TextureButton" parent="."]
+offset_left = 45.0
+offset_top = 144.0
+offset_right = 1069.0
+offset_bottom = 1168.0
+scale = Vector2(0.2, 0.2)
+texture_normal = ExtResource("4_xmicy")
+
+[node name="RightButton" type="TextureButton" parent="."]
+offset_left = 464.0
+offset_top = 146.0
+offset_right = 1488.0
+offset_bottom = 1170.0
+scale = Vector2(0.2, 0.2)
+texture_normal = ExtResource("5_krq6j")
+
+[node name="ActiveSprite" type="Sprite2D" parent="."]
+
+[connection signal="pressed" from="StartGame" to="." method="_on_button_pressed"]
+[connection signal="pressed" from="LeftButton" to="." method="_on_left_button_pressed"]
+[connection signal="pressed" from="RightButton" to="." method="_on_right_button_pressed"]
