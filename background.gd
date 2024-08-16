@@ -57,7 +57,9 @@ func game_over():
 	$CoinTimer.stop()
 	$FoodTimer.stop()
 	for child in get_children():
-		if child is Node and !Timer:
+		if child is Timer:
+			print("nothing")
+		else: 
 			child.queue_free()
 	emit_signal("gameOver")
 	
