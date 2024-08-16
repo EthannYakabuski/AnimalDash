@@ -39,6 +39,7 @@ var spike_patterns = [
 var spikePointer = 0
 var currentPattern = 0
 var resolveSpikePattern = false
+var gamePaused = false
 
 func new_game(): 
 	score = 0
@@ -61,6 +62,7 @@ func game_over():
 			print("nothing")
 		else: 
 			child.queue_free()
+	gamePaused = true
 	emit_signal("gameOver")
 	
 # Called when the node enters the scene tree for the first time.
@@ -87,13 +89,14 @@ func _ready():
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta):
-	var background_background = $Parallax_Background
-	background_background.scroll_base_offset -= Vector2(5,0) * delta
-	$EnergyBar.value = $Player.energy
-	if $Player.energy < 0: 
-		$Player.hide()
-		game_over()
-	checkSpikePoints()
+	if(!gamePaused): 
+		var background_background = $Parallax_Background
+		background_background.scroll_base_offset -= Vector2(5,0) * delta
+		$EnergyBar.value = $Player.energy
+		if $Player.energy < 0: 
+			$Player.hide()
+			game_over()
+		checkSpikePoints()
 	
 func checkSpikePoints():
 	for spikeItem in spikeArray:
