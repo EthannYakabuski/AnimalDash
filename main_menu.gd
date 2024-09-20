@@ -16,6 +16,12 @@ func _ready():
 	else: 
 		print("google sign in available")
 		
+	if Engine.has_singleton("GodotPlayGameServices"):
+		var play_services = Engine.get_singleton("GodotPlayGameServices")
+		play_services.some_function()  # Replace with the actual function you're calling
+	else:
+		print("GodotPlayGameServices plugin not available")
+		
 func _process(_delta):
 	pass
 

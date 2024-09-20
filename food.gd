@@ -16,4 +16,3 @@ func _on_body_entered(body):
 		print("food collided with coin")
 		#collect.emit()
 		emit_signal("foodcoincollision")
-

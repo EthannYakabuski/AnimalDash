@@ -18,4 +18,3 @@ func _on_body_entered(_body):
 	#collect.emit()
 	alreadyRemoved = false
 	emit_signal("foodcoincollision")
-
