@@ -15,17 +15,24 @@ func _ready():
 		print("play game services not found")
 	else: 
 		print("google sign in available")
+	var timer = Timer.new()
+	timer.wait_time = 2.0  # 2 seconds delay
+	timer.one_shot = false
+	add_child(timer)
+	timer.start()
+	await timer.timeout
+	check_plugin()
 		
-	if Engine.has_singleton("GodotPlayGameServices"):
+func _process(_delta):
+	pass
+	
+func check_plugin(): 
+	if GodotPlayGameServices.android_plugin:
 		var play_services = Engine.get_singleton("GodotPlayGameServices")
 		play_services.some_function()  # Replace with the actual function you're calling
 	else:
 		print("GodotPlayGameServices plugin not available")
-		
-func _process(_delta):
-	pass
-
-
+	
 func _on_button_pressed():
 	$CharacterImage.visible = false
 	$StartGame.visible = false
