@@ -41,6 +41,12 @@ texture_normal = ExtResource("5_krq6j")
 
 [node name="ActiveSprite" type="Sprite2D" parent="."]
 
+[node name="TitleText" type="Label" parent="."]
+offset_left = 22.0
+offset_top = 400.0
+offset_right = 267.0
+offset_bottom = 423.0
+
 [connection signal="pressed" from="StartGame" to="." method="_on_button_pressed"]
 [connection signal="pressed" from="LeftButton" to="." method="_on_left_button_pressed"]
 [connection signal="pressed" from="RightButton" to="." method="_on_right_button_pressed"]

@@ -8,30 +8,30 @@ var currentCharacter = 0
 @export var game_scene: PackedScene
 @export var menu_scene: PackedScene
 
+var _sign_in_retries := 5
+
 # Called when the node enters the scene tree for the first time.
 func _ready():
 	updateCharacter()
 	if not GodotPlayGameServices.android_plugin: 
 		print("play game services not found")
+		$TitleText.text = "Play game services not found"
 	else: 
 		print("google sign in available")
-	var timer = Timer.new()
-	timer.wait_time = 2.0  # 2 seconds delay
-	timer.one_shot = false
-	add_child(timer)
-	timer.start()
-	await timer.timeout
-	check_plugin()
+		$TitleText.text = "Play game services found"
+		SignInClient.user_authenticated.connect(func(is_authenticated: bool):
+			if _sign_in_retries > 0 and not is_authenticated:
+				$TitleText.text = "Trying to sign in!"
+				SignInClient.sign_in()
+				_sign_in_retries -= 1
+			if _sign_in_retries == 0:
+				$TitleText.text = "Sign in attemps expired!"
+			if is_authenticated:
+				$TitleText.text = "Play game services connected"
+		)
 		
 func _process(_delta):
 	pass
-	
-func check_plugin(): 
-	if GodotPlayGameServices.android_plugin:
-		var play_services = Engine.get_singleton("GodotPlayGameServices")
-		play_services.some_function()  # Replace with the actual function you're calling
-	else:
-		print("GodotPlayGameServices plugin not available")
 	
 func _on_button_pressed():
 	$CharacterImage.visible = false
