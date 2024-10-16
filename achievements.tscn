@@ -1,0 +1,26 @@
+[gd_scene load_steps=2 format=3 uid="uid://bdamtbrpkjtu1"]
+
+[ext_resource type="Script" path="res://achievements.gd" id="1_houw0"]
+
+[node name="Achievements" type="Node2D"]
+script = ExtResource("1_houw0")
+
+[node name="DebugText" type="Label" parent="."]
+offset_left = 10.0
+offset_top = 444.0
+offset_right = 257.0
+offset_bottom = 473.0
+
+[node name="JourneyBegun" type="Label" parent="."]
+offset_left = 149.0
+offset_top = 238.0
+offset_right = 392.0
+offset_bottom = 275.0
+text = "Default text"
+
+[node name="JustGettingStarted" type="Label" parent="."]
+offset_left = 150.0
+offset_top = 307.0
+offset_right = 393.0
+offset_bottom = 344.0
+text = "Default text"

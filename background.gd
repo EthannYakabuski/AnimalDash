@@ -12,6 +12,8 @@ var coinArray = []
 var foodArray = []
 var points = 0
 var coinsCollected = 0
+var justGettingStarted = false
+var journeyBegun = false
 
 var sound_coinCollect
 var sound_foodCollect
@@ -28,7 +30,7 @@ signal foodcoincollision
 signal gameOver
 
 var spike_patterns = [
-	[1, 1, 1, 0.5, 0.5],       
+	[1, 1, 1, 3, 3],       
 	[3, 3, 1, 1, 2],  
 	[3, 0.5, 0.5, 1, 3], 
 	[0.5, 0.5, 3, 3, 3],  
@@ -116,6 +118,14 @@ func addPoints(pointsToAdd):
 	points = points + pointsToAdd
 	$Score.text = str(points)
 	print(points)
+	if points > 25 and not journeyBegun: 
+		$DebugText.text = "Just unlocked journey begun"
+		AchievementsClient.unlock_achievement("CgkIuuKhlf8BEAIQAw")
+		journeyBegun = true
+	if points > 100 and not justGettingStarted:
+		$DebugText.text = "Just unlocked Just getting started" 
+		AchievementsClient.unlock_achievement("CgkIuuKhlf8BEAIQAQ")
+		justGettingStarted = true
 	
 func addIndicator(position): 
 	print("adding + indicator to the UI")
@@ -143,7 +153,7 @@ func _on_spike_timer_timeout():
 	var newWaitTime = randf_range(1.0,3.0)
 	
 	if(!resolveSpikePattern): 
-		var randomRoll = randi() % 3 #33% chance to select and start a pattern of spikes
+		var randomRoll = randi() % 2 #50% chance to select and start a pattern of spikes
 		if(randomRoll == 0): 
 			print("pattern started")
 			currentPattern = randi() % 7
@@ -247,10 +257,5 @@ func _on_food_timer_timeout():
 	$FoodTimer.wait_time = newWaitTime
 	$FoodTimer.start()
 	
-	
-	
-	
-
-
 func _on_baseline_kickin_finished():
 	$BaselineKickin.play()

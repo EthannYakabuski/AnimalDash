@@ -151,6 +151,13 @@ offset_bottom = 104.0
 label_settings = SubResource("LabelSettings_irf5v")
 horizontal_alignment = 2
 
+[node name="DebugText" type="Label" parent="."]
+offset_left = 215.0
+offset_top = 105.0
+offset_right = 498.0
+offset_bottom = 138.0
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+
 [connection signal="foodcoincollision" from="." to="." method="_on_foodcoincollision"]
 [connection signal="body_entered" from="Player" to="." method="_on_player_body_entered"]
 [connection signal="timeout" from="SpikeTimer" to="." method="_on_spike_timer_timeout"]
