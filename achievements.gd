@@ -9,11 +9,10 @@ func achievementsLoaded():
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
-	GodotPlayGameServices.android_plugin.showAchievements()
+	AchievementsClient.achievements_loaded.connect(achievementsLoaded);
 	if AchievementsClient: 
 		$DebugText.text = "Achievements client found" 
-		#AchievementsClient.achievements_loaded.connect(loadListener)
-		AchievementsClient.achievements_loaded.connect(achievementsLoaded);
+		#AchievementsClient.achievements_loaded.connect(loadListener
 		AchievementsClient.load_achievements(true)
 	else: 
 		$DebugText.text = "Achievements client not found"

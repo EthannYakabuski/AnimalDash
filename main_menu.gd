@@ -2,6 +2,7 @@ extends Node
 signal hit
 signal characterSelect
 signal gameOver
+
 var characters = ["res://images/snowTiger_stand.png","res://images/panda_stand_base.png"]
 var currentCharacter = 0
 
@@ -13,15 +14,21 @@ var _sign_in_retries := 1
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
-	SignInClient.user_authenticated.connect(isSignedInListener)
+	if SignInClient == null or GodotPlayGameServices == null: 
+		$TitleText.text = "SignInClient is null"
+	SignInClient.user_authenticated.connect(func(is_authenticated: bool):
+		if not is_authenticated:
+			SignInClient.sign_in()
+		else: 
+			$TitleText.text = "User has been authenticated"
+	)
 	updateCharacter()
 	if not GodotPlayGameServices.android_plugin: 
 		print("play game services not found")
-		$TitleText.text = "Play game services not found"
+		$TitleText.text = $TitleText.text + "Play game services not found"
 	else: 
 		print("google sign in available")
-		$TitleText.text = "Play game services found" 
-		#AchievementsClient.show_achievements()
+		$TitleText.text = $TitleText.text + "Play game services found" 
 		
 func _process(_delta):
 	pass
@@ -70,10 +77,10 @@ func _on_right_button_pressed():
 
 func _on_google_sign_in_pressed() -> void:
 	print("attempting manual sign in with google")
-	$TitleText.text = "Manual sign in attempted"
-	SignInClient.user_authenticated.connect(isSignedInListener)
-	SignInClient.user_signed_in.connect(isSignedInListener)
-	SignInClient.sign_in()
+	$TitleText.text = $TitleText.text + " Manual sign in attempted"
+	GodotPlayGameServices.android_plugin.signIn()
+	$TitleText.text = $TitleText.text + " returned"
+		
 
 func isSignedInListener(status): 
 	print(status)
