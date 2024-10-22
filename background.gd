@@ -118,12 +118,12 @@ func addPoints(pointsToAdd):
 	points = points + pointsToAdd
 	$Score.text = str(points)
 	print(points)
-	if points > 25 and not journeyBegun: 
-		$DebugText.text = "Just unlocked journey begun"
+	if points >= 25 and not journeyBegun: 
+		#$DebugText.text = "Just unlocked journey begun"
 		AchievementsClient.unlock_achievement("CgkIuuKhlf8BEAIQAw")
 		journeyBegun = true
-	if points > 100 and not justGettingStarted:
-		$DebugText.text = "Just unlocked Just getting started" 
+	if points >= 100 and not justGettingStarted:
+		#$DebugText.text = "Just unlocked Just getting started" 
 		AchievementsClient.unlock_achievement("CgkIuuKhlf8BEAIQAQ")
 		justGettingStarted = true
 	
