@@ -80,7 +80,10 @@ func _ready():
 	$Player.connect("land", _on_land)
 	#self.connect("foodcoincollision", _on_foodcoincollision)
 	self.connect("characterSelect", _on_characterSelect)
-	
+	LeaderboardsClient.score_submitted.connect(
+		func refresh_score(is_submitted: bool, leaderboard_id: String):
+			game_over()
+	)
 	sound_coinCollect = $CoinSound
 	sound_foodCollect = $EatSound
 	sound_jump = $JumpSound
@@ -230,7 +233,7 @@ func _on_foodcoincollision():
 func _on_hit():
 	print("spike hit in main")
 	$HitSound.play()
-	game_over()
+	LeaderboardsClient.submit_score("CgkIuuKhlf8BEAIQAg", int(score))
 
 func _on_food_Entered(): 
 	print("food entered in main")
