@@ -16,24 +16,26 @@ var _sign_in_retries := 1
 func _ready():
 	AchievementsClient.achievements_loaded.connect(
 		func achievementsLoaded(achievements: Array[AchievementsClient.Achievement]):
-			$TitleText.text = $TitleText.text + " inside loaded callback "; 
+			#$TitleText.text = $TitleText.text + " inside loaded callback "; 
 			AchievementsClient.show_achievements()
 	)
 	if SignInClient == null or GodotPlayGameServices == null: 
-		$TitleText.text = "SignInClient is null"
+		pass
+		#$TitleText.text = "SignInClient is null"
 	SignInClient.user_authenticated.connect(func(is_authenticated: bool):
 		if not is_authenticated:
 			SignInClient.sign_in()
 		else: 
-			$TitleText.text = "User has been authenticated"
+			pass
+			#$TitleText.text = "User has been authenticated"
 	)
 	updateCharacter()
 	if not GodotPlayGameServices.android_plugin: 
 		print("play game services not found")
-		$TitleText.text = $TitleText.text + "Play game services not found"
+		#$TitleText.text = $TitleText.text + "Play game services not found"
 	else: 
 		print("google sign in available")
-		$TitleText.text = $TitleText.text + "Play game services found" 
+		#$TitleText.text = $TitleText.text + "Play game services found" 
 		
 func _process(_delta):
 	pass
@@ -45,6 +47,7 @@ func _on_button_pressed():
 	$RightButton.visible = false
 	$GoogleSignIn.visible = false
 	$TitleText.visible = false
+	$Achievements.visible = false
 	#remove_child($CharacterImage)
 	#remove_child($StartGame)
 	#remove_child($LeftButton)
@@ -82,19 +85,20 @@ func _on_right_button_pressed():
 
 func _on_google_sign_in_pressed() -> void:
 	print("attempting manual sign in with google")
-	$TitleText.text = $TitleText.text + " Manual sign in attempted"
+	#$TitleText.text = $TitleText.text + " Manual sign in attempted"
 	if GodotPlayGameServices.android_plugin: 
 		GodotPlayGameServices.android_plugin.signIn()
-	$TitleText.text = $TitleText.text + " returned"
+	#$TitleText.text = $TitleText.text + " returned"
 		
 
 func isSignedInListener(status): 
 	print(status)
-	$TitleText.text = "logged in: " + status
+	#$TitleText.text = "logged in: " + status
 
 func _on_achievements_pressed() -> void:
 	if AchievementsClient: 
-		$TitleText.text = "Achievements client found" 
+		#$TitleText.text = "Achievements client found" 
 		AchievementsClient.load_achievements(true)
-	else: 
-		$TitleText.text = "Achievements client not found"
+	else:
+		pass 
+		#$TitleText.text = "Achievements client not found"
