@@ -36,6 +36,7 @@ _data = {
 point_count = 2
 
 [sub_resource type="SystemFont" id="SystemFont_34dpl"]
+subpixel_positioning = 0
 
 [sub_resource type="FontVariation" id="FontVariation_6n8k2"]
 base_font = SubResource("SystemFont_34dpl")
