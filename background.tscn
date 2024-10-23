@@ -36,6 +36,7 @@ _data = {
 point_count = 2
 
 [sub_resource type="SystemFont" id="SystemFont_34dpl"]
+subpixel_positioning = 0
 
 [sub_resource type="FontVariation" id="FontVariation_6n8k2"]
 base_font = SubResource("SystemFont_34dpl")
@@ -152,9 +153,9 @@ label_settings = SubResource("LabelSettings_irf5v")
 horizontal_alignment = 2
 
 [node name="DebugText" type="Label" parent="."]
-offset_left = 215.0
-offset_top = 105.0
-offset_right = 498.0
+offset_left = 24.0
+offset_top = 103.0
+offset_right = 706.0
 offset_bottom = 138.0
 theme_override_colors/font_color = Color(0, 0, 0, 1)
 
