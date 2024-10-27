@@ -6,6 +6,8 @@ signal gameOver
 var characters = ["res://images/snowTiger_stand.png","res://images/panda_stand_base.png"]
 var currentCharacter = 0
 
+var soundOn = true
+
 @export var game_scene: PackedScene
 @export var menu_scene: PackedScene
 @export var achievements_scene: PackedScene
@@ -102,3 +104,15 @@ func _on_achievements_pressed() -> void:
 	else:
 		pass 
 		#$TitleText.text = "Achievements client not found"
+
+
+func _on_sound_toggle_pressed() -> void:
+	print("sound toggled")
+	if soundOn: 
+		soundOn = false
+		$SoundToggle.texture_normal = load("res://images/audioMuted.png")
+	else: 
+		soundOn = true
+		$SoundToggle.texture_normal = load("res://images/audioOn.png")
+	
+	
