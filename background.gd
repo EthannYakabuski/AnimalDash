@@ -71,7 +71,6 @@ func game_over():
 	
 # Called when the node enters the scene tree for the first time.
 func _ready():
-	$BaselineKickin.play()
 	$Score.text = str(0)
 	#var screen_size = get_viewport_rect().size
 	$Player.connect("hit", _on_hit)
@@ -108,6 +107,8 @@ func _process(delta):
 func _on_sound_toggled(soundValue): 
 	print("sound toggled in game " + str(soundValue))
 	soundOn = soundValue
+	if soundOn: 
+		$BaselineKickin.play()
 
 func checkSpikePoints():
 	for spikeItem in spikeArray:
