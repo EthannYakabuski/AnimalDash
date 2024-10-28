@@ -43,6 +43,8 @@ var currentPattern = 0
 var resolveSpikePattern = false
 var gamePaused = false
 
+var soundOn = true
+
 func new_game(): 
 	score = 0
 	$Player.position = $StartPosition.position
@@ -69,7 +71,6 @@ func game_over():
 	
 # Called when the node enters the scene tree for the first time.
 func _ready():
-	$BaselineKickin.play()
 	$Score.text = str(0)
 	#var screen_size = get_viewport_rect().size
 	$Player.connect("hit", _on_hit)
@@ -82,7 +83,7 @@ func _ready():
 	self.connect("characterSelect", _on_characterSelect)
 	LeaderboardsClient.score_submitted.connect(
 		func refresh_score(is_submitted: bool, leaderboard_id: String):
-			game_over()
+			pass
 	)
 	sound_coinCollect = $CoinSound
 	sound_foodCollect = $EatSound
@@ -102,7 +103,13 @@ func _process(delta):
 			$Player.hide()
 			game_over()
 		checkSpikePoints()
-	
+
+func _on_sound_toggled(soundValue): 
+	print("sound toggled in game " + str(soundValue))
+	soundOn = soundValue
+	if soundOn: 
+		$BaselineKickin.play()
+
 func checkSpikePoints():
 	for spikeItem in spikeArray:
 		#print(spikeItem.position.x)
@@ -234,6 +241,7 @@ func _on_hit():
 	print("spike hit in main")
 	$HitSound.play()
 	LeaderboardsClient.submit_score("CgkIuuKhlf8BEAIQAg", int(points))
+	game_over()
 
 func _on_food_Entered(): 
 	print("food entered in main")

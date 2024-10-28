@@ -6,6 +6,8 @@ signal gameOver
 var characters = ["res://images/snowTiger_stand.png","res://images/panda_stand_base.png"]
 var currentCharacter = 0
 
+var soundOn = true
+
 @export var game_scene: PackedScene
 @export var menu_scene: PackedScene
 @export var achievements_scene: PackedScene
@@ -48,12 +50,14 @@ func _on_button_pressed():
 	$GoogleSignIn.visible = false
 	$TitleText.visible = false
 	$Achievements.visible = false
+	$SoundToggle.visible = false
 	#remove_child($CharacterImage)
 	#remove_child($StartGame)
 	#remove_child($LeftButton)
 	#remove_child($RightButton)
 	var game = game_scene.instantiate()
 	add_child(game)
+	game.call("_on_sound_toggled", soundOn)
 	game.get_node("Player").call("_on_character_select", characters[currentCharacter].replace("res://images/","").replace("_stand.png","").replace("_stand_base.png","")); 
 	#emit_signal("characterSelect")
 	game.connect("gameOver", _on_game_finished)
@@ -64,7 +68,7 @@ func _on_game_finished():
 	
 func redoMainMenu(): 
 	print("recreating main menu")
-	var menuElements = [$CharacterImage, $StartGame, $LeftButton, $RightButton, $GoogleSignIn, $TitleText, $Achievements]
+	var menuElements = [$CharacterImage, $StartGame, $LeftButton, $RightButton, $GoogleSignIn, $TitleText, $Achievements, $SoundToggle]
 	for element in menuElements: 
 		print("making element visible")
 		element.visible = true
@@ -102,3 +106,15 @@ func _on_achievements_pressed() -> void:
 	else:
 		pass 
 		#$TitleText.text = "Achievements client not found"
+
+
+func _on_sound_toggle_pressed() -> void:
+	print("sound toggled")
+	if soundOn: 
+		soundOn = false
+		$SoundToggle.texture_normal = load("res://images/audioMuted.png")
+	else: 
+		soundOn = true
+		$SoundToggle.texture_normal = load("res://images/audioOn.png")
+	
+	
