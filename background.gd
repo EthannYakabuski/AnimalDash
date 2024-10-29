@@ -136,6 +136,8 @@ func addPoints(pointsToAdd):
 		#$DebugText.text = "Just unlocked Just getting started" 
 		AchievementsClient.unlock_achievement("CgkIuuKhlf8BEAIQAQ")
 		justGettingStarted = true
+	if points >= 500: 
+		AchievementsClient.unlock_achievement("CgkIuuKhlf8BEAIQBA")
 	
 func addIndicator(position): 
 	print("adding + indicator to the UI")
