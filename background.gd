@@ -222,6 +222,8 @@ func _on_collect():
 	coinsCollected = coinsCollected + 1
 	sound_coinCollect.play()
 	$Player.energy = $Player.energy + 50
+	if coinsCollected >= 25: 
+		AchievementsClient.unlock_achievement("CgkIuuKhlf8BEAIQBw"); 
 	for coin in coinArray: 
 		if coin.position.x < 0:
 			remove_child(coin)
