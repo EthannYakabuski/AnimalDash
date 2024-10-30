@@ -25,6 +25,9 @@ var sound_land
 var lastFlashFrame
 var isFlashing = false
 
+var spikesCleared = 0
+var isInAir = false
+
 signal collect
 signal hit
 signal eat
@@ -161,6 +164,8 @@ func addIndicator(position):
 	position.x = position.x + 300
 	position.y = $Player.position.y - 100
 	newPlus.position = position
+	newPlus.collision_layer = 2
+	newPlus.collision_mask = 0b00000101
 	add_child(newPlus)
 
 func _on_spike_timer_timeout():
@@ -286,7 +291,7 @@ func _on_food_timer_timeout():
 	food.collision_layer = 2
 	food.collision_mask = 0b00000101
 	add_child(food)
-	var newWaitTime = randf_range(10.0,15.0)
+	var newWaitTime = randf_range(8.0,17.0)
 	$FoodTimer.wait_time = newWaitTime
 	$FoodTimer.start()
 	
