@@ -257,7 +257,9 @@ func _on_foodcoincollision():
 func _on_hit():
 	print("spike hit in main")
 	$HitSound.play()
-	LeaderboardsClient.submit_score("CgkIuuKhlf8BEAIQAg", int(points))
+	if LeaderboardsClient: 
+		LeaderboardsClient.submit_score("CgkIuuKhlf8BEAIQAg", int(points))
+		LeaderboardsClient.submit_score("CgkIuuKhlf8BEAIQCQ", int(coinsCollected))
 	game_over()
 
 func _on_food_Entered(): 
