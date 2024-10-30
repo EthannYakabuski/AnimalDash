@@ -115,6 +115,7 @@ func _process(delta):
 			lastFlashFrame = 0
 			$EnergyBar.tint_progress = Color(1,1,1)
 		if $Player.energy < 0: 
+			AchievementsClient.unlock_achievement("CgkIuuKhlf8BEAIQBg")
 			$Player.hide()
 			game_over()
 		checkSpikePoints()
