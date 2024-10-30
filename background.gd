@@ -252,6 +252,8 @@ func _on_eat():
 	addPoints(2)
 	sound_foodCollect.play()
 	$Player.energy = $Player.energy + 600
+	if $Player.energy > 1000: 
+		$Player.energy = 1000
 	for food in foodArray: 
 		remove_child(food)
 		
