@@ -102,10 +102,18 @@ func _process(delta):
 		var background_background = $Parallax_Background
 		background_background.scroll_base_offset -= Vector2(5,0) * delta
 		$EnergyBar.value = $Player.energy
-		if $Player.energy < 300: 
+		if $Player.energy < 350: 
+			isFlashing = true
 			$EnergyBar.tint_progress = Color(1,0,0)
 		else: 
+			isFlashing = false
+			lastFlashFrame = 0
 			$EnergyBar.tint_progress = Color(0.28, 0.86, 0.30)
+		if isFlashing: 
+			lastFlashFrame = lastFlashFrame + 1
+		if lastFlashFrame > 12: 
+			lastFlashFrame = 0
+			$EnergyBar.tint_progress = Color(1,1,1)
 		if $Player.energy < 0: 
 			$Player.hide()
 			game_over()

@@ -25,13 +25,13 @@ point_count = 3
 
 [sub_resource type="Curve2D" id="Curve2D_dnhif"]
 _data = {
-"points": PackedVector2Array(0, 0, 0, 0, 644, 42, 0, 0, 0, 0, -761, 41)
+"points": PackedVector2Array(0, 0, 0, 0, 772, 41, 0, 0, 0, 0, -761, 41)
 }
 point_count = 2
 
 [sub_resource type="Curve2D" id="Curve2D_ykk1t"]
 _data = {
-"points": PackedVector2Array(0, 0, 0, 0, 651, 239, 0, 0, 0, 0, -801, 224)
+"points": PackedVector2Array(0, 0, 0, 0, 748, 234, 0, 0, 0, 0, -801, 224)
 }
 point_count = 2
 
@@ -102,8 +102,8 @@ rotation = 1.5708
 curve = SubResource("Curve2D_dnhif")
 
 [node name="CoinPathFollow" type="PathFollow2D" parent="CoinPath"]
-position = Vector2(644, 42)
-rotation = -3.14088
+position = Vector2(772, 41)
+rotation = 3.14159
 
 [node name="EnergyBar" type="TextureProgressBar" parent="."]
 offset_left = 24.0
@@ -120,8 +120,8 @@ tint_progress = Color(0.282353, 0.862745, 0.309804, 1)
 curve = SubResource("Curve2D_ykk1t")
 
 [node name="FoodPathFollow" type="PathFollow2D" parent="Foodpath"]
-position = Vector2(651, 239)
-rotation = -3.13126
+position = Vector2(748, 234)
+rotation = -3.13514
 
 [node name="CoinSound" type="AudioStreamPlayer2D" parent="."]
 stream = ExtResource("10_8hkru")
