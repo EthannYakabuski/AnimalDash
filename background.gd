@@ -22,6 +22,9 @@ var sound_doubleJump
 var sound_hit
 var sound_land
 
+var lastFlashFrame
+var isFlashing = false
+
 signal collect
 signal hit
 signal eat
@@ -99,6 +102,10 @@ func _process(delta):
 		var background_background = $Parallax_Background
 		background_background.scroll_base_offset -= Vector2(5,0) * delta
 		$EnergyBar.value = $Player.energy
+		if $Player.energy < 300: 
+			$EnergyBar.tint_progress = Color(1,0,0)
+		else: 
+			$EnergyBar.tint_progress = Color(0.28, 0.86, 0.30)
 		if $Player.energy < 0: 
 			$Player.hide()
 			game_over()
