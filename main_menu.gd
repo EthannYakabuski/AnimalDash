@@ -26,10 +26,9 @@ func _ready():
 		#$TitleText.text = "SignInClient is null"
 	SignInClient.user_authenticated.connect(func(is_authenticated: bool):
 		if not is_authenticated:
-			SignInClient.sign_in()
-		else: 
 			pass
-			#$TitleText.text = "User has been authenticated"
+		else: 
+			$GoogleSignIn.visible = false
 	)
 	updateCharacter()
 	if not GodotPlayGameServices.android_plugin: 

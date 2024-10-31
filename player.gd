@@ -121,6 +121,10 @@ func _process(delta):
 		energy = energy + 1
 		if energy > 1000: 
 			energy = 1000
+			
+	#fixes device lag causing player character getting caught under screen
+	if position.y > 400: 
+		position.y = 400
 	
 	position += velocity*delta
 	position = position.clamp(Vector2.ZERO, screen_size)

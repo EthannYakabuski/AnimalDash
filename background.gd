@@ -132,7 +132,7 @@ func _on_sound_toggled(soundValue):
 func checkSpikePoints():
 	for spikeItem in spikeArray:
 		#print(spikeItem.position.x)
-		if spikeItem.position.x < -700 and not spikeItem.passed: 
+		if spikeItem.position.x < -650 and not spikeItem.passed: 
 			print("spike point")
 			spikeItem.passed = true
 			addPoints(1)
@@ -173,7 +173,8 @@ func _on_spike_timer_timeout():
 	spikePointer = spikePointer + 1
 	spike = spike_scene.instantiate()
 	spike.add_to_group("Spike")
-	
+	spike.collision_layer = 2
+	spike.collision_mask = 0b00000101
 	var spike_loc = $SpikeSpawn/SpikeSpawnLocation
 	spike_loc.progress_ratio = randf()
 	
