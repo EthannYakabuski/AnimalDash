@@ -132,7 +132,7 @@ func _on_sound_toggled(soundValue):
 func checkSpikePoints():
 	for spikeItem in spikeArray:
 		#print(spikeItem.position.x)
-		if spikeItem.position.x < -580 and not spikeItem.passed: 
+		if spikeItem.position.x < -700 and not spikeItem.passed: 
 			print("spike point")
 			spikeItem.passed = true
 			addPoints(1)
@@ -150,7 +150,7 @@ func addPoints(pointsToAdd):
 	if points >= 25 and not journeyBegun: 
 		#$DebugText.text = "Just unlocked journey begun"
 		AchievementsClient.unlock_achievement("CgkIuuKhlf8BEAIQAw")
-		journeyBegun = true
+		journeyBegun = true 
 	if points >= 100 and not justGettingStarted:
 		#$DebugText.text = "Just unlocked Just getting started" 
 		AchievementsClient.unlock_achievement("CgkIuuKhlf8BEAIQAQ")
@@ -161,8 +161,8 @@ func addPoints(pointsToAdd):
 func addIndicator(position): 
 	print("adding + indicator to the UI")
 	var newPlus = plus_scene.instantiate();
-	position.x = position.x + 300
-	position.y = $Player.position.y - 100
+	position.x = $StartPosition.position.x - 300
+	position.y = $Player.position.y - 150
 	newPlus.position = position
 	newPlus.collision_layer = 2
 	newPlus.collision_mask = 0b00000101
