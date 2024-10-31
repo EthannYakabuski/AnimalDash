@@ -19,9 +19,9 @@
 
 [sub_resource type="Curve2D" id="Curve2D_gqxnl"]
 _data = {
-"points": PackedVector2Array(0, 0, 0, 0, 711, 357, 0, 0, 0, 0, 711, 460, 0, 0, 0, 0, -895, 467)
+"points": PackedVector2Array(0, 0, 0, 0, 1108, 461, 0, 0, 0, 0, 1013, 459, 0, 0, 0, 0, 843.932, 458.935, 0, 0, 0, 0, 771.807, 453.278, 0, 0, 0, 0, -895, 467)
 }
-point_count = 3
+point_count = 5
 
 [sub_resource type="Curve2D" id="Curve2D_dnhif"]
 _data = {
@@ -31,9 +31,9 @@ point_count = 2
 
 [sub_resource type="Curve2D" id="Curve2D_ykk1t"]
 _data = {
-"points": PackedVector2Array(0, 0, 0, 0, 748, 234, 0, 0, 0, 0, -801, 224)
+"points": PackedVector2Array(0, 0, 0, 0, 776.089, 83.3333, 0, 0, 0, 0, 277, 68, 0, 0, 0, 0, -786, 65)
 }
-point_count = 2
+point_count = 3
 
 [sub_resource type="SystemFont" id="SystemFont_34dpl"]
 subpixel_positioning = 0
@@ -95,8 +95,8 @@ texture = ExtResource("4_t411p")
 curve = SubResource("Curve2D_gqxnl")
 
 [node name="SpikeSpawnLocation" type="PathFollow2D" parent="SpikeSpawn"]
-position = Vector2(711, 357)
-rotation = 1.5708
+position = Vector2(1108, 461)
+rotation = -3.12054
 
 [node name="CoinPath" type="Path2D" parent="."]
 curve = SubResource("Curve2D_dnhif")
@@ -117,11 +117,13 @@ texture_progress = ExtResource("7_pn1h5")
 tint_progress = Color(0.282353, 0.862745, 0.309804, 1)
 
 [node name="Foodpath" type="Path2D" parent="."]
+position = Vector2(-4.08948, 69)
+scale = Vector2(1, 0.252)
 curve = SubResource("Curve2D_ykk1t")
 
 [node name="FoodPathFollow" type="PathFollow2D" parent="Foodpath"]
-position = Vector2(748, 234)
-rotation = -3.13514
+position = Vector2(776.089, 83.3333)
+rotation = -3.11088
 
 [node name="CoinSound" type="AudioStreamPlayer2D" parent="."]
 stream = ExtResource("10_8hkru")

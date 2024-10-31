@@ -282,7 +282,7 @@ func _on_food_timer_timeout():
 	foodArray.push_back(food);
 	
 	var food_loc = $Foodpath/FoodPathFollow
-	food_loc.progress_ratio = randf()
+	#food_loc.progress_ratio = randf()
 	
 	food.connect("body_entered", _on_food_Entered)
 	
