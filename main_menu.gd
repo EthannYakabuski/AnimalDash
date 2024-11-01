@@ -7,6 +7,7 @@ var characters = ["res://images/snowTiger_stand.png","res://images/panda_stand_b
 var currentCharacter = 0
 
 var soundOn = true
+var menuMusic
 
 @export var game_scene: PackedScene
 @export var menu_scene: PackedScene
@@ -31,6 +32,9 @@ func _ready():
 			$GoogleSignIn.visible = false
 	)
 	updateCharacter()
+	menuMusic = $MenuMusic
+	if soundOn: 
+		menuMusic.play()
 	if not GodotPlayGameServices.android_plugin: 
 		print("play game services not found")
 		#$TitleText.text = $TitleText.text + "Play game services not found"
@@ -42,6 +46,7 @@ func _process(_delta):
 	pass
 	
 func _on_button_pressed():
+	$MenuMusic.stop()
 	$CharacterImage.visible = false
 	$StartGame.visible = false
 	$LeftButton.visible = false
@@ -112,8 +117,11 @@ func _on_sound_toggle_pressed() -> void:
 	if soundOn: 
 		soundOn = false
 		$SoundToggle.texture_normal = load("res://images/audioMuted.png")
+		$MenuMusic.stop()
 	else: 
 		soundOn = true
 		$SoundToggle.texture_normal = load("res://images/audioOn.png")
+		$MenuMusic.play()
 	
-	
+func _on_menu_music_finished() -> void:
+	$MenuMusic.play()
