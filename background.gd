@@ -227,7 +227,8 @@ func _on_collect():
 	print("coin collected in main")
 	addPoints(3)
 	coinsCollected = coinsCollected + 1
-	sound_coinCollect.play()
+	if soundOn: 
+		sound_coinCollect.play()
 	$Player.energy = $Player.energy + 50
 	if coinsCollected >= 25: 
 		AchievementsClient.unlock_achievement("CgkIuuKhlf8BEAIQBw"); 
@@ -238,20 +239,24 @@ func _on_collect():
 
 func _on_land(): 
 	print("land in main")
-	sound_land.play()
+	if soundOn: 
+		sound_land.play()
 
 func _on_doubleJump(): 
 	print("double jump in main")
-	sound_doubleJump.play()	
+	if soundOn: 
+		sound_doubleJump.play()	
 	
 func _on_jump():
 	print("on jump in main")
-	sound_jump.play()
+	if soundOn: 
+		sound_jump.play()
 		
 func _on_eat(): 
 	print("eat in main")
 	addPoints(2)
-	sound_foodCollect.play()
+	if soundOn: 
+		sound_foodCollect.play()
 	$Player.energy = $Player.energy + 600
 	if $Player.energy > 1000: 
 		$Player.energy = 1000
