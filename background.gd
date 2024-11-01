@@ -209,6 +209,7 @@ func _on_coin_timer_timeout():
 	print("coin spawned")
 	var coin = coin_scene.instantiate()
 	coin.add_to_group("Coin")
+	coin.get_node("CoinSprite").position.y = randf_range(40,350)
 	coinArray.push_back(coin)
 	
 	var coin_loc = $CoinPath/CoinPathFollow
@@ -285,6 +286,7 @@ func _on_food_timer_timeout():
 	print("food spawned")	
 	var food = food_scene.instantiate(); 
 	food.add_to_group("Food"); 
+	food.get_node("FoodSprite").position.y = randf_range(40, 200)
 	foodArray.push_back(food);
 	
 	var food_loc = $Foodpath/FoodPathFollow
