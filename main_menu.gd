@@ -40,7 +40,7 @@ func _ready():
 		#$TitleText.text = $TitleText.text + "Play game services not found"
 	else: 
 		print("google sign in available")
-		#$TitleText.text = $TitleText.text + "Play game services found" 
+		#$TitleText.text = $TitleText.text + "Play game services found"
 		
 func _process(_delta):
 	pass
@@ -67,6 +67,7 @@ func _on_button_pressed():
 	game.connect("gameOver", _on_game_finished)
 	
 func _on_game_finished(): 
+	$HitSound.play()
 	print("on game finished")
 	redoMainMenu()
 	
