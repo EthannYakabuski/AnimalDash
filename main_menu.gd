@@ -47,6 +47,7 @@ func _process(_delta):
 	
 func _on_button_pressed():
 	$MenuMusic.stop()
+	$DashClick.play()
 	$CharacterImage.visible = false
 	$StartGame.visible = false
 	$LeftButton.visible = false
@@ -85,10 +86,12 @@ func updateCharacter():
 	
 func _on_left_button_pressed():
 	currentCharacter = (currentCharacter - 1) % 2
+	$LeftClick.play()
 	updateCharacter()
 
 func _on_right_button_pressed(): 
 	currentCharacter = (currentCharacter + 1) % 2
+	$RightClick.play()
 	updateCharacter()
 
 
