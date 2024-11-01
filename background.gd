@@ -27,6 +27,7 @@ var isFlashing = false
 
 var spikesCleared = 0
 var isInAir = false
+var isDoubleJumping = false
 
 signal collect
 signal hit
@@ -160,6 +161,11 @@ func addPoints(pointsToAdd):
 	
 func addIndicator(position): 
 	print("adding + indicator to the UI")
+	if !isDoubleJumping: 
+		spikesCleared = spikesCleared + 1
+	if spikesCleared >= 2: 
+		print("perfect jump")
+		AchievementsClient.unlock_achievement("CgkIuuKhlf8BEAIQBQ")
 	var newPlus = plus_scene.instantiate();
 	position.x = $StartPosition.position.x - 300
 	position.y = $Player.position.y - 150
@@ -240,11 +246,15 @@ func _on_collect():
 
 func _on_land(): 
 	print("land in main")
+	spikesCleared = 0
+	isDoubleJumping = false
 	if soundOn: 
 		sound_land.play()
 
 func _on_doubleJump(): 
 	print("double jump in main")
+	spikesCleared = 0
+	isDoubleJumping = true
 	if soundOn: 
 		sound_doubleJump.play()	
 	
