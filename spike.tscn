@@ -1,4 +1,4 @@
-[gd_scene load_steps=5 format=3 uid="uid://c3oschgq7a4ct"]
+[gd_scene load_steps=4 format=3 uid="uid://c3oschgq7a4ct"]
 
 [ext_resource type="Texture2D" uid="uid://crw8gr6fbck3y" path="res://images/spikeFinal.png" id="1_5k81s"]
 [ext_resource type="Script" path="res://spike.gd" id="1_dl06m"]
@@ -14,26 +14,23 @@ animations = [{
 "speed": 5.0
 }]
 
-[sub_resource type="CircleShape2D" id="CircleShape2D_vqfd6"]
-radius = 47.0106
-
 [node name="Spike" type="RigidBody2D"]
 gravity_scale = 0.0
 script = ExtResource("1_dl06m")
 
 [node name="SpikeImage" type="AnimatedSprite2D" parent="."]
-position = Vector2(651, 464)
+position = Vector2(797, 457)
 scale = Vector2(2.005, 2.41826)
 sprite_frames = SubResource("SpriteFrames_1exf8")
 animation = &"Base"
 
-[node name="SpikeCollision" type="CollisionShape2D" parent="."]
-position = Vector2(643, 461)
-shape = SubResource("CircleShape2D_vqfd6")
-
 [node name="VisibleOnScreenNotifier2D" type="VisibleOnScreenNotifier2D" parent="."]
 position = Vector2(362, 240)
 scale = Vector2(37.2, 25)
+
+[node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="."]
+position = Vector2(789, 448)
+polygon = PackedVector2Array(0, -41, 46, 18, -46, 18)
 
 [connection signal="body_entered" from="." to="." method="_on_body_entered"]
 [connection signal="body_shape_entered" from="." to="." method="_on_body_shape_entered"]

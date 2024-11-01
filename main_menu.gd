@@ -7,6 +7,7 @@ var characters = ["res://images/snowTiger_stand.png","res://images/panda_stand_b
 var currentCharacter = 0
 
 var soundOn = true
+var menuMusic
 
 @export var game_scene: PackedScene
 @export var menu_scene: PackedScene
@@ -26,23 +27,28 @@ func _ready():
 		#$TitleText.text = "SignInClient is null"
 	SignInClient.user_authenticated.connect(func(is_authenticated: bool):
 		if not is_authenticated:
-			SignInClient.sign_in()
-		else: 
 			pass
-			#$TitleText.text = "User has been authenticated"
+		else: 
+			$GoogleSignIn.visible = false
 	)
 	updateCharacter()
+	menuMusic = $MenuMusic
+	if soundOn: 
+		menuMusic.play()
 	if not GodotPlayGameServices.android_plugin: 
 		print("play game services not found")
 		#$TitleText.text = $TitleText.text + "Play game services not found"
 	else: 
 		print("google sign in available")
-		#$TitleText.text = $TitleText.text + "Play game services found" 
+		#$TitleText.text = $TitleText.text + "Play game services found"
 		
 func _process(_delta):
 	pass
 	
 func _on_button_pressed():
+	$MenuMusic.stop()
+	if soundOn: 
+		$DashClick.play()
 	$CharacterImage.visible = false
 	$StartGame.visible = false
 	$LeftButton.visible = false
@@ -63,6 +69,8 @@ func _on_button_pressed():
 	game.connect("gameOver", _on_game_finished)
 	
 func _on_game_finished(): 
+	if soundOn: 
+		$HitSound.play()
 	print("on game finished")
 	redoMainMenu()
 	
@@ -80,10 +88,14 @@ func updateCharacter():
 	
 func _on_left_button_pressed():
 	currentCharacter = (currentCharacter - 1) % 2
+	if soundOn: 
+		$LeftClick.play()
 	updateCharacter()
 
 func _on_right_button_pressed(): 
 	currentCharacter = (currentCharacter + 1) % 2
+	if soundOn: 
+		$RightClick.play()
 	updateCharacter()
 
 
@@ -113,8 +125,11 @@ func _on_sound_toggle_pressed() -> void:
 	if soundOn: 
 		soundOn = false
 		$SoundToggle.texture_normal = load("res://images/audioMuted.png")
+		$MenuMusic.stop()
 	else: 
 		soundOn = true
 		$SoundToggle.texture_normal = load("res://images/audioOn.png")
+		$MenuMusic.play()
 	
-	
+func _on_menu_music_finished() -> void:
+	$MenuMusic.play()

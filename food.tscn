@@ -16,20 +16,20 @@ animations = [{
 
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_w4lgc"]
 radius = 37.0
-height = 112.0
+height = 82.0
 
 [node name="Food" type="RigidBody2D"]
 gravity_scale = 0.0
 script = ExtResource("1_516ws")
 
 [node name="FoodSprite" type="AnimatedSprite2D" parent="."]
-position = Vector2(620, 109)
+position = Vector2(776, 61)
 scale = Vector2(0.0869094, 0.0869094)
 sprite_frames = SubResource("SpriteFrames_udydm")
 animation = &"Standard"
 
 [node name="FoodCollision" type="CollisionShape2D" parent="."]
-position = Vector2(621, 107)
+position = Vector2(775, 58)
 shape = SubResource("CapsuleShape2D_w4lgc")
 
 [node name="VisibleOnScreenNotifier2D" type="VisibleOnScreenNotifier2D" parent="."]

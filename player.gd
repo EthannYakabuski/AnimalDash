@@ -88,7 +88,7 @@ func _process(delta):
 	
 	if (Input.is_action_just_pressed("jump") && jumped < 2 || isJumping):
 		velocity = Vector2.ZERO
-		velocity.y -= 500
+		velocity.y -= 350
 		energy = energy - 2.5
 		#velocity = velocity.normalized() * speed
 		previousVelocity = velocity
@@ -118,9 +118,13 @@ func _process(delta):
 		velocity = Vector2.ZERO
 		
 	if animationHandle.animation == "Run": 
-		energy = energy + 1
+		energy = energy + 1.1
 		if energy > 1000: 
 			energy = 1000
+			
+	#fixes device lag causing player character getting caught under screen
+	if position.y > 400: 
+		position.y = 400
 	
 	position += velocity*delta
 	position = position.clamp(Vector2.ZERO, screen_size)

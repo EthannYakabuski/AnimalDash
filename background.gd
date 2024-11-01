@@ -22,6 +22,15 @@ var sound_doubleJump
 var sound_hit
 var sound_land
 
+var lastFlashFrame
+var isFlashing = false
+
+var spikesCleared = 0
+var isInAir = false
+var isDoubleJumping = false
+
+var isFamished = false
+
 signal collect
 signal hit
 signal eat
@@ -99,10 +108,24 @@ func _process(delta):
 		var background_background = $Parallax_Background
 		background_background.scroll_base_offset -= Vector2(5,0) * delta
 		$EnergyBar.value = $Player.energy
+		if $Player.energy < 350: 
+			isFlashing = true
+			$EnergyBar.tint_progress = Color(1,0,0)
+		else: 
+			isFlashing = false
+			lastFlashFrame = 0
+			$EnergyBar.tint_progress = Color(0.28, 0.86, 0.30)
+		if isFlashing: 
+			lastFlashFrame = lastFlashFrame + 1
+		if lastFlashFrame > 12: 
+			lastFlashFrame = 0
+			$EnergyBar.tint_progress = Color(1,1,1)
 		if $Player.energy < 0: 
+			AchievementsClient.unlock_achievement("CgkIuuKhlf8BEAIQBg")
 			$Player.hide()
 			game_over()
 		checkSpikePoints()
+		checkFamished()
 
 func _on_sound_toggled(soundValue): 
 	print("sound toggled in game " + str(soundValue))
@@ -110,10 +133,17 @@ func _on_sound_toggled(soundValue):
 	if soundOn: 
 		$BaselineKickin.play()
 
+func checkFamished(): 
+	for food in foodArray: 
+		if food.position.x < 0 and not food.passed: 
+			print("famished started")
+			food.passed = true
+			isFamished = true
+
 func checkSpikePoints():
 	for spikeItem in spikeArray:
 		#print(spikeItem.position.x)
-		if spikeItem.position.x < -580 and not spikeItem.passed: 
+		if spikeItem.position.x < -650 and not spikeItem.passed: 
 			print("spike point")
 			spikeItem.passed = true
 			addPoints(1)
@@ -131,18 +161,27 @@ func addPoints(pointsToAdd):
 	if points >= 25 and not journeyBegun: 
 		#$DebugText.text = "Just unlocked journey begun"
 		AchievementsClient.unlock_achievement("CgkIuuKhlf8BEAIQAw")
-		journeyBegun = true
+		journeyBegun = true 
 	if points >= 100 and not justGettingStarted:
 		#$DebugText.text = "Just unlocked Just getting started" 
 		AchievementsClient.unlock_achievement("CgkIuuKhlf8BEAIQAQ")
 		justGettingStarted = true
+	if points >= 500: 
+		AchievementsClient.unlock_achievement("CgkIuuKhlf8BEAIQBA")
 	
 func addIndicator(position): 
 	print("adding + indicator to the UI")
+	if !isDoubleJumping: 
+		spikesCleared = spikesCleared + 1
+	if spikesCleared >= 2: 
+		print("perfect jump")
+		AchievementsClient.unlock_achievement("CgkIuuKhlf8BEAIQBQ")
 	var newPlus = plus_scene.instantiate();
-	position.x = position.x + 300
-	position.y = $Player.position.y - 100
+	position.x = $StartPosition.position.x - 300
+	position.y = $Player.position.y - 150
 	newPlus.position = position
+	newPlus.collision_layer = 2
+	newPlus.collision_mask = 0b00000101
 	add_child(newPlus)
 
 func _on_spike_timer_timeout():
@@ -150,7 +189,8 @@ func _on_spike_timer_timeout():
 	spikePointer = spikePointer + 1
 	spike = spike_scene.instantiate()
 	spike.add_to_group("Spike")
-	
+	spike.collision_layer = 2
+	spike.collision_mask = 0b00000101
 	var spike_loc = $SpikeSpawn/SpikeSpawnLocation
 	spike_loc.progress_ratio = randf()
 	
@@ -185,6 +225,7 @@ func _on_coin_timer_timeout():
 	print("coin spawned")
 	var coin = coin_scene.instantiate()
 	coin.add_to_group("Coin")
+	coin.get_node("CoinSprite").position.y = randf_range(40,200)
 	coinArray.push_back(coin)
 	
 	var coin_loc = $CoinPath/CoinPathFollow
@@ -203,8 +244,11 @@ func _on_collect():
 	print("coin collected in main")
 	addPoints(3)
 	coinsCollected = coinsCollected + 1
-	sound_coinCollect.play()
+	if soundOn: 
+		sound_coinCollect.play()
 	$Player.energy = $Player.energy + 50
+	if coinsCollected >= 25: 
+		AchievementsClient.unlock_achievement("CgkIuuKhlf8BEAIQBw"); 
 	for coin in coinArray: 
 		if coin.position.x < 0:
 			remove_child(coin)
@@ -212,21 +256,34 @@ func _on_collect():
 
 func _on_land(): 
 	print("land in main")
-	sound_land.play()
+	spikesCleared = 0
+	isDoubleJumping = false
+	if soundOn: 
+		sound_land.play()
 
 func _on_doubleJump(): 
 	print("double jump in main")
-	sound_doubleJump.play()	
+	spikesCleared = 0
+	isDoubleJumping = true
+	if soundOn: 
+		sound_doubleJump.play()	
 	
 func _on_jump():
 	print("on jump in main")
-	sound_jump.play()
+	if soundOn: 
+		sound_jump.play()
 		
 func _on_eat(): 
 	print("eat in main")
+	if isFamished: 
+		AchievementsClient.unlock_achievement("CgkIuuKhlf8BEAIQCA")
+	isFamished = false
 	addPoints(2)
-	sound_foodCollect.play()
+	if soundOn: 
+		sound_foodCollect.play()
 	$Player.energy = $Player.energy + 600
+	if $Player.energy > 1000: 
+		$Player.energy = 1000
 	for food in foodArray: 
 		remove_child(food)
 		
@@ -239,8 +296,10 @@ func _on_foodcoincollision():
 
 func _on_hit():
 	print("spike hit in main")
-	$HitSound.play()
-	LeaderboardsClient.submit_score("CgkIuuKhlf8BEAIQAg", int(points))
+	#$HitSound.play()
+	if LeaderboardsClient: 
+		LeaderboardsClient.submit_score("CgkIuuKhlf8BEAIQAg", int(points))
+		LeaderboardsClient.submit_score("CgkIuuKhlf8BEAIQCQ", int(coinsCollected))
 	game_over()
 
 func _on_food_Entered(): 
@@ -250,10 +309,11 @@ func _on_food_timer_timeout():
 	print("food spawned")	
 	var food = food_scene.instantiate(); 
 	food.add_to_group("Food"); 
+	food.get_node("FoodSprite").position.y = randf_range(40, 200)
 	foodArray.push_back(food);
 	
 	var food_loc = $Foodpath/FoodPathFollow
-	food_loc.progress_ratio = randf()
+	#food_loc.progress_ratio = randf()
 	
 	food.connect("body_entered", _on_food_Entered)
 	
@@ -264,7 +324,7 @@ func _on_food_timer_timeout():
 	food.collision_layer = 2
 	food.collision_mask = 0b00000101
 	add_child(food)
-	var newWaitTime = randf_range(10.0,15.0)
+	var newWaitTime = randf_range(8.0,17.0)
 	$FoodTimer.wait_time = newWaitTime
 	$FoodTimer.start()
 	
