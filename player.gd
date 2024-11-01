@@ -118,7 +118,7 @@ func _process(delta):
 		velocity = Vector2.ZERO
 		
 	if animationHandle.animation == "Run": 
-		energy = energy + 1
+		energy = energy + 1.1
 		if energy > 1000: 
 			energy = 1000
 			

@@ -215,7 +215,7 @@ func _on_coin_timer_timeout():
 	print("coin spawned")
 	var coin = coin_scene.instantiate()
 	coin.add_to_group("Coin")
-	coin.get_node("CoinSprite").position.y = randf_range(40,350)
+	coin.get_node("CoinSprite").position.y = randf_range(40,200)
 	coinArray.push_back(coin)
 	
 	var coin_loc = $CoinPath/CoinPathFollow
