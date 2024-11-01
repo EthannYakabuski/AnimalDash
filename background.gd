@@ -135,7 +135,7 @@ func _on_sound_toggled(soundValue):
 
 func checkFamished(): 
 	for food in foodArray: 
-		if food.position.x < 0 and not food.passed: 
+		if food.position.x > 0 and not food.passed and not food.collected: 
 			print("famished started")
 			food.passed = true
 			isFamished = true
@@ -276,6 +276,7 @@ func _on_jump():
 func _on_eat(): 
 	print("eat in main")
 	if isFamished: 
+		print("famished unlocked")
 		AchievementsClient.unlock_achievement("CgkIuuKhlf8BEAIQCA")
 	isFamished = false
 	addPoints(2)
@@ -284,7 +285,8 @@ func _on_eat():
 	$Player.energy = $Player.energy + 600
 	if $Player.energy > 1000: 
 		$Player.energy = 1000
-	for food in foodArray: 
+	for food in foodArray:
+		food.collected = true 
 		remove_child(food)
 		
 func _on_characterSelect(characterSelected): 
