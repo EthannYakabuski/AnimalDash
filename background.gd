@@ -29,6 +29,8 @@ var spikesCleared = 0
 var isInAir = false
 var isDoubleJumping = false
 
+var isFamished = false
+
 signal collect
 signal hit
 signal eat
@@ -123,12 +125,20 @@ func _process(delta):
 			$Player.hide()
 			game_over()
 		checkSpikePoints()
+		checkFamished()
 
 func _on_sound_toggled(soundValue): 
 	print("sound toggled in game " + str(soundValue))
 	soundOn = soundValue
 	if soundOn: 
 		$BaselineKickin.play()
+
+func checkFamished(): 
+	for food in foodArray: 
+		if food.position.x < 0 and not food.passed: 
+			print("famished started")
+			food.passed = true
+			isFamished = true
 
 func checkSpikePoints():
 	for spikeItem in spikeArray:
@@ -265,6 +275,9 @@ func _on_jump():
 		
 func _on_eat(): 
 	print("eat in main")
+	if isFamished: 
+		AchievementsClient.unlock_achievement("CgkIuuKhlf8BEAIQCA")
+	isFamished = false
 	addPoints(2)
 	if soundOn: 
 		sound_foodCollect.play()

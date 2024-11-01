@@ -2,6 +2,8 @@ extends RigidBody2D
 
 signal foodcoincollision
 
+var passed = false
+
 # Called when the node enters the scene tree for the first time.
 func _ready():
 	$FoodSprite.play("Standard")
