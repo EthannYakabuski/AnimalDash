@@ -66,7 +66,13 @@ func new_game():
 
 	$StartTimer.start()
 	
-func game_over(): 
+func game_over():
+	if SnapshotsClient: 
+		print("snapshots client found")
+		SnapshotsClient.save_game("playerData", "playerData for Animal Dash", str(coinsCollected).to_utf8_buffer())
+	if LeaderboardsClient: 
+		LeaderboardsClient.submit_score("CgkIuuKhlf8BEAIQAg", int(points))
+		LeaderboardsClient.submit_score("CgkIuuKhlf8BEAIQCQ", int(coinsCollected)) 
 	$SpikeTimer.stop()
 	$CoinTimer.stop()
 	$FoodTimer.stop()
@@ -302,9 +308,6 @@ func _on_foodcoincollision():
 func _on_hit():
 	print("spike hit in main")
 	#$HitSound.play()
-	if LeaderboardsClient: 
-		LeaderboardsClient.submit_score("CgkIuuKhlf8BEAIQAg", int(points))
-		LeaderboardsClient.submit_score("CgkIuuKhlf8BEAIQCQ", int(coinsCollected))
 	game_over()
 
 func _on_food_Entered(): 

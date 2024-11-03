@@ -8,6 +8,7 @@ var currentCharacter = 0
 
 var soundOn = true
 var menuMusic
+var currentData: String
 
 @export var game_scene: PackedScene
 @export var menu_scene: PackedScene
@@ -17,6 +18,13 @@ var _sign_in_retries := 1
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
+	SnapshotsClient.game_loaded.connect(
+		func(snapshot: SnapshotsClient.Snapshot):
+			if !snapshot: 
+				print("snap shot not found")
+			currentData = snapshot.content.get_string_from_utf8()
+			$CoinsLabel.text = currentData
+	)
 	AchievementsClient.achievements_loaded.connect(
 		func achievementsLoaded(achievements: Array[AchievementsClient.Achievement]):
 			#$TitleText.text = $TitleText.text + " inside loaded callback "; 
@@ -30,6 +38,8 @@ func _ready():
 			pass
 		else: 
 			$GoogleSignIn.visible = false
+			print("loading player data")
+			SnapshotsClient.load_game("playerData", true)
 	)
 	updateCharacter()
 	menuMusic = $MenuMusic
@@ -57,6 +67,8 @@ func _on_button_pressed():
 	$TitleText.visible = false
 	$Achievements.visible = false
 	$SoundToggle.visible = false
+	$CoinLabelSprite.visible = false
+	$CoinsLabel.visible = false
 	#remove_child($CharacterImage)
 	#remove_child($StartGame)
 	#remove_child($LeftButton)
@@ -76,7 +88,7 @@ func _on_game_finished():
 	
 func redoMainMenu(): 
 	print("recreating main menu")
-	var menuElements = [$CharacterImage, $StartGame, $LeftButton, $RightButton, $GoogleSignIn, $TitleText, $Achievements, $SoundToggle]
+	var menuElements = [$CharacterImage, $StartGame, $LeftButton, $RightButton, $GoogleSignIn, $TitleText, $Achievements, $SoundToggle, $CoinLabelSprite, $CoinsLabel]
 	for element in menuElements: 
 		print("making element visible")
 		element.visible = true

@@ -1,4 +1,4 @@
-[gd_scene load_steps=12 format=3 uid="uid://bou780e4w75un"]
+[gd_scene load_steps=13 format=3 uid="uid://bou780e4w75un"]
 
 [ext_resource type="Script" path="res://main_menu.gd" id="1_ao6ml"]
 [ext_resource type="PackedScene" uid="uid://checsqe14agle" path="res://background.tscn" id="2_32us4"]
@@ -11,6 +11,7 @@
 [ext_resource type="AudioStream" uid="uid://dn08ykdw0qply" path="res://sounds/rightClick.wav" id="9_5ac5k"]
 [ext_resource type="AudioStream" uid="uid://0wic0hpgjtph" path="res://sounds/leftClick.wav" id="10_krk4e"]
 [ext_resource type="AudioStream" uid="uid://b64m35wtl0sji" path="res://sounds/dash.wav" id="11_8aal4"]
+[ext_resource type="Texture2D" uid="uid://dqibi56mi8pgb" path="res://images/Coingood.png" id="12_ihqi1"]
 
 [node name="MainMenu" type="Node"]
 script = ExtResource("1_ao6ml")
@@ -93,6 +94,20 @@ stream = ExtResource("10_krk4e")
 
 [node name="DashClick" type="AudioStreamPlayer2D" parent="."]
 stream = ExtResource("11_8aal4")
+
+[node name="CoinsLabel" type="Label" parent="."]
+offset_left = 331.0
+offset_top = 17.0
+offset_right = 418.0
+offset_bottom = 50.0
+text = "0"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="CoinLabelSprite" type="Sprite2D" parent="."]
+position = Vector2(327, 34)
+scale = Vector2(0.06, 0.06)
+texture = ExtResource("12_ihqi1")
 
 [connection signal="pressed" from="StartGame" to="." method="_on_button_pressed"]
 [connection signal="pressed" from="LeftButton" to="." method="_on_left_button_pressed"]
