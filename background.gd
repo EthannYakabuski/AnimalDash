@@ -135,7 +135,7 @@ func _on_sound_toggled(soundValue):
 
 func checkFamished(): 
 	for food in foodArray: 
-		if food.position.x > 0 and not food.passed and not food.collected: 
+		if food.position.x < -700 and not food.passed and not food.collected: 
 			print("famished started")
 			food.passed = true
 			isFamished = true
@@ -225,7 +225,9 @@ func _on_coin_timer_timeout():
 	print("coin spawned")
 	var coin = coin_scene.instantiate()
 	coin.add_to_group("Coin")
-	coin.get_node("CoinSprite").position.y = randf_range(40,200)
+	var rando = randf_range(40,200)
+	coin.get_node("CoinSprite").position.y = rando
+	coin.get_node("CoinCollision").position.y = rando
 	coinArray.push_back(coin)
 	
 	var coin_loc = $CoinPath/CoinPathFollow
@@ -288,6 +290,7 @@ func _on_eat():
 	for food in foodArray:
 		food.collected = true 
 		remove_child(food)
+	foodArray = []
 		
 func _on_characterSelect(characterSelected): 
 	print("character selected")
@@ -311,7 +314,9 @@ func _on_food_timer_timeout():
 	print("food spawned")	
 	var food = food_scene.instantiate(); 
 	food.add_to_group("Food"); 
-	food.get_node("FoodSprite").position.y = randf_range(40, 200)
+	var rando = randf_range(40,200)
+	food.get_node("FoodSprite").position.y = rando
+	food.get_node("FoodCollision").position.y = rando
 	foodArray.push_back(food);
 	
 	var food_loc = $Foodpath/FoodPathFollow
