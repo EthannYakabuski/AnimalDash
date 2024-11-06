@@ -109,6 +109,13 @@ position = Vector2(327, 34)
 scale = Vector2(0.06, 0.06)
 texture = ExtResource("12_ihqi1")
 
+[node name="DebugLabel" type="Label" parent="."]
+offset_left = 12.0
+offset_top = 452.0
+offset_right = 712.0
+offset_bottom = 475.0
+text = "Debug_TestOnly"
+
 [connection signal="pressed" from="StartGame" to="." method="_on_button_pressed"]
 [connection signal="pressed" from="LeftButton" to="." method="_on_left_button_pressed"]
 [connection signal="pressed" from="RightButton" to="." method="_on_right_button_pressed"]

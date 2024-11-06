@@ -2,6 +2,7 @@ extends Node
 signal hit
 signal characterSelect
 signal gameOver
+signal coinsCollectedSignal
 
 var characters = ["res://images/snowTiger_stand.png","res://images/panda_stand_base.png"]
 var currentCharacter = 0
@@ -20,15 +21,31 @@ var _sign_in_retries := 1
 func _ready():
 	SnapshotsClient.game_loaded.connect(
 		func(snapshot: SnapshotsClient.Snapshot):
-			if !snapshot: 
+			if !snapshot:
+				$DebugLabel.text = $DebugLabel.text + " snap not found" 
 				print("snap shot not found")
+				SnapshotsClient.save_game("playerData", "player data for Animal Dash", str(0).to_utf8_buffer())
+			$DebugLabel.text = $DebugLabel.text + "here1"
 			currentData = snapshot.content.get_string_from_utf8()
+			$DebugLabel.text = $DebugLabel.text + "currentData: " + currentData
 			$CoinsLabel.text = currentData
+	)
+	
+	SnapshotsClient.conflict_emitted.connect(
+		func():
+			$DebugLabel.text = $DebugLabel.text + "snapshot conflict"
 	)
 	AchievementsClient.achievements_loaded.connect(
 		func achievementsLoaded(achievements: Array[AchievementsClient.Achievement]):
 			#$TitleText.text = $TitleText.text + " inside loaded callback "; 
 			AchievementsClient.show_achievements()
+	)
+	SnapshotsClient.game_saved.connect(
+		func(is_saved: bool, save_data_name: String, save_data_description: String):
+			if is_saved: 
+				$DebugLabel.text = $DebugLabel.text + " game saved"
+			else: 
+				$DebugLabel.text = $DebugLabel.text + " unable to save game"
 	)
 	if SignInClient == null or GodotPlayGameServices == null: 
 		pass
@@ -39,7 +56,9 @@ func _ready():
 		else: 
 			$GoogleSignIn.visible = false
 			print("loading player data")
+			$DebugLabel.text = $DebugLabel.text + "trying to load data "
 			SnapshotsClient.load_game("playerData", true)
+			SnapshotsClient.show_saved_games("playerData", false, false, 5)
 	)
 	updateCharacter()
 	menuMusic = $MenuMusic
@@ -51,6 +70,7 @@ func _ready():
 	else: 
 		print("google sign in available")
 		#$TitleText.text = $TitleText.text + "Play game services found"
+	SnapshotsClient.load_game("playerData", true)
 		
 func _process(_delta):
 	pass
@@ -79,14 +99,25 @@ func _on_button_pressed():
 	game.get_node("Player").call("_on_character_select", characters[currentCharacter].replace("res://images/","").replace("_stand.png","").replace("_stand_base.png","")); 
 	#emit_signal("characterSelect")
 	game.connect("gameOver", _on_game_finished)
+	game.connect("coinsCollectedSignal", _on_coins_collected);
 	
 func _on_game_finished(): 
 	if soundOn: 
 		$HitSound.play()
 	print("on game finished")
-	redoMainMenu()
+	$DebugLabel.text = $DebugLabel.text + "here2"
+	
+func _on_coins_collected(amount):
+	_ready()
+	redoMainMenu() 
+	$DebugLabel.text = $DebugLabel.text + "c:" + str(amount)
+	var saveData = {"coins": amount}
+	var jsonSaveData = JSON.stringify(saveData)
+	SnapshotsClient.save_game("playerData", "player data for Animal Dash", jsonSaveData.to_utf8_buffer())
+	$DebugLabel.text = $DebugLabel.text + "after save main"
 	
 func redoMainMenu(): 
+	SnapshotsClient.load_game("playerData", true)
 	print("recreating main menu")
 	var menuElements = [$CharacterImage, $StartGame, $LeftButton, $RightButton, $GoogleSignIn, $TitleText, $Achievements, $SoundToggle, $CoinLabelSprite, $CoinsLabel]
 	for element in menuElements: 

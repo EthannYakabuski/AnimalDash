@@ -37,6 +37,7 @@ signal eat
 signal characterSelect
 signal foodcoincollision
 signal gameOver
+signal coinsCollectedSignal
 
 var spike_patterns = [
 	[1, 1, 1, 3, 3],       
@@ -69,7 +70,11 @@ func new_game():
 func game_over():
 	if SnapshotsClient: 
 		print("snapshots client found")
-		SnapshotsClient.save_game("playerData", "playerData for Animal Dash", str(coinsCollected).to_utf8_buffer())
+		$DebugText.text = $DebugText.text + "before save"
+		var saveData = {"coins": coinsCollected}
+		var jsonSaveData = JSON.stringify(saveData)
+		SnapshotsClient.save_game("playerData", "playerData for Animal Dash", jsonSaveData.to_utf8_buffer())
+		$DebugText.text = $DebugText.text + "after save"
 	if LeaderboardsClient: 
 		LeaderboardsClient.submit_score("CgkIuuKhlf8BEAIQAg", int(points))
 		LeaderboardsClient.submit_score("CgkIuuKhlf8BEAIQCQ", int(coinsCollected)) 
@@ -79,9 +84,12 @@ func game_over():
 	for child in get_children():
 		if child is Timer:
 			print("nothing")
+		elif child == $DebugText:
+			print("debug text not being removed")
 		else: 
 			child.queue_free()
 	gamePaused = true
+	emit_signal("coinsCollectedSignal", coinsCollected)
 	emit_signal("gameOver")
 	
 # Called when the node enters the scene tree for the first time.
@@ -99,6 +107,13 @@ func _ready():
 	LeaderboardsClient.score_submitted.connect(
 		func refresh_score(is_submitted: bool, leaderboard_id: String):
 			pass
+	)
+	SnapshotsClient.game_saved.connect(
+		func(is_saved: bool, save_data_name: String, save_data_description: String):
+			if is_saved: 
+				$DebugText.text = $DebugText.text + " game saved"
+			else: 
+				$DebugText.text = $DebugText.text + " unable to save game"
 	)
 	sound_coinCollect = $CoinSound
 	sound_foodCollect = $EatSound
