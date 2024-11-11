@@ -107,6 +107,7 @@ func _on_button_pressed():
 	
 func _on_coins_collected(amount): 
 	redoMainMenu()
+	$CoinsLabel.text = amount
 	
 func _on_game_finished(): 
 	if soundOn: 
