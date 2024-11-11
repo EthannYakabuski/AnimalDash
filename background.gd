@@ -105,33 +105,35 @@ func _ready():
 	)
 	SnapshotsClient.game_saved.connect(
 		func(is_saved: bool, save_data_name: String, save_data_description: String):
-			if is_saved: 
-				$DebugText.text = $DebugText.text + " game saved"
+			if is_saved:
+				pass 
+				#$DebugText.text = $DebugText.text + " game saved"
 			else: 
-				$DebugText.text = $DebugText.text + " unable to save game"
+				pass
+				#$DebugText.text = $DebugText.text + " unable to save game"
 	)
 	SnapshotsClient.game_loaded.connect(
 		func(snapshot: SnapshotsClient.Snapshot):
 			if !snapshot:
-				$DebugText.text = $DebugText.text + " snap not found" 
+				#$DebugText.text = $DebugText.text + " snap not found" 
 				print("snap shot not found")
 			else: 
-				$DebugText.text = $DebugText.text + " existing data loaded"
+				#$DebugText.text = $DebugText.text + " existing data loaded"
 				var currentData = snapshot.content.get_string_from_utf8()
-				$DebugText.text = $DebugText.text + "h1"
+				#$DebugText.text = $DebugText.text + "h1"
 				var parsedData = JSON.parse_string(currentData)
-				$DebugText.text = $DebugText.text + "h2"
+				#$DebugText.text = $DebugText.text + "h2"
 				var currentPlayerCoins = parsedData["coins"]
-				$DebugText.text = $DebugText.text + "h3"
-				$DebugText.text = $DebugText.text + "currentCoins: " + str(currentPlayerCoins)
-				$DebugText.text = $DebugText.text + "h4"
+				#$DebugText.text = $DebugText.text + "h3"
+				#$DebugText.text = $DebugText.text + "currentCoins: " + str(currentPlayerCoins)
+				#$DebugText.text = $DebugText.text + "h4"
 				var newPlayerCoinsAmount = coinsCollected + int(currentPlayerCoins)
-				$DebugText.text = $DebugText.text + "h5"
+				#$DebugText.text = $DebugText.text + "h5"
 				var saveData = {"coins": newPlayerCoinsAmount}
 				var jsonSaveData = JSON.stringify(saveData)
-				$DebugText.text = $DebugText.text + "h6"
+				#$DebugText.text = $DebugText.text + "h6"
 				SnapshotsClient.save_game("playerData", "playerData for Animal Dash", jsonSaveData.to_utf8_buffer())
-				$DebugText.text = $DebugText.text + "after save"
+				#$DebugText.text = $DebugText.text + "after save"
 				emit_signal("coinsCollectedSignal", newPlayerCoinsAmount)
 				
 	)

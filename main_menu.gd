@@ -22,18 +22,21 @@ func _ready():
 	SnapshotsClient.game_loaded.connect(
 		func(snapshot: SnapshotsClient.Snapshot):
 			if !snapshot:
-				$DebugLabel.text = $DebugLabel.text + " snap not found" 
+				#$DebugLabel.text = $DebugLabel.text + " snap not found" 
 				print("snap shot not found")
 				SnapshotsClient.save_game("playerData", "player data for Animal Dash", str(0).to_utf8_buffer())
-			$DebugLabel.text = $DebugLabel.text + "here1"
+			#$DebugLabel.text = $DebugLabel.text + "here1"
 			currentData = snapshot.content.get_string_from_utf8()
-			$DebugLabel.text = $DebugLabel.text + "currentData: " + currentData
-			$CoinsLabel.text = currentData
+			var parsedData = JSON.parse_string(currentData)
+			var currentPlayerCoins = parsedData["coins"]
+			#$DebugLabel.text = $DebugLabel.text + "currentData: " + currentData
+			$CoinsLabel.text = currentPlayerCoins
 	)
 	
 	SnapshotsClient.conflict_emitted.connect(
 		func():
-			$DebugLabel.text = $DebugLabel.text + "snapshot conflict"
+			pass
+			#$DebugLabel.text = $DebugLabel.text + "snapshot conflict"
 	)
 	AchievementsClient.achievements_loaded.connect(
 		func achievementsLoaded(achievements: Array[AchievementsClient.Achievement]):
@@ -42,10 +45,12 @@ func _ready():
 	)
 	SnapshotsClient.game_saved.connect(
 		func(is_saved: bool, save_data_name: String, save_data_description: String):
-			if is_saved: 
-				$DebugLabel.text = $DebugLabel.text + " game saved"
+			if is_saved:
+				pass 
+				#$DebugLabel.text = $DebugLabel.text + " game saved"
 			else: 
-				$DebugLabel.text = $DebugLabel.text + " unable to save game"
+				pass
+				#$DebugLabel.text = $DebugLabel.text + " unable to save game"
 	)
 	if SignInClient == null or GodotPlayGameServices == null: 
 		pass
@@ -56,7 +61,7 @@ func _ready():
 		else: 
 			$GoogleSignIn.visible = false
 			print("loading player data")
-			$DebugLabel.text = $DebugLabel.text + "trying to load data "
+			#$DebugLabel.text = $DebugLabel.text + "trying to load data "
 			SnapshotsClient.load_game("playerData", true)
 	)
 	updateCharacter()
@@ -107,7 +112,7 @@ func _on_game_finished():
 	if soundOn: 
 		$HitSound.play()
 	print("on game finished")
-	$DebugLabel.text = $DebugLabel.text + "here2"
+	#$DebugLabel.text = $DebugLabel.text + "here2"
 	
 func redoMainMenu(): 
 	print("recreating main menu")
