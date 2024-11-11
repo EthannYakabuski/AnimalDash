@@ -70,11 +70,7 @@ func new_game():
 func game_over():
 	if SnapshotsClient: 
 		print("snapshots client found")
-		$DebugText.text = $DebugText.text + "before save"
-		var saveData = {"coins": coinsCollected}
-		var jsonSaveData = JSON.stringify(saveData)
-		SnapshotsClient.save_game("playerData", "playerData for Animal Dash", jsonSaveData.to_utf8_buffer())
-		$DebugText.text = $DebugText.text + "after save"
+		SnapshotsClient.load_game("playerData")
 	if LeaderboardsClient: 
 		LeaderboardsClient.submit_score("CgkIuuKhlf8BEAIQAg", int(points))
 		LeaderboardsClient.submit_score("CgkIuuKhlf8BEAIQCQ", int(coinsCollected)) 
@@ -89,7 +85,6 @@ func game_over():
 		else: 
 			child.queue_free()
 	gamePaused = true
-	emit_signal("coinsCollectedSignal", coinsCollected)
 	emit_signal("gameOver")
 	
 # Called when the node enters the scene tree for the first time.
@@ -115,6 +110,32 @@ func _ready():
 			else: 
 				$DebugText.text = $DebugText.text + " unable to save game"
 	)
+	SnapshotsClient.game_loaded.connect(
+		func(snapshot: SnapshotsClient.Snapshot):
+			if !snapshot:
+				$DebugText.text = $DebugText.text + " snap not found" 
+				print("snap shot not found")
+			else: 
+				$DebugText.text = $DebugText.text + " existing data loaded"
+				var currentData = snapshot.content.get_string_from_utf8()
+				$DebugText.text = $DebugText.text + "h1"
+				var parsedData = JSON.parse_string(currentData)
+				$DebugText.text = $DebugText.text + "h2"
+				var currentPlayerCoins = parsedData["coins"]
+				$DebugText.text = $DebugText.text + "h3"
+				$DebugText.text = $DebugText.text + "currentCoins: " + str(currentPlayerCoins)
+				$DebugText.text = $DebugText.text + "h4"
+				var newPlayerCoinsAmount = coinsCollected + int(currentPlayerCoins)
+				$DebugText.text = $DebugText.text + "h5"
+				var saveData = {"coins": newPlayerCoinsAmount}
+				var jsonSaveData = JSON.stringify(saveData)
+				$DebugText.text = $DebugText.text + "h6"
+				SnapshotsClient.save_game("playerData", "playerData for Animal Dash", jsonSaveData.to_utf8_buffer())
+				$DebugText.text = $DebugText.text + "after save"
+				emit_signal("coinsCollectedSignal", newPlayerCoinsAmount)
+				
+	)
+	
 	sound_coinCollect = $CoinSound
 	sound_foodCollect = $EatSound
 	sound_jump = $JumpSound

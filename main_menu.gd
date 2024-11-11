@@ -58,10 +58,10 @@ func _ready():
 			print("loading player data")
 			$DebugLabel.text = $DebugLabel.text + "trying to load data "
 			SnapshotsClient.load_game("playerData", true)
-			SnapshotsClient.show_saved_games("playerData", false, false, 5)
 	)
 	updateCharacter()
 	menuMusic = $MenuMusic
+	redoMainMenu() 
 	if soundOn: 
 		menuMusic.play()
 	if not GodotPlayGameServices.android_plugin: 
@@ -70,7 +70,6 @@ func _ready():
 	else: 
 		print("google sign in available")
 		#$TitleText.text = $TitleText.text + "Play game services found"
-	SnapshotsClient.load_game("playerData", true)
 		
 func _process(_delta):
 	pass
@@ -99,7 +98,10 @@ func _on_button_pressed():
 	game.get_node("Player").call("_on_character_select", characters[currentCharacter].replace("res://images/","").replace("_stand.png","").replace("_stand_base.png","")); 
 	#emit_signal("characterSelect")
 	game.connect("gameOver", _on_game_finished)
-	game.connect("coinsCollectedSignal", _on_coins_collected);
+	game.connect("coinsCollectedSignal", _on_coins_collected)
+	
+func _on_coins_collected(amount): 
+	redoMainMenu()
 	
 func _on_game_finished(): 
 	if soundOn: 
@@ -107,23 +109,14 @@ func _on_game_finished():
 	print("on game finished")
 	$DebugLabel.text = $DebugLabel.text + "here2"
 	
-func _on_coins_collected(amount):
-	_ready()
-	redoMainMenu() 
-	$DebugLabel.text = $DebugLabel.text + "c:" + str(amount)
-	var saveData = {"coins": amount}
-	var jsonSaveData = JSON.stringify(saveData)
-	SnapshotsClient.save_game("playerData", "player data for Animal Dash", jsonSaveData.to_utf8_buffer())
-	$DebugLabel.text = $DebugLabel.text + "after save main"
-	
 func redoMainMenu(): 
-	SnapshotsClient.load_game("playerData", true)
 	print("recreating main menu")
+	if soundOn: 
+		$MenuMusic.play()
 	var menuElements = [$CharacterImage, $StartGame, $LeftButton, $RightButton, $GoogleSignIn, $TitleText, $Achievements, $SoundToggle, $CoinLabelSprite, $CoinsLabel]
 	for element in menuElements: 
 		print("making element visible")
 		element.visible = true
-	_ready()
 
 func updateCharacter(): 
 	print('updating character')
