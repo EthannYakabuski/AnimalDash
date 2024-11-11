@@ -2,12 +2,14 @@ extends Node
 signal hit
 signal characterSelect
 signal gameOver
+signal coinsCollectedSignal
 
 var characters = ["res://images/snowTiger_stand.png","res://images/panda_stand_base.png"]
 var currentCharacter = 0
 
 var soundOn = true
 var menuMusic
+var currentData: String
 
 @export var game_scene: PackedScene
 @export var menu_scene: PackedScene
@@ -17,10 +19,38 @@ var _sign_in_retries := 1
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
+	SnapshotsClient.game_loaded.connect(
+		func(snapshot: SnapshotsClient.Snapshot):
+			if !snapshot:
+				#$DebugLabel.text = $DebugLabel.text + " snap not found" 
+				print("snap shot not found")
+				SnapshotsClient.save_game("playerData", "player data for Animal Dash", str(0).to_utf8_buffer())
+			#$DebugLabel.text = $DebugLabel.text + "here1"
+			currentData = snapshot.content.get_string_from_utf8()
+			var parsedData = JSON.parse_string(currentData)
+			var currentPlayerCoins = parsedData["coins"]
+			#$DebugLabel.text = $DebugLabel.text + "currentData: " + currentData
+			$CoinsLabel.text = currentPlayerCoins
+	)
+	
+	SnapshotsClient.conflict_emitted.connect(
+		func():
+			pass
+			#$DebugLabel.text = $DebugLabel.text + "snapshot conflict"
+	)
 	AchievementsClient.achievements_loaded.connect(
 		func achievementsLoaded(achievements: Array[AchievementsClient.Achievement]):
 			#$TitleText.text = $TitleText.text + " inside loaded callback "; 
 			AchievementsClient.show_achievements()
+	)
+	SnapshotsClient.game_saved.connect(
+		func(is_saved: bool, save_data_name: String, save_data_description: String):
+			if is_saved:
+				pass 
+				#$DebugLabel.text = $DebugLabel.text + " game saved"
+			else: 
+				pass
+				#$DebugLabel.text = $DebugLabel.text + " unable to save game"
 	)
 	if SignInClient == null or GodotPlayGameServices == null: 
 		pass
@@ -30,9 +60,13 @@ func _ready():
 			pass
 		else: 
 			$GoogleSignIn.visible = false
+			print("loading player data")
+			#$DebugLabel.text = $DebugLabel.text + "trying to load data "
+			SnapshotsClient.load_game("playerData", true)
 	)
 	updateCharacter()
 	menuMusic = $MenuMusic
+	redoMainMenu() 
 	if soundOn: 
 		menuMusic.play()
 	if not GodotPlayGameServices.android_plugin: 
@@ -57,6 +91,8 @@ func _on_button_pressed():
 	$TitleText.visible = false
 	$Achievements.visible = false
 	$SoundToggle.visible = false
+	$CoinLabelSprite.visible = false
+	$CoinsLabel.visible = false
 	#remove_child($CharacterImage)
 	#remove_child($StartGame)
 	#remove_child($LeftButton)
@@ -67,20 +103,26 @@ func _on_button_pressed():
 	game.get_node("Player").call("_on_character_select", characters[currentCharacter].replace("res://images/","").replace("_stand.png","").replace("_stand_base.png","")); 
 	#emit_signal("characterSelect")
 	game.connect("gameOver", _on_game_finished)
+	game.connect("coinsCollectedSignal", _on_coins_collected)
+	
+func _on_coins_collected(amount): 
+	redoMainMenu()
+	$CoinsLabel.text = amount
 	
 func _on_game_finished(): 
 	if soundOn: 
 		$HitSound.play()
 	print("on game finished")
-	redoMainMenu()
+	#$DebugLabel.text = $DebugLabel.text + "here2"
 	
 func redoMainMenu(): 
 	print("recreating main menu")
-	var menuElements = [$CharacterImage, $StartGame, $LeftButton, $RightButton, $GoogleSignIn, $TitleText, $Achievements, $SoundToggle]
+	if soundOn: 
+		$MenuMusic.play()
+	var menuElements = [$CharacterImage, $StartGame, $LeftButton, $RightButton, $GoogleSignIn, $TitleText, $Achievements, $SoundToggle, $CoinLabelSprite, $CoinsLabel]
 	for element in menuElements: 
 		print("making element visible")
 		element.visible = true
-	_ready()
 
 func updateCharacter(): 
 	print('updating character')

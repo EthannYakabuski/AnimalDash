@@ -37,6 +37,7 @@ signal eat
 signal characterSelect
 signal foodcoincollision
 signal gameOver
+signal coinsCollectedSignal
 
 var spike_patterns = [
 	[1, 1, 1, 3, 3],       
@@ -66,13 +67,21 @@ func new_game():
 
 	$StartTimer.start()
 	
-func game_over(): 
+func game_over():
+	if SnapshotsClient: 
+		print("snapshots client found")
+		SnapshotsClient.load_game("playerData")
+	if LeaderboardsClient: 
+		LeaderboardsClient.submit_score("CgkIuuKhlf8BEAIQAg", int(points))
+		LeaderboardsClient.submit_score("CgkIuuKhlf8BEAIQCQ", int(coinsCollected)) 
 	$SpikeTimer.stop()
 	$CoinTimer.stop()
 	$FoodTimer.stop()
 	for child in get_children():
 		if child is Timer:
 			print("nothing")
+		elif child == $DebugText:
+			print("debug text not being removed")
 		else: 
 			child.queue_free()
 	gamePaused = true
@@ -94,6 +103,41 @@ func _ready():
 		func refresh_score(is_submitted: bool, leaderboard_id: String):
 			pass
 	)
+	SnapshotsClient.game_saved.connect(
+		func(is_saved: bool, save_data_name: String, save_data_description: String):
+			if is_saved:
+				pass 
+				#$DebugText.text = $DebugText.text + " game saved"
+			else: 
+				pass
+				#$DebugText.text = $DebugText.text + " unable to save game"
+	)
+	SnapshotsClient.game_loaded.connect(
+		func(snapshot: SnapshotsClient.Snapshot):
+			if !snapshot:
+				#$DebugText.text = $DebugText.text + " snap not found" 
+				print("snap shot not found")
+			else: 
+				#$DebugText.text = $DebugText.text + " existing data loaded"
+				var currentData = snapshot.content.get_string_from_utf8()
+				#$DebugText.text = $DebugText.text + "h1"
+				var parsedData = JSON.parse_string(currentData)
+				#$DebugText.text = $DebugText.text + "h2"
+				var currentPlayerCoins = parsedData["coins"]
+				#$DebugText.text = $DebugText.text + "h3"
+				#$DebugText.text = $DebugText.text + "currentCoins: " + str(currentPlayerCoins)
+				#$DebugText.text = $DebugText.text + "h4"
+				var newPlayerCoinsAmount = coinsCollected + int(currentPlayerCoins)
+				#$DebugText.text = $DebugText.text + "h5"
+				var saveData = {"coins": newPlayerCoinsAmount}
+				var jsonSaveData = JSON.stringify(saveData)
+				#$DebugText.text = $DebugText.text + "h6"
+				SnapshotsClient.save_game("playerData", "playerData for Animal Dash", jsonSaveData.to_utf8_buffer())
+				#$DebugText.text = $DebugText.text + "after save"
+				emit_signal("coinsCollectedSignal", newPlayerCoinsAmount)
+				
+	)
+	
 	sound_coinCollect = $CoinSound
 	sound_foodCollect = $EatSound
 	sound_jump = $JumpSound
@@ -135,7 +179,7 @@ func _on_sound_toggled(soundValue):
 
 func checkFamished(): 
 	for food in foodArray: 
-		if food.position.x > 0 and not food.passed and not food.collected: 
+		if food.position.x < -700 and not food.passed and not food.collected: 
 			print("famished started")
 			food.passed = true
 			isFamished = true
@@ -225,7 +269,9 @@ func _on_coin_timer_timeout():
 	print("coin spawned")
 	var coin = coin_scene.instantiate()
 	coin.add_to_group("Coin")
-	coin.get_node("CoinSprite").position.y = randf_range(40,200)
+	var rando = randf_range(40,200)
+	coin.get_node("CoinSprite").position.y = rando
+	coin.get_node("CoinCollision").position.y = rando
 	coinArray.push_back(coin)
 	
 	var coin_loc = $CoinPath/CoinPathFollow
@@ -288,6 +334,7 @@ func _on_eat():
 	for food in foodArray:
 		food.collected = true 
 		remove_child(food)
+	foodArray = []
 		
 func _on_characterSelect(characterSelected): 
 	print("character selected")
@@ -299,9 +346,6 @@ func _on_foodcoincollision():
 func _on_hit():
 	print("spike hit in main")
 	#$HitSound.play()
-	if LeaderboardsClient: 
-		LeaderboardsClient.submit_score("CgkIuuKhlf8BEAIQAg", int(points))
-		LeaderboardsClient.submit_score("CgkIuuKhlf8BEAIQCQ", int(coinsCollected))
 	game_over()
 
 func _on_food_Entered(): 
@@ -311,7 +355,9 @@ func _on_food_timer_timeout():
 	print("food spawned")	
 	var food = food_scene.instantiate(); 
 	food.add_to_group("Food"); 
-	food.get_node("FoodSprite").position.y = randf_range(40, 200)
+	var rando = randf_range(40,200)
+	food.get_node("FoodSprite").position.y = rando
+	food.get_node("FoodCollision").position.y = rando
 	foodArray.push_back(food);
 	
 	var food_loc = $Foodpath/FoodPathFollow
