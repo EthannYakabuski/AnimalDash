@@ -124,12 +124,17 @@ func _ready():
 				var parsedData = JSON.parse_string(currentData)
 				#$DebugText.text = $DebugText.text + "h2"
 				var currentPlayerCoins = parsedData["coins"]
+				var playerUnlocksArray = parsedData["playerUnlocks"]
+				if playerUnlocksArray: 
+					pass
+				else:
+					playerUnlocksArray = [true, false]
 				#$DebugText.text = $DebugText.text + "h3"
 				#$DebugText.text = $DebugText.text + "currentCoins: " + str(currentPlayerCoins)
 				#$DebugText.text = $DebugText.text + "h4"
 				var newPlayerCoinsAmount = coinsCollected + int(currentPlayerCoins)
 				#$DebugText.text = $DebugText.text + "h5"
-				var saveData = {"coins": newPlayerCoinsAmount}
+				var saveData = {"coins": newPlayerCoinsAmount, "playerUnlocks": playerUnlocksArray}
 				var jsonSaveData = JSON.stringify(saveData)
 				#$DebugText.text = $DebugText.text + "h6"
 				SnapshotsClient.save_game("playerData", "playerData for Animal Dash", jsonSaveData.to_utf8_buffer())
