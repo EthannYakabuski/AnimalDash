@@ -34,6 +34,14 @@ offset_bottom = 1166.0
 scale = Vector2(0.18, 0.18)
 texture = ExtResource("4_soimu")
 
+[node name="UnlockButton" type="Button" parent="."]
+visible = false
+offset_left = 292.0
+offset_top = 384.0
+offset_right = 440.0
+offset_bottom = 443.0
+text = "Unlock: 300"
+
 [node name="StartGame" type="Button" parent="."]
 offset_left = 292.0
 offset_top = 384.0
@@ -124,6 +132,7 @@ offset_top = 452.0
 offset_right = 712.0
 offset_bottom = 475.0
 
+[connection signal="pressed" from="UnlockButton" to="." method="_on_unlock_button_pressed"]
 [connection signal="pressed" from="StartGame" to="." method="_on_button_pressed"]
 [connection signal="pressed" from="LeftButton" to="." method="_on_left_button_pressed"]
 [connection signal="pressed" from="RightButton" to="." method="_on_right_button_pressed"]
