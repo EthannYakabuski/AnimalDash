@@ -222,6 +222,7 @@ func _on_unlock_button_pressed() -> void:
 		var jsonSaveData = JSON.stringify(saveData)
 		savedData = saveData
 		updateCoins(newCoins)
+		AchievementsClient.unlock_achievement("CgkIuuKhlf8BEAIQCg")
 		SnapshotsClient.save_game("playerData", "player data for Animal Dash", jsonSaveData.to_utf8_buffer())
 	else: 
 		$DebugLabel.text = $DebugLabel.text + " ins. funds"
