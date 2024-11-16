@@ -1,8 +1,9 @@
-[gd_scene load_steps=13 format=3 uid="uid://bou780e4w75un"]
+[gd_scene load_steps=14 format=3 uid="uid://bou780e4w75un"]
 
 [ext_resource type="Script" path="res://main_menu.gd" id="1_ao6ml"]
 [ext_resource type="PackedScene" uid="uid://checsqe14agle" path="res://background.tscn" id="2_32us4"]
 [ext_resource type="PackedScene" uid="uid://bdamtbrpkjtu1" path="res://achievements.tscn" id="3_ap3ca"]
+[ext_resource type="Texture2D" uid="uid://vhp6t48hdbkn" path="res://images/lockIcon.png" id="4_soimu"]
 [ext_resource type="Texture2D" uid="uid://b416mjk6ofs8d" path="res://leftArrowFinal.png" id="4_xmicy"]
 [ext_resource type="Texture2D" uid="uid://6m4jdx7gbthh" path="res://rightArrowFinal.png" id="5_krq6j"]
 [ext_resource type="Texture2D" uid="uid://pvkextrk6u70" path="res://images/audioOn.png" id="6_rq66x"]
@@ -24,6 +25,22 @@ offset_top = 136.0
 offset_right = 564.0
 offset_bottom = 436.0
 scale = Vector2(0.65, 0.65)
+
+[node name="LockIcon" type="TextureRect" parent="."]
+offset_left = 268.0
+offset_top = 142.0
+offset_right = 1292.0
+offset_bottom = 1166.0
+scale = Vector2(0.18, 0.18)
+texture = ExtResource("4_soimu")
+
+[node name="UnlockButton" type="Button" parent="."]
+visible = false
+offset_left = 292.0
+offset_top = 384.0
+offset_right = 440.0
+offset_bottom = 443.0
+text = "Unlock: 300"
 
 [node name="StartGame" type="Button" parent="."]
 offset_left = 292.0
@@ -115,6 +132,7 @@ offset_top = 452.0
 offset_right = 712.0
 offset_bottom = 475.0
 
+[connection signal="pressed" from="UnlockButton" to="." method="_on_unlock_button_pressed"]
 [connection signal="pressed" from="StartGame" to="." method="_on_button_pressed"]
 [connection signal="pressed" from="LeftButton" to="." method="_on_left_button_pressed"]
 [connection signal="pressed" from="RightButton" to="." method="_on_right_button_pressed"]
