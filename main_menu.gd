@@ -136,7 +136,7 @@ func redoMainMenu():
 
 func updateCharacter(): 
 	print('updating character')
-	$DebugLabel.text = $DebugLabel.text + " " + str(currentCharacter)
+	#$DebugLabel.text = $DebugLabel.text + " " + str(currentCharacter)
 	checkCharacterUnlock(currentCharacter)
 	
 func checkCharacterUnlock(currentCharacter): 
@@ -212,9 +212,9 @@ func _on_menu_music_finished() -> void:
 
 func _on_unlock_button_pressed() -> void:
 	print("unlocking a new character")
-	$DebugLabel.text = $DebugLabel.text + "unl new char"
+	#$DebugLabel.text = $DebugLabel.text + "unl new char"
 	if int(savedData["coins"]) >= 300: 
-		$DebugLabel.text = $DebugLabel.text + " unlocked"
+		#$DebugLabel.text = $DebugLabel.text + " unlocked"
 		var newCoins = int(savedData["coins"]) - 300
 		var playerUnlocks = savedData["playerUnlocks"]
 		playerUnlocks[currentCharacter] = true
@@ -225,4 +225,5 @@ func _on_unlock_button_pressed() -> void:
 		AchievementsClient.unlock_achievement("CgkIuuKhlf8BEAIQCg")
 		SnapshotsClient.save_game("playerData", "player data for Animal Dash", jsonSaveData.to_utf8_buffer())
 	else: 
-		$DebugLabel.text = $DebugLabel.text + " ins. funds"
+		pass
+		#$DebugLabel.text = $DebugLabel.text + " ins. funds"
