@@ -100,6 +100,7 @@ func _on_button_pressed():
 	$CoinsLabel.visible = false
 	$LockIcon.visible = false
 	$UnlockButton.visible = false
+	$BackgroundImage.visible = false
 	#remove_child($CharacterImage)
 	#remove_child($StartGame)
 	#remove_child($LeftButton)
@@ -129,7 +130,7 @@ func redoMainMenu():
 	print("recreating main menu")
 	if soundOn: 
 		$MenuMusic.play()
-	var menuElements = [$CharacterImage, $StartGame, $LeftButton, $RightButton, $GoogleSignIn, $TitleText, $Achievements, $SoundToggle, $CoinLabelSprite, $CoinsLabel]
+	var menuElements = [$CharacterImage, $StartGame, $LeftButton, $RightButton, $GoogleSignIn, $TitleText, $Achievements, $SoundToggle, $CoinLabelSprite, $CoinsLabel, $BackgroundImage]
 	for element in menuElements: 
 		print("making element visible")
 		element.visible = true
@@ -138,6 +139,28 @@ func updateCharacter():
 	print('updating character')
 	#$DebugLabel.text = $DebugLabel.text + " " + str(currentCharacter)
 	checkCharacterUnlock(currentCharacter)
+	changeBackground(currentCharacter)
+	
+func changeBackground(currentCharacter): 
+	if currentCharacter < 0: 
+		currentCharacter = currentCharacter * -1
+		
+	match currentCharacter: 
+		0: 
+			var new_texture = load("res://images/snowTiger_backgroundClouds.png") as Texture2D
+			$BackgroundImage.texture = new_texture
+		1: 
+			var new_texture = load("res://images/panda_backgroundClouds.png") as Texture2D
+			$BackgroundImage.texture = new_texture
+		2: 
+			var new_texture = load("res://images/bear_backgroundClouds.png") as Texture2D
+			$BackgroundImage.texture = new_texture
+		3: 
+			var new_texture = load("res://images/bunny_backgroundClouds.png") as Texture2D
+			$BackgroundImage.texture = new_texture
+		4: 
+			var new_texture = load("res://images/pig_backgroundClouds.png") as Texture2D
+			$BackgroundImage.texture = new_texture
 	
 func checkCharacterUnlock(currentCharacter): 
 	var isCharacterUnlocked = false
