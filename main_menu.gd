@@ -107,8 +107,10 @@ func _on_button_pressed():
 	#remove_child($RightButton)
 	var game = game_scene.instantiate()
 	add_child(game)
+	var characterName = characters[currentCharacter].replace("res://images/","").replace("_stand.png","").replace("_stand_base.png","")
 	game.call("_on_sound_toggled", soundOn)
-	game.get_node("Player").call("_on_character_select", characters[currentCharacter].replace("res://images/","").replace("_stand.png","").replace("_stand_base.png","")); 
+	game.call("prepareBackgroundSprite", characterName)
+	game.get_node("Player").call("_on_character_select", characterName); 
 	#emit_signal("characterSelect")
 	game.connect("gameOver", _on_game_finished)
 	game.connect("coinsCollectedSignal", _on_coins_collected)
@@ -176,8 +178,8 @@ func checkCharacterUnlock(currentCharacter):
 		#$DebugLabel.text = $DebugLabel.text + str(isCharacterUnlocked)
 	if isCharacterUnlocked == false: 
 		$LockIcon.visible = true
-		$UnlockButton.visible = true
-		$StartGame.visible = false
+		#$UnlockButton.visible = true
+		#$StartGame.visible = false
 	else: 
 		$LockIcon.visible = false
 		$UnlockButton.visible = false

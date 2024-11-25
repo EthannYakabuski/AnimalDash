@@ -190,6 +190,18 @@ func _on_sound_toggled(soundValue):
 	if soundOn: 
 		$BaselineKickin.play()
 
+func prepareBackgroundSprite(characterName): 
+	print("preparing background sprites for: " + characterName)
+	#res://images/bear_backgroundClouds.png
+	#res://images/bunny_foregroundLarge.png
+	var cloudString = "res://images/" + characterName + "_backgroundClouds.png"
+	var foregroundString = "res://images/" + characterName + "_foregroundLarge.png"
+	var clouds_texture = load(cloudString) as Texture2D
+	var foreground_texture = load(foregroundString) as Texture2D
+	print(cloudString)
+	$Parallax_Background/parallax_lay_one/layone_sprite.texture = clouds_texture
+	$Parallax_Background/parallax_lay_two/laytwo_sprite.texture = foreground_texture
+
 func checkFamished(): 
 	for food in foodArray: 
 		if food.position.x < -700 and not food.passed and not food.collected: 
