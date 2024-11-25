@@ -1,0 +1,25 @@
+[gd_scene load_steps=3 format=3 uid="uid://14cghgnjoqui"]
+
+[ext_resource type="Texture2D" uid="uid://b5jpa26ttgea6" path="res://images/bunny_food.png" id="1_51u4a"]
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_38wv0"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("1_51u4a")
+}],
+"loop": true,
+"name": &"Standard",
+"speed": 5.0
+}]
+
+[node name="Carrot" type="RigidBody2D"]
+
+[node name="FoodSprite" type="AnimatedSprite2D" parent="."]
+position = Vector2(772, 51)
+scale = Vector2(0.09, 0.09)
+sprite_frames = SubResource("SpriteFrames_38wv0")
+animation = &"Standard"
+
+[node name="FoodCollision" type="CollisionPolygon2D" parent="."]
+polygon = PackedVector2Array(752, 30, 760, 41, 757, 49, 759, 58, 761, 67, 765, 75, 771, 80, 776, 79, 780, 73, 783, 64, 786, 53, 787, 43, 786, 38, 791, 32, 791, 27, 787, 24, 782, 24, 780, 26, 778, 22, 775, 19, 769, 19, 766, 22, 764, 26, 761, 24, 756, 24)

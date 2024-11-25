@@ -4,7 +4,7 @@ signal characterSelect
 signal gameOver
 signal coinsCollectedSignal
 
-var characters = ["res://images/snowTiger_stand.png","res://images/panda_stand_base.png"]
+var characters = ["res://images/snowTiger_stand.png","res://images/panda_stand_base.png","res://images/bear_stand.png","res://images/bunny_stand.png","res://images/pig_stand.png"]
 var currentCharacter = 0
 
 var soundOn = true
@@ -25,7 +25,7 @@ func _ready():
 			if !snapshot:
 				#$DebugLabel.text = $DebugLabel.text + " snap not found" 
 				print("snap shot not found")
-				var saveData = {"coins": 0, "playerUnlocks": [true,false]}
+				var saveData = {"coins": 0, "playerUnlocks": [true,false,false,false,false]}
 				updateCoins(0)
 				var jsonSaveData = JSON.stringify(saveData)
 				SnapshotsClient.save_game("playerData", "player data for Animal Dash", jsonSaveData.to_utf8_buffer())
@@ -162,13 +162,13 @@ func checkCharacterUnlock(currentCharacter):
 	$CharacterImage.texture = load(characters[currentCharacter])
 	
 func _on_left_button_pressed():
-	currentCharacter = (currentCharacter - 1) % 2
-	if soundOn: 
+	currentCharacter = (currentCharacter - 1) % 5
+	if soundOn:
 		$LeftClick.play()
 	updateCharacter()
 
 func _on_right_button_pressed(): 
-	currentCharacter = (currentCharacter + 1) % 2
+	currentCharacter = (currentCharacter + 1) % 5
 	if soundOn: 
 		$RightClick.play()
 	updateCharacter()

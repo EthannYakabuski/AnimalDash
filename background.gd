@@ -5,6 +5,11 @@ extends Node2D
 @export var player_scene: PackedScene
 @export var food_scene: PackedScene
 @export var plus_scene: PackedScene
+@export var bamboo_scene: PackedScene
+@export var mushroom_scene: PackedScene
+@export var fish_scene: PackedScene
+@export var carrot_scene: PackedScene
+
 var score
 var spike
 var spikeArray = []
@@ -128,7 +133,10 @@ func _ready():
 				if playerUnlocksArray: 
 					pass
 				else:
-					playerUnlocksArray = [true, false]
+					playerUnlocksArray = [true, false, false, false, false]
+				#this line is ONLY for testers that were testing the game before there was 5 characters
+				if playerUnlocksArray.size() < 5: 
+					playerUnlocksArray = [true, false, false, false, false]
 				#$DebugText.text = $DebugText.text + "h3"
 				#$DebugText.text = $DebugText.text + "currentCoins: " + str(currentPlayerCoins)
 				#$DebugText.text = $DebugText.text + "h4"

@@ -1,0 +1,25 @@
+[gd_scene load_steps=3 format=3 uid="uid://b0mgpg5ay4804"]
+
+[ext_resource type="Texture2D" uid="uid://bx137ye5he4jj" path="res://images/bear_food.png" id="1_hu8s4"]
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_aygii"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("1_hu8s4")
+}],
+"loop": true,
+"name": &"Standard",
+"speed": 5.0
+}]
+
+[node name="Fish" type="RigidBody2D"]
+
+[node name="FoodSprite" type="AnimatedSprite2D" parent="."]
+position = Vector2(777, 50)
+scale = Vector2(0.095, 0.095)
+sprite_frames = SubResource("SpriteFrames_aygii")
+animation = &"Standard"
+
+[node name="FoodCollision" type="CollisionPolygon2D" parent="."]
+polygon = PackedVector2Array(748, 45, 756, 36, 764, 31, 771, 25, 780, 25, 785, 30, 785, 35, 793, 41, 801, 35, 806, 36, 807, 46, 802, 50, 807, 57, 805, 61, 796, 64, 792, 59, 786, 64, 783, 70, 780, 75, 772, 75, 761, 67, 752, 60, 747, 53)

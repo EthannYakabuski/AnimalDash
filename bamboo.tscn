@@ -1,0 +1,26 @@
+[gd_scene load_steps=3 format=3 uid="uid://c0noxdy25rbxg"]
+
+[ext_resource type="Texture2D" uid="uid://cqucbeusi16fj" path="res://images/panda_food.png" id="1_45ayk"]
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_s06ec"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("1_45ayk")
+}],
+"loop": true,
+"name": &"Standard",
+"speed": 5.0
+}]
+
+[node name="Bamboo" type="RigidBody2D"]
+gravity_scale = 0.0
+
+[node name="FoodSprite" type="AnimatedSprite2D" parent="."]
+position = Vector2(770, 49)
+scale = Vector2(0.08, 0.08)
+sprite_frames = SubResource("SpriteFrames_s06ec")
+animation = &"Standard"
+
+[node name="FoodCollision" type="CollisionPolygon2D" parent="."]
+polygon = PackedVector2Array(767, 18, 761, 24, 761, 29, 756, 29, 754, 31, 755, 33, 761, 33, 761, 36, 761, 41, 761, 45, 756, 46, 754, 48, 755, 50, 761, 50, 761, 54, 761, 58, 760, 63, 757, 63, 754, 65, 755, 67, 760, 67, 761, 71, 765, 68, 767, 70, 767, 83, 767, 85, 779, 85, 779, 82, 777, 81, 777, 70, 779, 69, 784, 71, 786, 67, 791, 67, 792, 66, 789, 63, 785, 62, 785, 58, 785, 53, 786, 50, 791, 50, 792, 48, 789, 46, 785, 45, 785, 41, 786, 34, 784, 31, 785, 24, 780, 27, 778, 17, 776, 15, 768, 15)

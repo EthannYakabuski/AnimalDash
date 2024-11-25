@@ -1,0 +1,26 @@
+[gd_scene load_steps=3 format=3 uid="uid://fvqr1wso03fc"]
+
+[ext_resource type="Texture2D" uid="uid://sbmdfuadrd5y" path="res://images/pig_food.png" id="1_o1g63"]
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_h4831"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("1_o1g63")
+}],
+"loop": true,
+"name": &"Standard",
+"speed": 5.0
+}]
+
+[node name="Mushroom" type="RigidBody2D"]
+gravity_scale = 0.0
+
+[node name="FoodSprite" type="AnimatedSprite2D" parent="."]
+position = Vector2(770, 47)
+scale = Vector2(0.07, 0.07)
+sprite_frames = SubResource("SpriteFrames_h4831")
+animation = &"Standard"
+
+[node name="FoodCollision" type="CollisionPolygon2D" parent="."]
+polygon = PackedVector2Array(751, 45, 752, 35, 756, 29, 762, 24, 771, 22, 783, 26, 786, 31, 789, 37, 789, 46, 786, 51, 781, 51, 777, 52, 776, 65, 774, 68, 766, 67, 764, 62, 764, 51, 758, 51, 754, 49)
