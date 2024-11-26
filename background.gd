@@ -207,8 +207,10 @@ func prepareBackgroundSprite(characterName):
 	$Parallax_Background/parallax_lay_one/layone_sprite.scale = Vector2(0.5,0.5)
 	match characterName: 
 		"snowTiger": 
-			$Parallax_Background/parallax_lay_one/layone_sprite.position.x = 440
+			$Parallax_Background/parallax_lay_one/layone_sprite.position.x = 389
 			$Parallax_Background/parallax_lay_one/layone_sprite.position.y = 200
+			#parallax_layer.mirror.x = 500
+			$Parallax_Background/parallax_lay_one.motion_mirroring.x = 776
 		"panda": 
 			$Parallax_Background/parallax_lay_one/layone_sprite.position.x = 440
 			$Parallax_Background/parallax_lay_one/layone_sprite.position.y = 250

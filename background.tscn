@@ -87,10 +87,10 @@ wait_time = 13.0
 
 [node name="parallax_lay_one" type="ParallaxLayer" parent="Parallax_Background"]
 motion_scale = Vector2(4, 4)
-motion_mirroring = Vector2(820, 0)
+motion_mirroring = Vector2(776, 0)
 
 [node name="layone_sprite" type="Sprite2D" parent="Parallax_Background/parallax_lay_one"]
-position = Vector2(440, 200)
+position = Vector2(389, 200)
 scale = Vector2(0.5, 0.5)
 texture = ExtResource("3_bsfhd")
 
