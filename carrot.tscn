@@ -1,6 +1,7 @@
-[gd_scene load_steps=3 format=3 uid="uid://14cghgnjoqui"]
+[gd_scene load_steps=4 format=3 uid="uid://14cghgnjoqui"]
 
 [ext_resource type="Texture2D" uid="uid://b5jpa26ttgea6" path="res://images/bunny_food.png" id="1_51u4a"]
+[ext_resource type="Script" path="res://carrot.gd" id="1_qrg57"]
 
 [sub_resource type="SpriteFrames" id="SpriteFrames_38wv0"]
 animations = [{
@@ -14,6 +15,8 @@ animations = [{
 }]
 
 [node name="Carrot" type="RigidBody2D"]
+gravity_scale = 0.0
+script = ExtResource("1_qrg57")
 
 [node name="FoodSprite" type="AnimatedSprite2D" parent="."]
 position = Vector2(772, 51)

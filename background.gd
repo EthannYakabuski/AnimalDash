@@ -36,6 +36,8 @@ var isDoubleJumping = false
 
 var isFamished = false
 
+var currentCharacterString = ""
+
 signal collect
 signal hit
 signal eat
@@ -192,6 +194,7 @@ func _on_sound_toggled(soundValue):
 
 func prepareBackgroundSprite(characterName): 
 	print("preparing background sprites for: " + characterName)
+	currentCharacterString = characterName
 	#res://images/bear_backgroundClouds.png
 	#res://images/bunny_foregroundLarge.png
 	var cloudString = "res://images/" + characterName + "_backgroundClouds.png"
@@ -395,8 +398,19 @@ func _on_food_Entered():
 	print("food entered in main")
 	
 func _on_food_timer_timeout():
+	var food
+	match currentCharacterString: 
+		"snowTiger": 
+			food = food_scene.instantiate()
+		"panda": 
+			food = bamboo_scene.instantiate()
+		"bear": 
+			food = fish_scene.instantiate()
+		"bunny": 
+			food = carrot_scene.instantiate()
+		"pig": 
+			food = mushroom_scene.instantiate()
 	print("food spawned")	
-	var food = food_scene.instantiate(); 
 	food.add_to_group("Food"); 
 	var rando = randf_range(40,200)
 	food.get_node("FoodSprite").position.y = rando

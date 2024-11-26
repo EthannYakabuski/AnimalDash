@@ -1,6 +1,7 @@
-[gd_scene load_steps=3 format=3 uid="uid://c0noxdy25rbxg"]
+[gd_scene load_steps=4 format=3 uid="uid://c0noxdy25rbxg"]
 
 [ext_resource type="Texture2D" uid="uid://cqucbeusi16fj" path="res://images/panda_food.png" id="1_45ayk"]
+[ext_resource type="Script" path="res://bamboo.gd" id="1_iu4gm"]
 
 [sub_resource type="SpriteFrames" id="SpriteFrames_s06ec"]
 animations = [{
@@ -15,6 +16,7 @@ animations = [{
 
 [node name="Bamboo" type="RigidBody2D"]
 gravity_scale = 0.0
+script = ExtResource("1_iu4gm")
 
 [node name="FoodSprite" type="AnimatedSprite2D" parent="."]
 position = Vector2(770, 49)
