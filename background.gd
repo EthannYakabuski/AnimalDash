@@ -201,6 +201,24 @@ func prepareBackgroundSprite(characterName):
 	print(cloudString)
 	$Parallax_Background/parallax_lay_one/layone_sprite.texture = clouds_texture
 	$Parallax_Background/parallax_lay_two/laytwo_sprite.texture = foreground_texture
+	$Parallax_Background/parallax_lay_one/layone_sprite.scale = Vector2(0.5,0.5)
+	match characterName: 
+		"snowTiger": 
+			$Parallax_Background/parallax_lay_one/layone_sprite.position.x = 440
+			$Parallax_Background/parallax_lay_one/layone_sprite.position.y = 200
+		"panda": 
+			$Parallax_Background/parallax_lay_one/layone_sprite.position.x = 440
+			$Parallax_Background/parallax_lay_one/layone_sprite.position.y = 250
+		"bear": 
+			$Parallax_Background/parallax_lay_one/layone_sprite.position.x = 440
+			$Parallax_Background/parallax_lay_one/layone_sprite.position.y = 250
+		"bunny": 
+			$Parallax_Background/parallax_lay_one/layone_sprite.position.x = 440
+			$Parallax_Background/parallax_lay_one/layone_sprite.position.y = 215
+		"pig": 
+			$Parallax_Background/parallax_lay_one/layone_sprite.position.x = 440
+			$Parallax_Background/parallax_lay_one/layone_sprite.position.y = 260
+			$Parallax_Background/parallax_lay_two/laytwo_sprite.position.y = 50
 
 func checkFamished(): 
 	for food in foodArray: 
