@@ -11,6 +11,7 @@ var soundOn = true
 var menuMusic
 var currentData: String
 var savedData = ""
+var unauthenticatedUser = true
 
 @export var game_scene: PackedScene
 @export var menu_scene: PackedScene
@@ -35,6 +36,7 @@ func _ready():
 			savedData = parsedData
 			var currentPlayerCoins = parsedData["coins"]
 			updateCharacter()
+			unauthenticatedUser = false
 			#$DebugLabel.text = $DebugLabel.text + "currentData: " + currentData
 			$CoinsLabel.text = currentPlayerCoins
 	)
@@ -125,6 +127,9 @@ func updateCoins(amount):
 func _on_game_finished(): 
 	if soundOn: 
 		$HitSound.play()
+	#if playing on godot emulator or user has no connect play services account
+	if not GodotPlayGameServices.android_plugin or unauthenticatedUser: 
+		redoMainMenu()
 	print("on game finished")
 	#$DebugLabel.text = $DebugLabel.text + "here2"
 	
