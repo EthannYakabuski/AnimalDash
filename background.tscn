@@ -13,8 +13,8 @@
 [ext_resource type="PackedScene" uid="uid://b0mgpg5ay4804" path="res://fish.tscn" id="8_oixtk"]
 [ext_resource type="PackedScene" uid="uid://14cghgnjoqui" path="res://carrot.tscn" id="9_o8jqq"]
 [ext_resource type="AudioStream" uid="uid://387wolenmks" path="res://sounds/coin.wav" id="10_8hkru"]
-[ext_resource type="Texture2D" uid="uid://hytpyudacfbh" path="res://images/bunny_backgroundClouds.png" id="11_0b1f5"]
 [ext_resource type="AudioStream" uid="uid://b8vin0beu6deu" path="res://sounds/eat.wav" id="11_6f248"]
+[ext_resource type="Texture2D" uid="uid://by8pmoto47dbc" path="res://images/pig_backgroundClouds.png" id="11_v6gkr"]
 [ext_resource type="AudioStream" uid="uid://bu3uag5oil2ya" path="res://sounds/jump.wav" id="12_7kmbv"]
 [ext_resource type="AudioStream" uid="uid://d035qq43nsolo" path="res://sounds/land.wav" id="13_lqkd3"]
 [ext_resource type="AudioStream" uid="uid://chpa5urjsbrq3" path="res://sounds/doublejump.wav" id="14_dkb00"]
@@ -87,12 +87,12 @@ wait_time = 13.0
 
 [node name="parallax_lay_one" type="ParallaxLayer" parent="Parallax_Background"]
 motion_scale = Vector2(4, 4)
-motion_mirroring = Vector2(889, 0)
+motion_mirroring = Vector2(899, 0)
 
 [node name="layone_sprite" type="Sprite2D" parent="Parallax_Background/parallax_lay_one"]
 position = Vector2(389, 200)
 scale = Vector2(0.5, 0.5)
-texture = ExtResource("11_0b1f5")
+texture = ExtResource("11_v6gkr")
 
 [node name="parallax_lay_two" type="ParallaxLayer" parent="Parallax_Background"]
 motion_scale = Vector2(60, 60)

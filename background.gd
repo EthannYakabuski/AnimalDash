@@ -227,6 +227,7 @@ func prepareBackgroundSprite(characterName):
 			$Parallax_Background/parallax_lay_one/layone_sprite.position.x = 440
 			$Parallax_Background/parallax_lay_one/layone_sprite.position.y = 260
 			$Parallax_Background/parallax_lay_two/laytwo_sprite.position.y = 50
+			$Parallax_Background/parallax_lay_one.motion_mirroring.x = 890
 
 func checkFamished(): 
 	for food in foodArray: 
