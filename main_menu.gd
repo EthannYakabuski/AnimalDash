@@ -30,15 +30,19 @@ func _ready():
 				updateCoins(0)
 				var jsonSaveData = JSON.stringify(saveData)
 				SnapshotsClient.save_game("playerData", "player data for Animal Dash", jsonSaveData.to_utf8_buffer())
-			#$DebugLabel.text = $DebugLabel.text + "here1"
-			currentData = snapshot.content.get_string_from_utf8()
-			var parsedData = JSON.parse_string(currentData)
-			savedData = parsedData
-			var currentPlayerCoins = parsedData["coins"]
-			updateCharacter()
-			unauthenticatedUser = false
-			#$DebugLabel.text = $DebugLabel.text + "currentData: " + currentData
-			$CoinsLabel.text = currentPlayerCoins
+				#$DebugLabel.text = $DebugLabel.text + "here1"
+			else: 
+				currentData = snapshot.content.get_string_from_utf8()
+				var parsedData = JSON.parse_string(currentData)
+				savedData = parsedData
+				var currentPlayerCoins = parsedData["coins"]
+				if currentPlayerCoins == null: 
+					print("error on player coins")
+					SnapshotsClient.load_game("playerData", true)	
+				updateCharacter()
+				unauthenticatedUser = false
+				#$DebugLabel.text = $DebugLabel.text + "currentData: " + currentData
+				$CoinsLabel.text = currentPlayerCoins
 	)
 	
 	SnapshotsClient.conflict_emitted.connect(
@@ -69,7 +73,7 @@ func _ready():
 			$GoogleSignIn.visible = false
 			print("loading player data")
 			#$DebugLabel.text = $DebugLabel.text + "trying to load data "
-			SnapshotsClient.load_game("playerData", true)
+			SnapshotsClient.load_game("playerData", false)
 	)
 	updateCharacter()
 	menuMusic = $MenuMusic
