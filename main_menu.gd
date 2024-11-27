@@ -153,8 +153,15 @@ func updateCharacter():
 	changeBackground(currentCharacter)
 	
 func changeBackground(currentCharacter): 
-	if currentCharacter < 0: 
-		currentCharacter = currentCharacter * -1
+	match currentCharacter: 
+		-1: 
+			currentCharacter = 4
+		-2: 
+			currentCharacter = 3
+		-3: 
+			currentCharacter = 2
+		-4: 
+			currentCharacter = 1
 		
 	match currentCharacter: 
 		0: 

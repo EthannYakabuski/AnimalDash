@@ -214,12 +214,15 @@ func prepareBackgroundSprite(characterName):
 		"panda": 
 			$Parallax_Background/parallax_lay_one/layone_sprite.position.x = 440
 			$Parallax_Background/parallax_lay_one/layone_sprite.position.y = 250
+			$Parallax_Background/parallax_lay_one.motion_mirroring.x = 600
 		"bear": 
 			$Parallax_Background/parallax_lay_one/layone_sprite.position.x = 440
 			$Parallax_Background/parallax_lay_one/layone_sprite.position.y = 250
+			$Parallax_Background/parallax_lay_one.motion_mirroring.x = 700
 		"bunny": 
 			$Parallax_Background/parallax_lay_one/layone_sprite.position.x = 440
 			$Parallax_Background/parallax_lay_one/layone_sprite.position.y = 215
+			$Parallax_Background/parallax_lay_one.motion_mirroring.x = 889
 		"pig": 
 			$Parallax_Background/parallax_lay_one/layone_sprite.position.x = 440
 			$Parallax_Background/parallax_lay_one/layone_sprite.position.y = 260
