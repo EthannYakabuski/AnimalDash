@@ -264,6 +264,8 @@ func addPoints(pointsToAdd):
 		justGettingStarted = true
 	if points >= 500: 
 		AchievementsClient.unlock_achievement("CgkIuuKhlf8BEAIQBA")
+	if points >= 1000: 
+		AchievementsClient.unlock_achievement("CgkIuuKhlf8BEAIQDw")
 	
 func addIndicator(position): 
 	print("adding + indicator to the UI")
@@ -346,7 +348,9 @@ func _on_collect():
 		sound_coinCollect.play()
 	$Player.energy = $Player.energy + 50
 	if coinsCollected >= 25: 
-		AchievementsClient.unlock_achievement("CgkIuuKhlf8BEAIQBw"); 
+		AchievementsClient.unlock_achievement("CgkIuuKhlf8BEAIQBw")
+	if coinsCollected >= 100: 
+		AchievementsClient.unlock_achievement("CgkIuuKhlf8BEAIQEA") 
 	for coin in coinArray: 
 		if coin.position.x < 0:
 			remove_child(coin)

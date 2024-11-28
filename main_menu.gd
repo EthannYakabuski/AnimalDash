@@ -182,6 +182,7 @@ func changeBackground(currentCharacter):
 	
 func checkCharacterUnlock(currentCharacter): 
 	var isCharacterUnlocked = false
+	#$StartGame.visible = false
 	print(str(currentCharacter))
 	if savedData == "": 
 		#$DebugLabel.text = $DebugLabel.text + "sd not loaded"
@@ -253,6 +254,15 @@ func _on_menu_music_finished() -> void:
 
 func _on_unlock_button_pressed() -> void:
 	print("unlocking a new character")
+	match currentCharacter: 
+		-1: 
+			currentCharacter = 4
+		-2: 
+			currentCharacter = 3
+		-3: 
+			currentCharacter = 2
+		-4: 
+			currentCharacter = 1
 	#$DebugLabel.text = $DebugLabel.text + "unl new char"
 	if int(savedData["coins"]) >= 300: 
 		#$DebugLabel.text = $DebugLabel.text + " unlocked"
@@ -265,6 +275,19 @@ func _on_unlock_button_pressed() -> void:
 		updateCoins(newCoins)
 		AchievementsClient.unlock_achievement("CgkIuuKhlf8BEAIQCg")
 		SnapshotsClient.save_game("playerData", "player data for Animal Dash", jsonSaveData.to_utf8_buffer())
+		match currentCharacter: 
+			1: 
+				#panda
+				AchievementsClient.unlock_achievement("CgkIuuKhlf8BEAIQCw")
+			2: 
+				#bear
+				AchievementsClient.unlock_achievement("CgkIuuKhlf8BEAIQDA")
+			3: 
+				#bunny
+				AchievementsClient.unlock_achievement("CgkIuuKhlf8BEAIQDQ")
+			4: 
+				#pig
+				AchievementsClient.unlock_achievement("CgkIuuKhlf8BEAIQDg")
 	else: 
 		pass
 		#$DebugLabel.text = $DebugLabel.text + " ins. funds"
