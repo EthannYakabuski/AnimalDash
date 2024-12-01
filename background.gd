@@ -74,7 +74,7 @@ func new_game():
 
 	$StartTimer.start()
 	
-func game_over():
+func game_over(coinsToAdd):
 	if SnapshotsClient: 
 		print("snapshots client found")
 		SnapshotsClient.load_game("playerData")
@@ -92,7 +92,7 @@ func game_over():
 		else: 
 			child.queue_free()
 	gamePaused = true
-	emit_signal("gameOver")
+	emit_signal("gameOver", int(coinsToAdd))
 	
 # Called when the node enters the scene tree for the first time.
 func _ready():
@@ -182,7 +182,7 @@ func _process(delta):
 		if $Player.energy < 0: 
 			AchievementsClient.unlock_achievement("CgkIuuKhlf8BEAIQBg")
 			$Player.hide()
-			game_over()
+			game_over(coinsCollected)
 		checkSpikePoints()
 		checkFamished()
 
@@ -402,7 +402,7 @@ func _on_foodcoincollision():
 func _on_hit():
 	print("spike hit in main")
 	#$HitSound.play()
-	game_over()
+	game_over(coinsCollected)
 
 func _on_food_Entered(): 
 	print("food entered in main")

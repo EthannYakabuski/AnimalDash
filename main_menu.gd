@@ -29,6 +29,8 @@ func _ready():
 				var saveData = {"coins": 0, "playerUnlocks": [true,false,false,false,false]}
 				updateCoins(0)
 				var jsonSaveData = JSON.stringify(saveData)
+				var parsedData = JSON.parse_string(jsonSaveData)
+				savedData = parsedData
 				SnapshotsClient.save_game("playerData", "player data for Animal Dash", jsonSaveData.to_utf8_buffer())
 				#$DebugLabel.text = $DebugLabel.text + "here1"
 			else: 
@@ -40,9 +42,9 @@ func _ready():
 					print("error on player coins")
 					SnapshotsClient.load_game("playerData", true)	
 				updateCharacter()
+				#updateCoins(currentPlayerCoins)
 				unauthenticatedUser = false
-				#$DebugLabel.text = $DebugLabel.text + "currentData: " + currentData
-				$CoinsLabel.text = currentPlayerCoins
+				#$CoinsLabel.text = currentPlayerCoins
 	)
 	
 	SnapshotsClient.conflict_emitted.connect(
@@ -77,7 +79,7 @@ func _ready():
 	)
 	updateCharacter()
 	menuMusic = $MenuMusic
-	redoMainMenu() 
+	#redoMainMenu() 
 	if soundOn: 
 		menuMusic.play()
 	if not GodotPlayGameServices.android_plugin: 
@@ -112,30 +114,38 @@ func _on_button_pressed():
 	#remove_child($LeftButton)
 	#remove_child($RightButton)
 	var game = game_scene.instantiate()
+	#get_tree().current_scene.queue_free()
+	#get_tree().root.add_child(game)
+	#get_tree().current_scene = game
 	add_child(game)
 	var characterName = characters[currentCharacter].replace("res://images/","").replace("_stand.png","").replace("_stand_base.png","")
 	game.call("_on_sound_toggled", soundOn)
 	game.call("prepareBackgroundSprite", characterName)
-	game.get_node("Player").call("_on_character_select", characterName); 
+	game.get_node("Player").call("_on_character_select", characterName)
 	#emit_signal("characterSelect")
 	game.connect("gameOver", _on_game_finished)
-	game.connect("coinsCollectedSignal", _on_coins_collected)
-	
-func _on_coins_collected(amount): 
-	redoMainMenu()
-	$CoinsLabel.text = amount
+	#game.connect("coinsCollectedSignal", _on_coins_collected)
 	
 func updateCoins(amount): 
 	$CoinsLabel.text = amount
 	
-func _on_game_finished(): 
+func _on_game_finished(coinsToAdd): 
+	print("coins to add, back in main menu: " + str(coinsToAdd))
 	if soundOn: 
 		$HitSound.play()
+	#false comment
 	#if playing on godot emulator or user has no connect play services account
-	if not GodotPlayGameServices.android_plugin or unauthenticatedUser: 
-		redoMainMenu()
+	redoMainMenu()
 	print("on game finished")
-	#$DebugLabel.text = $DebugLabel.text + "here2"
+	if savedData: 
+		var newCoins = int(savedData["coins"]) + coinsToAdd
+		var playerUnlocks = savedData["playerUnlocks"]
+		playerUnlocks[currentCharacter] = true
+		var saveData = {"coins": newCoins, "playerUnlocks": playerUnlocks}
+		var jsonSaveData = JSON.stringify(saveData)
+		savedData = saveData
+		updateCoins(newCoins)
+		SnapshotsClient.save_game("playerData", "player data for Animal Dash", jsonSaveData.to_utf8_buffer())
 	
 func redoMainMenu(): 
 	print("recreating main menu")
