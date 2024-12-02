@@ -42,7 +42,7 @@ func _ready():
 				if currentPlayerCoins == null: 
 					print("error on player coins")
 					SnapshotsClient.load_game("playerData", true)
-				$DebugLabel.text = $DebugLabel.text + "from g_l" 
+				#$DebugLabel.text = $DebugLabel.text + "from g_l" 
 				updateCoins(currentPlayerCoins)
 				updateCharacter()
 				
