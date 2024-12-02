@@ -12,6 +12,7 @@ var menuMusic
 var currentData: String
 var savedData = ""
 var unauthenticatedUser = true
+var skipUpdateCharacter = false
 
 @export var game_scene: PackedScene
 @export var menu_scene: PackedScene
@@ -40,9 +41,11 @@ func _ready():
 				var currentPlayerCoins = parsedData["coins"]
 				if currentPlayerCoins == null: 
 					print("error on player coins")
-					SnapshotsClient.load_game("playerData", true)	
+					SnapshotsClient.load_game("playerData", true)
+				$DebugLabel.text = $DebugLabel.text + "from g_l" 
+				updateCoins(currentPlayerCoins)
 				updateCharacter()
-				#updateCoins(currentPlayerCoins)
+				
 				unauthenticatedUser = false
 				#$CoinsLabel.text = currentPlayerCoins
 	)
@@ -60,7 +63,10 @@ func _ready():
 	SnapshotsClient.game_saved.connect(
 		func(is_saved: bool, save_data_name: String, save_data_description: String):
 			if is_saved:
-				updateCharacter()
+				if !skipUpdateCharacter:
+					updateCharacter()
+				#$DebugLabel.text = $DebugLabel.text + "upc from s_g" 
+				#updateCoins(savedData["coins"])
 			else: 
 				pass
 				#$DebugLabel.text = $DebugLabel.text + " unable to save game"
@@ -93,6 +99,7 @@ func _process(_delta):
 	pass
 	
 func _on_button_pressed():
+	skipUpdateCharacter = true
 	$MenuMusic.stop()
 	if soundOn: 
 		$DashClick.play()
@@ -121,6 +128,7 @@ func _on_button_pressed():
 	var characterName = characters[currentCharacter].replace("res://images/","").replace("_stand.png","").replace("_stand_base.png","")
 	game.call("_on_sound_toggled", soundOn)
 	game.call("prepareBackgroundSprite", characterName)
+	game.call("setCurrentData", savedData)
 	game.get_node("Player").call("_on_character_select", characterName)
 	#emit_signal("characterSelect")
 	game.connect("gameOver", _on_game_finished)
@@ -128,30 +136,20 @@ func _on_button_pressed():
 	
 func updateCoins(amount): 
 	$CoinsLabel.text = amount
+	$CoinsLabel.visible = true
 	
-func _on_game_finished(coinsToAdd): 
-	print("coins to add, back in main menu: " + str(coinsToAdd))
+func _on_game_finished(): 
 	if soundOn: 
 		$HitSound.play()
-	#false comment
-	#if playing on godot emulator or user has no connect play services account
 	redoMainMenu()
+	SnapshotsClient.load_game("playerData")
 	print("on game finished")
-	if savedData: 
-		var newCoins = int(savedData["coins"]) + coinsToAdd
-		var playerUnlocks = savedData["playerUnlocks"]
-		playerUnlocks[currentCharacter] = true
-		var saveData = {"coins": newCoins, "playerUnlocks": playerUnlocks}
-		var jsonSaveData = JSON.stringify(saveData)
-		savedData = saveData
-		updateCoins(newCoins)
-		SnapshotsClient.save_game("playerData", "player data for Animal Dash", jsonSaveData.to_utf8_buffer())
 	
 func redoMainMenu(): 
 	print("recreating main menu")
 	if soundOn: 
 		$MenuMusic.play()
-	var menuElements = [$CharacterImage, $StartGame, $LeftButton, $RightButton, $GoogleSignIn, $TitleText, $Achievements, $SoundToggle, $CoinLabelSprite, $CoinsLabel, $BackgroundImage]
+	var menuElements = [$CharacterImage, $StartGame, $LeftButton, $RightButton, $GoogleSignIn, $TitleText, $Achievements, $SoundToggle, $CoinLabelSprite, $BackgroundImage]
 	for element in menuElements: 
 		print("making element visible")
 		element.visible = true

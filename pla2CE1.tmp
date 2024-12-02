@@ -7,6 +7,8 @@ radius = 59.0085
 
 [node name="Player" type="Area2D"]
 script = ExtResource("1_3vx8m")
+speed = null
+energy = null
 metadata/_edit_group_ = true
 
 [node name="PlayerHitBox" type="CollisionShape2D" parent="."]

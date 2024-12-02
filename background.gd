@@ -59,6 +59,7 @@ var spikePointer = 0
 var currentPattern = 0
 var resolveSpikePattern = false
 var gamePaused = false
+var savedData
 
 var soundOn = true
 
@@ -73,11 +74,11 @@ func new_game():
 	#var foregroundSprite = $Parallax_Background/parallax_lay_two/laytwo_sprite
 
 	$StartTimer.start()
-	
+
+func setCurrentData(currData): 
+		savedData = currData
+
 func game_over(coinsToAdd):
-	if SnapshotsClient: 
-		print("snapshots client found")
-		SnapshotsClient.load_game("playerData")
 	if LeaderboardsClient: 
 		LeaderboardsClient.submit_score("CgkIuuKhlf8BEAIQAg", int(points))
 		LeaderboardsClient.submit_score("CgkIuuKhlf8BEAIQCQ", int(coinsCollected)) 
@@ -92,7 +93,7 @@ func game_over(coinsToAdd):
 		else: 
 			child.queue_free()
 	gamePaused = true
-	emit_signal("gameOver", int(coinsToAdd))
+	emit_signal("gameOver")
 	
 # Called when the node enters the scene tree for the first time.
 func _ready():
@@ -118,39 +119,6 @@ func _ready():
 			else: 
 				pass
 				#$DebugText.text = $DebugText.text + " unable to save game"
-	)
-	SnapshotsClient.game_loaded.connect(
-		func(snapshot: SnapshotsClient.Snapshot):
-			if !snapshot:
-				#$DebugText.text = $DebugText.text + " snap not found" 
-				print("snap shot not found")
-			else: 
-				#$DebugText.text = $DebugText.text + " existing data loaded"
-				var currentData = snapshot.content.get_string_from_utf8()
-				#$DebugText.text = $DebugText.text + "h1"
-				var parsedData = JSON.parse_string(currentData)
-				#$DebugText.text = $DebugText.text + "h2"
-				var currentPlayerCoins = parsedData["coins"]
-				var playerUnlocksArray = parsedData["playerUnlocks"]
-				if playerUnlocksArray: 
-					pass
-				else:
-					playerUnlocksArray = [true, false, false, false, false]
-				#this line is ONLY for testers that were testing the game before there was 5 characters
-				if playerUnlocksArray.size() < 5: 
-					playerUnlocksArray = [true, false, false, false, false]
-				#$DebugText.text = $DebugText.text + "h3"
-				#$DebugText.text = $DebugText.text + "currentCoins: " + str(currentPlayerCoins)
-				#$DebugText.text = $DebugText.text + "h4"
-				var newPlayerCoinsAmount = coinsCollected + int(currentPlayerCoins)
-				#$DebugText.text = $DebugText.text + "h5"
-				var saveData = {"coins": newPlayerCoinsAmount, "playerUnlocks": playerUnlocksArray}
-				var jsonSaveData = JSON.stringify(saveData)
-				#$DebugText.text = $DebugText.text + "h6"
-				SnapshotsClient.save_game("playerData", "playerData for Animal Dash", jsonSaveData.to_utf8_buffer())
-				#$DebugText.text = $DebugText.text + "after save"
-				emit_signal("coinsCollectedSignal", newPlayerCoinsAmount)
-				
 	)
 	
 	sound_coinCollect = $CoinSound
@@ -355,6 +323,15 @@ func _on_collect():
 		if coin.position.x < 0:
 			remove_child(coin)
 	coinArray = []
+	addCoinToSavedData()
+	
+func addCoinToSavedData(): 
+	var newCoins = int(savedData["coins"]) + 1
+	var playerUnlocks = savedData["playerUnlocks"]
+	var saveData = {"coins": newCoins, "playerUnlocks": playerUnlocks}
+	var jsonSaveData = JSON.stringify(saveData)
+	savedData = saveData
+	SnapshotsClient.save_game("playerData", "player data for Animal Dash", jsonSaveData.to_utf8_buffer())
 
 func _on_land(): 
 	print("land in main")
