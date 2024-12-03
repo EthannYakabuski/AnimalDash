@@ -1,4 +1,4 @@
-[gd_scene load_steps=5 format=3 uid="uid://b5espwtionjie"]
+[gd_scene load_steps=4 format=3 uid="uid://b5espwtionjie"]
 
 [ext_resource type="Script" path="res://food.gd" id="1_516ws"]
 [ext_resource type="Texture2D" uid="uid://b7qx8dliki0fy" path="res://images/steakDone.png" id="2_liagc"]
@@ -14,25 +14,20 @@ animations = [{
 "speed": 5.0
 }]
 
-[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_w4lgc"]
-radius = 37.0
-height = 82.0
-
 [node name="Food" type="RigidBody2D"]
 gravity_scale = 0.0
 script = ExtResource("1_516ws")
 
 [node name="FoodSprite" type="AnimatedSprite2D" parent="."]
 position = Vector2(776, 61)
-scale = Vector2(0.0869094, 0.0869094)
+scale = Vector2(0.072, 0.072)
 sprite_frames = SubResource("SpriteFrames_udydm")
 animation = &"Standard"
 
-[node name="FoodCollision" type="CollisionShape2D" parent="."]
-position = Vector2(775, 58)
-shape = SubResource("CapsuleShape2D_w4lgc")
-
 [node name="VisibleOnScreenNotifier2D" type="VisibleOnScreenNotifier2D" parent="."]
+
+[node name="FoodCollision" type="CollisionPolygon2D" parent="."]
+polygon = PackedVector2Array(752, 48, 746, 57, 746, 66, 746, 74, 749, 80, 757, 85, 767, 89, 773, 89, 785, 84, 790, 78, 795, 73, 799, 68, 805, 62, 805, 54, 806, 45, 800, 37, 792, 33, 781, 32, 773, 36, 767, 40, 760, 45)
 
 [connection signal="body_entered" from="." to="." method="_on_body_entered"]
 [connection signal="body_shape_entered" from="." to="." method="_on_body_shape_entered"]

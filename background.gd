@@ -5,6 +5,11 @@ extends Node2D
 @export var player_scene: PackedScene
 @export var food_scene: PackedScene
 @export var plus_scene: PackedScene
+@export var bamboo_scene: PackedScene
+@export var mushroom_scene: PackedScene
+@export var fish_scene: PackedScene
+@export var carrot_scene: PackedScene
+
 var score
 var spike
 var spikeArray = []
@@ -31,6 +36,8 @@ var isDoubleJumping = false
 
 var isFamished = false
 
+var currentCharacterString = ""
+
 signal collect
 signal hit
 signal eat
@@ -52,6 +59,7 @@ var spikePointer = 0
 var currentPattern = 0
 var resolveSpikePattern = false
 var gamePaused = false
+var savedData
 
 var soundOn = true
 
@@ -66,11 +74,11 @@ func new_game():
 	#var foregroundSprite = $Parallax_Background/parallax_lay_two/laytwo_sprite
 
 	$StartTimer.start()
-	
-func game_over():
-	if SnapshotsClient: 
-		print("snapshots client found")
-		SnapshotsClient.load_game("playerData")
+
+func setCurrentData(currData): 
+		savedData = currData
+
+func game_over(coinsToAdd):
 	if LeaderboardsClient: 
 		LeaderboardsClient.submit_score("CgkIuuKhlf8BEAIQAg", int(points))
 		LeaderboardsClient.submit_score("CgkIuuKhlf8BEAIQCQ", int(coinsCollected)) 
@@ -112,36 +120,6 @@ func _ready():
 				pass
 				#$DebugText.text = $DebugText.text + " unable to save game"
 	)
-	SnapshotsClient.game_loaded.connect(
-		func(snapshot: SnapshotsClient.Snapshot):
-			if !snapshot:
-				#$DebugText.text = $DebugText.text + " snap not found" 
-				print("snap shot not found")
-			else: 
-				#$DebugText.text = $DebugText.text + " existing data loaded"
-				var currentData = snapshot.content.get_string_from_utf8()
-				#$DebugText.text = $DebugText.text + "h1"
-				var parsedData = JSON.parse_string(currentData)
-				#$DebugText.text = $DebugText.text + "h2"
-				var currentPlayerCoins = parsedData["coins"]
-				var playerUnlocksArray = parsedData["playerUnlocks"]
-				if playerUnlocksArray: 
-					pass
-				else:
-					playerUnlocksArray = [true, false]
-				#$DebugText.text = $DebugText.text + "h3"
-				#$DebugText.text = $DebugText.text + "currentCoins: " + str(currentPlayerCoins)
-				#$DebugText.text = $DebugText.text + "h4"
-				var newPlayerCoinsAmount = coinsCollected + int(currentPlayerCoins)
-				#$DebugText.text = $DebugText.text + "h5"
-				var saveData = {"coins": newPlayerCoinsAmount, "playerUnlocks": playerUnlocksArray}
-				var jsonSaveData = JSON.stringify(saveData)
-				#$DebugText.text = $DebugText.text + "h6"
-				SnapshotsClient.save_game("playerData", "playerData for Animal Dash", jsonSaveData.to_utf8_buffer())
-				#$DebugText.text = $DebugText.text + "after save"
-				emit_signal("coinsCollectedSignal", newPlayerCoinsAmount)
-				
-	)
 	
 	sound_coinCollect = $CoinSound
 	sound_foodCollect = $EatSound
@@ -172,7 +150,7 @@ func _process(delta):
 		if $Player.energy < 0: 
 			AchievementsClient.unlock_achievement("CgkIuuKhlf8BEAIQBg")
 			$Player.hide()
-			game_over()
+			game_over(coinsCollected)
 		checkSpikePoints()
 		checkFamished()
 
@@ -182,9 +160,46 @@ func _on_sound_toggled(soundValue):
 	if soundOn: 
 		$BaselineKickin.play()
 
+func prepareBackgroundSprite(characterName): 
+	print("preparing background sprites for: " + characterName)
+	currentCharacterString = characterName
+	#res://images/bear_backgroundClouds.png
+	#res://images/bunny_foregroundLarge.png
+	var cloudString = "res://images/" + characterName + "_backgroundClouds.png"
+	var foregroundString = "res://images/" + characterName + "_foregroundLarge.png"
+	var clouds_texture = load(cloudString) as Texture2D
+	var foreground_texture = load(foregroundString) as Texture2D
+	print(cloudString)
+	$Parallax_Background/parallax_lay_one/layone_sprite.texture = clouds_texture
+	$Parallax_Background/parallax_lay_two/laytwo_sprite.texture = foreground_texture
+	$Parallax_Background/parallax_lay_one/layone_sprite.scale = Vector2(0.5,0.5)
+	match characterName: 
+		"snowTiger": 
+			$Parallax_Background/parallax_lay_one/layone_sprite.position.x = 389
+			$Parallax_Background/parallax_lay_one/layone_sprite.position.y = 200
+			#parallax_layer.mirror.x = 500
+			$Parallax_Background/parallax_lay_one.motion_mirroring.x = 776
+		"panda": 
+			$Parallax_Background/parallax_lay_one/layone_sprite.position.x = 440
+			$Parallax_Background/parallax_lay_one/layone_sprite.position.y = 250
+			$Parallax_Background/parallax_lay_one.motion_mirroring.x = 600
+		"bear": 
+			$Parallax_Background/parallax_lay_one/layone_sprite.position.x = 440
+			$Parallax_Background/parallax_lay_one/layone_sprite.position.y = 250
+			$Parallax_Background/parallax_lay_one.motion_mirroring.x = 700
+		"bunny": 
+			$Parallax_Background/parallax_lay_one/layone_sprite.position.x = 440
+			$Parallax_Background/parallax_lay_one/layone_sprite.position.y = 215
+			$Parallax_Background/parallax_lay_one.motion_mirroring.x = 889
+		"pig": 
+			$Parallax_Background/parallax_lay_one/layone_sprite.position.x = 440
+			$Parallax_Background/parallax_lay_one/layone_sprite.position.y = 260
+			$Parallax_Background/parallax_lay_two/laytwo_sprite.position.y = 50
+			$Parallax_Background/parallax_lay_one.motion_mirroring.x = 890
+
 func checkFamished(): 
 	for food in foodArray: 
-		if food.position.x < -700 and not food.passed and not food.collected: 
+		if food.position.x < -850 and not food.passed and not food.collected: 
 			print("famished started")
 			food.passed = true
 			isFamished = true
@@ -217,6 +232,8 @@ func addPoints(pointsToAdd):
 		justGettingStarted = true
 	if points >= 500: 
 		AchievementsClient.unlock_achievement("CgkIuuKhlf8BEAIQBA")
+	if points >= 1000: 
+		AchievementsClient.unlock_achievement("CgkIuuKhlf8BEAIQDw")
 	
 func addIndicator(position): 
 	print("adding + indicator to the UI")
@@ -276,7 +293,7 @@ func _on_coin_timer_timeout():
 	coin.add_to_group("Coin")
 	var rando = randf_range(40,200)
 	coin.get_node("CoinSprite").position.y = rando
-	coin.get_node("CoinCollision").position.y = rando
+	#coin.get_node("CoinCollision").position.y = rando
 	coinArray.push_back(coin)
 	
 	var coin_loc = $CoinPath/CoinPathFollow
@@ -299,11 +316,23 @@ func _on_collect():
 		sound_coinCollect.play()
 	$Player.energy = $Player.energy + 50
 	if coinsCollected >= 25: 
-		AchievementsClient.unlock_achievement("CgkIuuKhlf8BEAIQBw"); 
+		AchievementsClient.unlock_achievement("CgkIuuKhlf8BEAIQBw")
+	if coinsCollected >= 100: 
+		AchievementsClient.unlock_achievement("CgkIuuKhlf8BEAIQEA") 
 	for coin in coinArray: 
 		if coin.position.x < 0:
 			remove_child(coin)
 	coinArray = []
+	addCoinToSavedData()
+	
+func addCoinToSavedData():
+	if GodotPlayGameServices.android_plugin: 
+		var newCoins = int(savedData["coins"]) + 1
+		var playerUnlocks = savedData["playerUnlocks"]
+		var saveData = {"coins": newCoins, "playerUnlocks": playerUnlocks}
+		var jsonSaveData = JSON.stringify(saveData)
+		savedData = saveData
+		SnapshotsClient.save_game("playerData", "player data for Animal Dash", jsonSaveData.to_utf8_buffer())
 
 func _on_land(): 
 	print("land in main")
@@ -327,7 +356,7 @@ func _on_jump():
 func _on_eat(): 
 	print("eat in main")
 	if isFamished: 
-		print("famished unlocked")
+		print("--- famished unlocked ---")
 		AchievementsClient.unlock_achievement("CgkIuuKhlf8BEAIQCA")
 	isFamished = false
 	addPoints(2)
@@ -351,14 +380,25 @@ func _on_foodcoincollision():
 func _on_hit():
 	print("spike hit in main")
 	#$HitSound.play()
-	game_over()
+	game_over(coinsCollected)
 
 func _on_food_Entered(): 
 	print("food entered in main")
 	
 func _on_food_timer_timeout():
+	var food
+	match currentCharacterString: 
+		"snowTiger": 
+			food = food_scene.instantiate()
+		"panda": 
+			food = bamboo_scene.instantiate()
+		"bear": 
+			food = fish_scene.instantiate()
+		"bunny": 
+			food = carrot_scene.instantiate()
+		"pig": 
+			food = mushroom_scene.instantiate()
 	print("food spawned")	
-	var food = food_scene.instantiate(); 
 	food.add_to_group("Food"); 
 	var rando = randf_range(40,200)
 	food.get_node("FoodSprite").position.y = rando
