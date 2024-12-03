@@ -293,7 +293,7 @@ func _on_coin_timer_timeout():
 	coin.add_to_group("Coin")
 	var rando = randf_range(40,200)
 	coin.get_node("CoinSprite").position.y = rando
-	coin.get_node("CoinCollision").position.y = rando
+	#coin.get_node("CoinCollision").position.y = rando
 	coinArray.push_back(coin)
 	
 	var coin_loc = $CoinPath/CoinPathFollow

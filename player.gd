@@ -68,7 +68,7 @@ func createCharacterFrames(character_name):
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta):
 	var velocity
-	gravity = 40000
+	gravity = 50000
 	if previousVelocity: 
 		velocity = previousVelocity
 	else: 
@@ -88,7 +88,7 @@ func _process(delta):
 	
 	if (Input.is_action_just_pressed("jump") && jumped < 2 || isJumping):
 		velocity = Vector2.ZERO
-		velocity.y -= 350
+		velocity.y -= 400
 		energy = energy - 2.5
 		#velocity = velocity.normalized() * speed
 		previousVelocity = velocity
