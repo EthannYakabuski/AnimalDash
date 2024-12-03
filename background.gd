@@ -325,13 +325,14 @@ func _on_collect():
 	coinArray = []
 	addCoinToSavedData()
 	
-func addCoinToSavedData(): 
-	var newCoins = int(savedData["coins"]) + 1
-	var playerUnlocks = savedData["playerUnlocks"]
-	var saveData = {"coins": newCoins, "playerUnlocks": playerUnlocks}
-	var jsonSaveData = JSON.stringify(saveData)
-	savedData = saveData
-	SnapshotsClient.save_game("playerData", "player data for Animal Dash", jsonSaveData.to_utf8_buffer())
+func addCoinToSavedData():
+	if GodotPlayGameServices.android_plugin: 
+		var newCoins = int(savedData["coins"]) + 1
+		var playerUnlocks = savedData["playerUnlocks"]
+		var saveData = {"coins": newCoins, "playerUnlocks": playerUnlocks}
+		var jsonSaveData = JSON.stringify(saveData)
+		savedData = saveData
+		SnapshotsClient.save_game("playerData", "player data for Animal Dash", jsonSaveData.to_utf8_buffer())
 
 func _on_land(): 
 	print("land in main")

@@ -20,9 +20,9 @@ script = ExtResource("1_rardl")
 
 [node name="FoodSprite" type="AnimatedSprite2D" parent="."]
 position = Vector2(770, 47)
-scale = Vector2(0.07, 0.07)
+scale = Vector2(0.12, 0.12)
 sprite_frames = SubResource("SpriteFrames_h4831")
 animation = &"Standard"
 
 [node name="FoodCollision" type="CollisionPolygon2D" parent="."]
-polygon = PackedVector2Array(751, 45, 752, 35, 756, 29, 762, 24, 771, 22, 783, 26, 786, 31, 789, 37, 789, 46, 786, 51, 781, 51, 777, 52, 776, 65, 774, 68, 766, 67, 764, 62, 764, 51, 758, 51, 754, 49)
+polygon = PackedVector2Array(738, 39, 740, 27, 744, 19, 751, 13, 770, 6, 790, 14, 801, 26, 804, 42, 797, 51, 792, 53, 784, 52, 780, 54, 781, 74, 776, 83, 762, 79, 761, 65, 760, 53, 753, 52, 744, 50)
