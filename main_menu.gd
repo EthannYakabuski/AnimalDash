@@ -170,7 +170,7 @@ func changeBackground(currentCharacter):
 			currentCharacter = 2
 		-4: 
 			currentCharacter = 1
-		
+			
 	match currentCharacter: 
 		0: 
 			var new_texture = load("res://images/snowTiger_backgroundClouds.png") as Texture2D
@@ -203,8 +203,8 @@ func checkCharacterUnlock(currentCharacter):
 		#$DebugLabel.text = $DebugLabel.text + str(isCharacterUnlocked)
 	if isCharacterUnlocked == false: 
 		$LockIcon.visible = true
-		#$UnlockButton.visible = true
-		#$StartGame.visible = false
+		$UnlockButton.visible = true
+		$StartGame.visible = false
 	else: 
 		$LockIcon.visible = false
 		$UnlockButton.visible = false
@@ -283,6 +283,10 @@ func _on_unlock_button_pressed() -> void:
 		updateCoins(newCoins)
 		AchievementsClient.unlock_achievement("CgkIuuKhlf8BEAIQCg")
 		SnapshotsClient.save_game("playerData", "player data for Animal Dash", jsonSaveData.to_utf8_buffer())
+		skipUpdateCharacter = false
+		$UnlockButton.visible = false
+		$LockIcon.visible = false
+		$StartGame.visible = true
 		match currentCharacter: 
 			1: 
 				#panda
