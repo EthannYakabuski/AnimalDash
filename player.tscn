@@ -3,7 +3,7 @@
 [ext_resource type="Script" path="res://player.gd" id="1_3vx8m"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_sx04a"]
-radius = 76.0
+radius = 59.0085
 
 [node name="Player" type="Area2D"]
 script = ExtResource("1_3vx8m")
@@ -12,5 +12,4 @@ metadata/_edit_group_ = true
 [node name="PlayerHitBox" type="CollisionShape2D" parent="."]
 shape = SubResource("CircleShape2D_sx04a")
 
-[connection signal="area_entered" from="." to="." method="_on_area_entered"]
 [connection signal="body_entered" from="." to="." method="_on_body_entered"]

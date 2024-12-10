@@ -1,4 +1,4 @@
-[gd_scene load_steps=23 format=3 uid="uid://checsqe14agle"]
+[gd_scene load_steps=27 format=3 uid="uid://checsqe14agle"]
 
 [ext_resource type="PackedScene" uid="uid://h0fryho40mr0" path="res://player.tscn" id="1_bfbfr"]
 [ext_resource type="Script" path="res://background.gd" id="1_ulvn5"]
@@ -8,7 +8,11 @@
 [ext_resource type="PackedScene" uid="uid://b5espwtionjie" path="res://food.tscn" id="5_50w5t"]
 [ext_resource type="PackedScene" uid="uid://dxld76dfsqvq2" path="res://plus.tscn" id="5_jb1cb"]
 [ext_resource type="PackedScene" uid="uid://c3oschgq7a4ct" path="res://spike.tscn" id="5_wo8yf"]
+[ext_resource type="PackedScene" uid="uid://c0noxdy25rbxg" path="res://bamboo.tscn" id="6_pv8uy"]
+[ext_resource type="PackedScene" uid="uid://fvqr1wso03fc" path="res://mushroom.tscn" id="7_m4elk"]
 [ext_resource type="Texture2D" uid="uid://b64hy0myqx2xj" path="res://images/Semi-Circle (no background 2).png" id="7_pn1h5"]
+[ext_resource type="PackedScene" uid="uid://b0mgpg5ay4804" path="res://fish.tscn" id="8_oixtk"]
+[ext_resource type="PackedScene" uid="uid://14cghgnjoqui" path="res://carrot.tscn" id="9_o8jqq"]
 [ext_resource type="AudioStream" uid="uid://387wolenmks" path="res://sounds/coin.wav" id="10_8hkru"]
 [ext_resource type="AudioStream" uid="uid://b8vin0beu6deu" path="res://sounds/eat.wav" id="11_6f248"]
 [ext_resource type="AudioStream" uid="uid://bu3uag5oil2ya" path="res://sounds/jump.wav" id="12_7kmbv"]
@@ -55,6 +59,10 @@ coin_scene = ExtResource("2_bmhpb")
 spike_scene = ExtResource("5_wo8yf")
 food_scene = ExtResource("5_50w5t")
 plus_scene = ExtResource("5_jb1cb")
+bamboo_scene = ExtResource("6_pv8uy")
+mushroom_scene = ExtResource("7_m4elk")
+fish_scene = ExtResource("8_oixtk")
+carrot_scene = ExtResource("9_o8jqq")
 
 [node name="Player" parent="." instance=ExtResource("1_bfbfr")]
 collision_mask = 7
@@ -79,9 +87,11 @@ wait_time = 13.0
 
 [node name="parallax_lay_one" type="ParallaxLayer" parent="Parallax_Background"]
 motion_scale = Vector2(4, 4)
-motion_mirroring = Vector2(1500, 0)
+motion_mirroring = Vector2(899, 0)
 
 [node name="layone_sprite" type="Sprite2D" parent="Parallax_Background/parallax_lay_one"]
+position = Vector2(389, 200)
+scale = Vector2(0.5, 0.5)
 texture = ExtResource("3_bsfhd")
 
 [node name="parallax_lay_two" type="ParallaxLayer" parent="Parallax_Background"]

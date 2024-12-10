@@ -1,4 +1,4 @@
-[gd_scene load_steps=5 format=3 uid="uid://c7fen34vsu0xo"]
+[gd_scene load_steps=4 format=3 uid="uid://c7fen34vsu0xo"]
 
 [ext_resource type="Script" path="res://coin.gd" id="1_kdm57"]
 [ext_resource type="Texture2D" uid="uid://dqibi56mi8pgb" path="res://images/Coingood.png" id="2_36vp6"]
@@ -14,26 +14,22 @@ animations = [{
 "speed": 5.0
 }]
 
-[sub_resource type="CircleShape2D" id="CircleShape2D_ep5mm"]
-radius = 43.0116
-
 [node name="Coin" type="RigidBody2D"]
 gravity_scale = 0.0
 script = ExtResource("1_kdm57")
 
 [node name="CoinSprite" type="AnimatedSprite2D" parent="."]
-position = Vector2(668, 129)
-scale = Vector2(0.0996951, 0.0996951)
+position = Vector2(775.135, 129)
+scale = Vector2(0.09, 0.09)
 sprite_frames = SubResource("SpriteFrames_n7lpc")
 animation = &"Standard"
-
-[node name="CoinCollision" type="CollisionShape2D" parent="."]
-position = Vector2(668, 131)
-shape = SubResource("CircleShape2D_ep5mm")
 
 [node name="VisibleOnScreenNotifier2D" type="VisibleOnScreenNotifier2D" parent="."]
 position = Vector2(360.5, 239.5)
 scale = Vector2(35.85, 23.95)
+
+[node name="CoinCollision" type="CollisionPolygon2D" parent="."]
+polygon = PackedVector2Array(743, 114, 740, 138, 750, 157, 768, 165, 786, 164, 802, 153, 811, 133, 804, 109, 787, 97, 768, 95, 749, 103)
 
 [connection signal="body_entered" from="." to="." method="_on_body_entered"]
 [connection signal="body_shape_entered" from="." to="." method="_on_body_shape_entered"]
