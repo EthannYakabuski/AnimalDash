@@ -1,4 +1,4 @@
-[gd_scene load_steps=15 format=3 uid="uid://bou780e4w75un"]
+[gd_scene load_steps=16 format=3 uid="uid://bou780e4w75un"]
 
 [ext_resource type="Script" path="res://main_menu.gd" id="1_ao6ml"]
 [ext_resource type="PackedScene" uid="uid://checsqe14agle" path="res://background.tscn" id="2_32us4"]
@@ -14,6 +14,7 @@
 [ext_resource type="AudioStream" uid="uid://0wic0hpgjtph" path="res://sounds/leftClick.wav" id="10_krk4e"]
 [ext_resource type="AudioStream" uid="uid://b64m35wtl0sji" path="res://sounds/dash.wav" id="11_8aal4"]
 [ext_resource type="Texture2D" uid="uid://dqibi56mi8pgb" path="res://images/Coingood.png" id="12_ihqi1"]
+[ext_resource type="Script" path="res://ad_banner.gd" id="15_2o17a"]
 
 [node name="MainMenu" type="Node"]
 script = ExtResource("1_ao6ml")
@@ -135,9 +136,12 @@ texture = ExtResource("12_ihqi1")
 
 [node name="DebugLabel" type="Label" parent="."]
 offset_left = 12.0
-offset_top = 452.0
+offset_top = 413.0
 offset_right = 712.0
 offset_bottom = 475.0
+
+[node name="AdBanner" type="Node2D" parent="."]
+script = ExtResource("15_2o17a")
 
 [connection signal="pressed" from="UnlockButton" to="." method="_on_unlock_button_pressed"]
 [connection signal="pressed" from="StartGame" to="." method="_on_button_pressed"]

@@ -14,6 +14,8 @@ var savedData = ""
 var unauthenticatedUser = true
 var skipUpdateCharacter = false
 
+var _ad_view : AdView
+
 @export var game_scene: PackedScene
 @export var menu_scene: PackedScene
 @export var achievements_scene: PackedScene
@@ -22,6 +24,8 @@ var _sign_in_retries := 1
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
+	#var deviceId = OS.get_unique_id()
+	#$DebugLabel.text = $DebugLabel.text + deviceId
 	SnapshotsClient.game_loaded.connect(
 		func(snapshot: SnapshotsClient.Snapshot):
 			if !snapshot:
@@ -94,6 +98,55 @@ func _ready():
 	else: 
 		print("google sign in available")
 		#$TitleText.text = $TitleText.text + "Play game services found"
+	
+	#The initializate needs to be done only once, ideally at app launch.
+	var onInitializationCompleteListener = OnInitializationCompleteListener.new()
+	onInitializationCompleteListener.on_initialization_complete = onAdInitializationComplete
+	var request_configuration = RequestConfiguration.new()
+	#"F03226F1DD8EFC77"
+	#,"2077EF9A63D2B398840261C8221A0C9B"
+	if MobileAds:
+		#request_configuration.test_device_ids = ["523a1b0eb5b6be122cd04bedf8035291"]
+		MobileAds.set_request_configuration(request_configuration)
+		$DebugLabel.text = $DebugLabel.text + "calling init"
+		MobileAds.initialize(onInitializationCompleteListener)
+		$DebugLabel.text = $DebugLabel.text + " post init"
+		_create_ad_view()
+		check_initialization_status()
+	
+func check_initialization_status():
+	var status = MobileAds.get_initialization_status()
+	if status: 
+		for adapter_name in status.adapter_status_map.keys():
+			var adapter_status = status.adapter_status_map[adapter_name]
+			$DebugLabel.text = $DebugLabel.text + "Adapter: %s, State: %s, Description: %s" % [adapter_name, adapter_status.state, adapter_status.description]
+		
+func onAdInitializationComplete(status : InitializationStatus): 
+	print("banner ad initialization complete")
+	$DebugLabel.text = $DebugLabel.text + " inside init"
+	_create_ad_view()
+
+func _create_ad_view() -> void:
+	#free memory
+	if _ad_view:
+		destroy_ad_view()
+
+	var adListener = AdListener.new()
+	adListener.on_ad_failed_to_load = func(load_ad_error : LoadAdError): 
+		$DebugLabel.text = $DebugLabel.text + load_ad_error.message
+		
+	$DebugLabel.text = $DebugLabel.text + " inside create"
+	var unit_id = "ca-app-pub-3940256099942544/6300978111"
+
+	_ad_view = AdView.new(unit_id, AdSize.BANNER, AdPosition.Values.BOTTOM)
+	var ad_request = AdRequest.new()
+	_ad_view.load_ad(ad_request)
+	_ad_view.show()
+	$DebugLabel.text = $DebugLabel.text + " aft load"
+	
+func destroy_ad_view(): 
+	_ad_view.destroy()
+	_ad_view = null
 		
 func _process(_delta):
 	pass
