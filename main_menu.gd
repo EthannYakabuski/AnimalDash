@@ -140,7 +140,7 @@ func _create_ad_view() -> void:
 	#$DebugLabel.text = $DebugLabel.text + " inside create"
 	var unit_id = "ca-app-pub-3940256099942544/6300978111"
 
-	_ad_view = AdView.new(unit_id, AdSize.BANNER, AdPosition.Values.TOP_LEFT)
+	_ad_view = AdView.new(unit_id, AdSize.BANNER, AdPosition.Values.BOTTOM_RIGHT)
 	var ad_request = AdRequest.new()
 	_ad_view.load_ad(ad_request)
 	_ad_view.show()
