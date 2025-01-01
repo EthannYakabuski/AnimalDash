@@ -49,10 +49,10 @@ offset_bottom = 443.0
 text = "Unlock: 300"
 
 [node name="StartGame" type="Button" parent="."]
-offset_left = 292.0
-offset_top = 384.0
-offset_right = 440.0
-offset_bottom = 444.0
+offset_left = 290.0
+offset_top = 351.0
+offset_right = 438.0
+offset_bottom = 411.0
 text = "Dash"
 
 [node name="LeftButton" type="TextureButton" parent="."]

@@ -80,6 +80,18 @@ func setCurrentData(currData):
 
 func game_over(coinsToAdd):
 	if LeaderboardsClient: 
+		match currentCharacterString: 
+			"snowTiger": 
+				LeaderboardsClient.submit_score("CgkIuuKhlf8BEAIQFg", int(points))
+			"panda": 
+				LeaderboardsClient.submit_score("CgkIuuKhlf8BEAIQEg", int(points))
+			"bear": 
+				LeaderboardsClient.submit_score("CgkIuuKhlf8BEAIQEw", int(points))
+			"bunny": 
+				LeaderboardsClient.submit_score("CgkIuuKhlf8BEAIQFA", int(points))
+			"pig": 
+				LeaderboardsClient.submit_score("CgkIuuKhlf8BEAIQFQ", int(points))
+				
 		LeaderboardsClient.submit_score("CgkIuuKhlf8BEAIQAg", int(points))
 		LeaderboardsClient.submit_score("CgkIuuKhlf8BEAIQCQ", int(coinsCollected)) 
 	$SpikeTimer.stop()
