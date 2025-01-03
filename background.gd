@@ -27,6 +27,8 @@ var sound_doubleJump
 var sound_hit
 var sound_land
 
+var newTotalCoins
+
 var lastFlashFrame
 var isFlashing = false
 
@@ -93,6 +95,7 @@ func setCurrentData(currData):
 			"pig": 
 				currentAnimalHighScore = int(savedData["highPigScore"])
 		totalHighScore = int(savedData["highDistanceScore"])
+		newTotalCoins = int(savedData["totalCoins"])
 
 func game_over(coinsToAdd): 
 	var updateHighScore = false
@@ -112,6 +115,10 @@ func game_over(coinsToAdd):
 	var newTotalDistance = int(savedData["totalDistance"]) + points
 	#submits added score to new total distance leaderboard
 	LeaderboardsClient.submit_score("CgkIuuKhlf8BEAIQGA", newTotalDistance)
+	
+	#if gathered at least one coin this game, submit score to totalCoin leaderboard
+	if newTotalCoins and newTotalCoins > 0: 
+		LeaderboardsClient.submit_score("CgkIuuKhlf8BEAIQFw", newTotalCoins)
 	
 	if LeaderboardsClient: 
 		match currentCharacterString: 
@@ -410,7 +417,7 @@ func _on_collect():
 func addCoinToSavedData():
 	if GodotPlayGameServices.android_plugin: 
 		var newCoins = int(savedData["coins"]) + 1
-		var newTotalCoins = int(savedData["totalCoins"]) + 1
+		newTotalCoins = int(savedData["totalCoins"]) + 1
 		var playerUnlocks = savedData["playerUnlocks"]
 		var saveData = {"coins": newCoins, "playerUnlocks": playerUnlocks, "highDistanceScore": int(savedData["highDistanceScore"]), "highTigerScore": int(savedData["highTigerScore"]), "highPandaScore": int(savedData["highPandaScore"]), "highBearScore": int(savedData["highBearScore"]), "highBunnyScore": int(savedData["highBunnyScore"]), "highPigScore": int(savedData["highPigScore"]), "totalDistance": int(savedData["totalDistance"]), "totalCoins": newTotalCoins}
 		var jsonSaveData = JSON.stringify(saveData)
