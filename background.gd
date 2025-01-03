@@ -116,6 +116,10 @@ func game_over(coinsToAdd):
 	#submits added score to new total distance leaderboard
 	LeaderboardsClient.submit_score("CgkIuuKhlf8BEAIQGA", newTotalDistance)
 	
+	#unlocks marathon achievement
+	if newTotalDistance >= 10000: 
+		AchievementsClient.unlock_achievement("CgkIuuKhlf8BEAIQGQ")
+	
 	#if gathered at least one coin this game, submit score to totalCoin leaderboard
 	if newTotalCoins and newTotalCoins > 0: 
 		LeaderboardsClient.submit_score("CgkIuuKhlf8BEAIQFw", newTotalCoins)
