@@ -31,7 +31,7 @@ func _ready():
 			if !snapshot:
 				#$DebugLabel.text = $DebugLabel.text + " snap not found" 
 				print("snap shot not found")
-				var saveData = {"coins": 0, "playerUnlocks": [true,false,false,false,false]}
+				var saveData = {"coins": 0, "playerUnlocks": [true,false,false,false,false], "highDistanceScore": 0, "highTigerScore": 0, "highPandaScore": 0, "highBearScore": 0, "highBunnyScore": 0, "highPigScore": 0, "totalDistance": 0, "totalCoins": 0}
 				updateCoins(0)
 				var jsonSaveData = JSON.stringify(saveData)
 				var parsedData = JSON.parse_string(jsonSaveData)
@@ -333,7 +333,7 @@ func _on_unlock_button_pressed() -> void:
 		var newCoins = int(savedData["coins"]) - 300
 		var playerUnlocks = savedData["playerUnlocks"]
 		playerUnlocks[currentCharacter] = true
-		var saveData = {"coins": newCoins, "playerUnlocks": playerUnlocks}
+		var saveData = {"coins": newCoins, "playerUnlocks": playerUnlocks, "highDistanceScore": int(savedData["highDistanceScore"]), "highTigerScore": int(savedData["highTigerScore"]), "highPandaScore": int(savedData["highPandaScore"]), "highBearScore": int(savedData["highBearScore"]), "highBunnyScore": int(savedData["highBunnyScore"]), "highPigScore": int(savedData["highPigScore"]), "totalDistance": int(savedData["totalDistance"]), "totalCoins": int(savedData["totalCoins"])}
 		var jsonSaveData = JSON.stringify(saveData)
 		savedData = saveData
 		updateCoins(newCoins)

@@ -61,6 +61,9 @@ var resolveSpikePattern = false
 var gamePaused = false
 var savedData
 
+var currentAnimalHighScore
+var totalHighScore
+
 var soundOn = true
 
 func new_game(): 
@@ -75,10 +78,41 @@ func new_game():
 
 	$StartTimer.start()
 
+#called from main_menu before game launch
 func setCurrentData(currData): 
 		savedData = currData
+		match currentCharacterString: 
+			"snowTiger": 
+				currentAnimalHighScore = int(savedData["highTigerScore"])
+			"panda": 
+				currentAnimalHighScore = int(savedData["highPandaScore"])
+			"bear": 
+				currentAnimalHighScore = int(savedData["highBearScore"])
+			"bunny": 
+				currentAnimalHighScore = int(savedData["highBunnyScore"])
+			"pig": 
+				currentAnimalHighScore = int(savedData["highPigScore"])
+		totalHighScore = int(savedData["highDistanceScore"])
 
-func game_over(coinsToAdd):
+func game_over(coinsToAdd): 
+	var updateHighScore = false
+	var updateTotalScore = false
+	if points > currentAnimalHighScore: 
+		updateHighScore = true
+	if points > totalHighScore: 
+		updateTotalScore = true
+		
+	if updateHighScore and updateTotalScore: 
+		addNewHighScoreToSavedData(true, true)
+	elif updateHighScore:
+		addNewHighScoreToSavedData(true, false)
+	elif not updateHighScore and not updateTotalScore: 
+		addNewHighScoreToSavedData(false, false)
+		
+	var newTotalDistance = int(savedData["totalDistance"]) + points
+	#submits added score to new total distance leaderboard
+	LeaderboardsClient.submit_score("CgkIuuKhlf8BEAIQGA", newTotalDistance)
+	
 	if LeaderboardsClient: 
 		match currentCharacterString: 
 			"snowTiger": 
@@ -106,7 +140,43 @@ func game_over(coinsToAdd):
 			child.queue_free()
 	gamePaused = true
 	emit_signal("gameOver")
-	
+
+func addNewHighScoreToSavedData(animalScore, totalScore): 
+	if GodotPlayGameServices.android_plugin: 
+		var saveData
+		var newTotalDistance = int(savedData["totalDistance"]) + points
+		if not animalScore and not totalScore:
+			saveData = {"coins": int(savedData["coins"]), "playerUnlocks": savedData["playerUnlocks"], "highDistanceScore": int(savedData["highDistanceScore"]), "highTigerScore": int(savedData["highTigerScore"]), "highPandaScore": int(savedData["highPandaScore"]), "highBearScore": int(savedData["highBearScore"]), "highBunnyScore": int(savedData["highBunnyScore"]), "highPigScore": int(savedData["highPigScore"]), "totalDistance": newTotalDistance, "totalCoins": int(savedData["totalCoins"])}
+		else: 
+			match currentCharacterString: 
+				"snowTiger": 
+					if totalScore: 
+						saveData = {"coins": int(savedData["coins"]), "playerUnlocks": savedData["playerUnlocks"], "highDistanceScore": points, "highTigerScore": points, "highPandaScore": int(savedData["highPandaScore"]), "highBearScore": int(savedData["highBearScore"]), "highBunnyScore": int(savedData["highBunnyScore"]), "highPigScore": int(savedData["highPigScore"]), "totalDistance": newTotalDistance, "totalCoins": int(savedData["totalCoins"])}
+					else: 
+						saveData = {"coins": int(savedData["coins"]), "playerUnlocks": savedData["playerUnlocks"], "highDistanceScore": int(savedData["highDistanceScore"]), "highTigerScore": points, "highPandaScore": int(savedData["highPandaScore"]), "highBearScore": int(savedData["highBearScore"]), "highBunnyScore": int(savedData["highBunnyScore"]), "highPigScore": int(savedData["highPigScore"]), "totalDistance": newTotalDistance, "totalCoins": int(savedData["totalCoins"])}
+				"panda": 
+					if totalScore: 
+						saveData = {"coins": int(savedData["coins"]), "playerUnlocks": savedData["playerUnlocks"], "highDistanceScore": points, "highTigerScore": int(savedData["highTigerScore"]), "highPandaScore": points, "highBearScore": int(savedData["highBearScore"]), "highBunnyScore": int(savedData["highBunnyScore"]), "highPigScore": int(savedData["highPigScore"]), "totalDistance": newTotalDistance, "totalCoins": int(savedData["totalCoins"])}					
+					else: 
+						saveData = {"coins": int(savedData["coins"]), "playerUnlocks": savedData["playerUnlocks"], "highDistanceScore": int(savedData["highDistanceScore"]), "highTigerScore": int(savedData["highTigerScore"]), "highPandaScore": points, "highBearScore": int(savedData["highBearScore"]), "highBunnyScore": int(savedData["highBunnyScore"]), "highPigScore": int(savedData["highPigScore"]), "totalDistance": newTotalDistance, "totalCoins": int(savedData["totalCoins"])}
+				"bear": 
+					if totalScore: 
+						saveData = {"coins": int(savedData["coins"]), "playerUnlocks": savedData["playerUnlocks"], "highDistanceScore": points, "highTigerScore": int(savedData["highTigerScore"]), "highPandaScore": int(savedData["highPandaScore"]), "highBearScore": points, "highBunnyScore": int(savedData["highBunnyScore"]), "highPigScore": int(savedData["highPigScore"]), "totalDistance": newTotalDistance, "totalCoins": int(savedData["totalCoins"])}					
+					else: 
+						saveData = {"coins": int(savedData["coins"]), "playerUnlocks": savedData["playerUnlocks"], "highDistanceScore": int(savedData["highDistanceScore"]), "highTigerScore": int(savedData["highTigerScore"]), "highPandaScore": int(savedData["highPandaScore"]), "highBearScore": points, "highBunnyScore": int(savedData["highBunnyScore"]), "highPigScore": int(savedData["highPigScore"]), "totalDistance": newTotalDistance, "totalCoins": int(savedData["totalCoins"])}
+				"bunny":
+					if totalScore: 
+						saveData = {"coins": int(savedData["coins"]), "playerUnlocks": savedData["playerUnlocks"], "highDistanceScore": points, "highTigerScore": int(savedData["highTigerScore"]), "highPandaScore": int(savedData["highPandaScore"]), "highBearScore": int(savedData["highBearScore"]), "highBunnyScore": points, "highPigScore": int(savedData["highPigScore"]), "totalDistance": newTotalDistance, "totalCoins": int(savedData["totalCoins"])}					
+					else: 
+						saveData = {"coins": int(savedData["coins"]), "playerUnlocks": savedData["playerUnlocks"], "highDistanceScore": int(savedData["highDistanceScore"]), "highTigerScore": int(savedData["highTigerScore"]), "highPandaScore": int(savedData["highPandaScore"]), "highBearScore": int(savedData["highBearScore"]), "highBunnyScore": points, "highPigScore": int(savedData["highPigScore"]), "totalDistance": newTotalDistance, "totalCoins": int(savedData["totalCoins"])}
+				"pig": 
+					if totalScore: 
+						saveData = {"coins": int(savedData["coins"]), "playerUnlocks": savedData["playerUnlocks"], "highDistanceScore": points, "highTigerScore": int(savedData["highTigerScore"]), "highPandaScore": int(savedData["highPandaScore"]), "highBearScore": int(savedData["highBearScore"]), "highBunnyScore": int(savedData["highBunnyScore"]), "highPigScore": points, "totalDistance": newTotalDistance, "totalCoins": int(savedData["totalCoins"])}				
+					else: 
+						saveData = {"coins": int(savedData["coins"]), "playerUnlocks": savedData["playerUnlocks"], "highDistanceScore": int(savedData["highDistanceScore"]), "highTigerScore": int(savedData["highTigerScore"]), "highPandaScore": int(savedData["highPandaScore"]), "highBearScore": int(savedData["highBearScore"]), "highBunnyScore": int(savedData["highBunnyScore"]), "highPigScore": points, "totalDistance": newTotalDistance, "totalCoins": int(savedData["totalCoins"])}
+		var jsonSaveData = JSON.stringify(saveData)
+		savedData = saveData
+		SnapshotsClient.save_game("playerData", "player data for Animal Dash", jsonSaveData.to_utf8_buffer())
 # Called when the node enters the scene tree for the first time.
 func _ready():
 	$Score.text = str(0)
@@ -340,8 +410,9 @@ func _on_collect():
 func addCoinToSavedData():
 	if GodotPlayGameServices.android_plugin: 
 		var newCoins = int(savedData["coins"]) + 1
+		var newTotalCoins = int(savedData["totalCoins"]) + 1
 		var playerUnlocks = savedData["playerUnlocks"]
-		var saveData = {"coins": newCoins, "playerUnlocks": playerUnlocks}
+		var saveData = {"coins": newCoins, "playerUnlocks": playerUnlocks, "highDistanceScore": int(savedData["highDistanceScore"]), "highTigerScore": int(savedData["highTigerScore"]), "highPandaScore": int(savedData["highPandaScore"]), "highBearScore": int(savedData["highBearScore"]), "highBunnyScore": int(savedData["highBunnyScore"]), "highPigScore": int(savedData["highPigScore"]), "totalDistance": int(savedData["totalDistance"]), "totalCoins": newTotalCoins}
 		var jsonSaveData = JSON.stringify(saveData)
 		savedData = saveData
 		SnapshotsClient.save_game("playerData", "player data for Animal Dash", jsonSaveData.to_utf8_buffer())
