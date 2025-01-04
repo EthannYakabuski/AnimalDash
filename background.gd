@@ -142,6 +142,7 @@ func game_over(coinsToAdd):
 	$SpikeTimer.stop()
 	$CoinTimer.stop()
 	$FoodTimer.stop()
+	LastScore.setLastScore(points)
 	for child in get_children():
 		if child is Timer:
 			print("nothing")

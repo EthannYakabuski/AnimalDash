@@ -1,4 +1,4 @@
-[gd_scene load_steps=16 format=3 uid="uid://bou780e4w75un"]
+[gd_scene load_steps=19 format=3 uid="uid://bou780e4w75un"]
 
 [ext_resource type="Script" path="res://main_menu.gd" id="1_ao6ml"]
 [ext_resource type="PackedScene" uid="uid://checsqe14agle" path="res://background.tscn" id="2_32us4"]
@@ -15,6 +15,20 @@
 [ext_resource type="AudioStream" uid="uid://b64m35wtl0sji" path="res://sounds/dash.wav" id="11_8aal4"]
 [ext_resource type="Texture2D" uid="uid://dqibi56mi8pgb" path="res://images/Coingood.png" id="12_ihqi1"]
 [ext_resource type="Script" path="res://ad_banner.gd" id="15_2o17a"]
+
+[sub_resource type="LabelSettings" id="LabelSettings_ai23m"]
+font_size = 23
+font_color = Color(0.901961, 0.431373, 0.839216, 1)
+outline_size = 3
+shadow_size = 5
+
+[sub_resource type="LabelSettings" id="LabelSettings_smo6i"]
+font_size = 23
+font_color = Color(0.901961, 0.431373, 0.839216, 1)
+
+[sub_resource type="LabelSettings" id="LabelSettings_dygsd"]
+font_size = 23
+font_color = Color(0.901961, 0.431373, 0.839216, 1)
 
 [node name="MainMenu" type="Node"]
 script = ExtResource("1_ao6ml")
@@ -142,6 +156,30 @@ offset_bottom = 475.0
 
 [node name="AdBanner" type="Node2D" parent="."]
 script = ExtResource("15_2o17a")
+
+[node name="HiScore" type="Label" parent="."]
+offset_left = 15.0
+offset_top = 59.0
+offset_right = 206.0
+offset_bottom = 93.0
+text = "HighScore:"
+label_settings = SubResource("LabelSettings_ai23m")
+
+[node name="AnimalHiScore" type="Label" parent="."]
+offset_left = 14.0
+offset_top = 98.0
+offset_right = 165.0
+offset_bottom = 133.0
+text = "Animal HighScore:"
+label_settings = SubResource("LabelSettings_smo6i")
+
+[node name="LastScore" type="Label" parent="."]
+offset_left = 15.0
+offset_top = 136.0
+offset_right = 156.0
+offset_bottom = 171.0
+text = "Last Score: "
+label_settings = SubResource("LabelSettings_dygsd")
 
 [connection signal="pressed" from="UnlockButton" to="." method="_on_unlock_button_pressed"]
 [connection signal="pressed" from="StartGame" to="." method="_on_button_pressed"]

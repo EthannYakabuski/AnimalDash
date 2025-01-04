@@ -13,6 +13,7 @@ var currentData: String
 var savedData = ""
 var unauthenticatedUser = true
 var skipUpdateCharacter = false
+var updatingAlphaUserData = false
 
 var _ad_view : AdView
 
@@ -28,6 +29,7 @@ func _ready():
 	#$DebugLabel.text = $DebugLabel.text + deviceId
 	SnapshotsClient.game_loaded.connect(
 		func(snapshot: SnapshotsClient.Snapshot):
+			updateLastScore()
 			if !snapshot:
 				#$DebugLabel.text = $DebugLabel.text + " snap not found" 
 				print("snap shot not found")
@@ -42,16 +44,26 @@ func _ready():
 				currentData = snapshot.content.get_string_from_utf8()
 				var parsedData = JSON.parse_string(currentData)
 				savedData = parsedData
+				updatingAlphaUserData = false
 				var currentPlayerCoins = parsedData["coins"]
 				if currentPlayerCoins == null: 
 					print("error on player coins")
 					SnapshotsClient.load_game("playerData", true)
-				#$DebugLabel.text = $DebugLabel.text + "from g_l" 
-				updateCoins(currentPlayerCoins)
-				updateCharacter()
-				
-				unauthenticatedUser = false
-				#$CoinsLabel.text = currentPlayerCoins
+				#player with existing save data without highDistanceScore, is an alphaUser that has not played a game since the latest release
+				if savedData["highDistanceScore"] == null: 
+					var saveData = {"coins": int(savedData["coins"]), "playerUnlocks": savedData["playerUnlocks"], "highDistanceScore": 0, "highTigerScore": 0, "highPandaScore": 0, "highBearScore": 0, "highBunnyScore": 0, "highPigScore": 0, "totalDistance": 0, "totalCoins": 0}
+					var jsonSaveData = JSON.stringify(saveData)
+					parsedData = JSON.parse_string(jsonSaveData)
+					savedData = parsedData
+					updatingAlphaUserData = true
+					SnapshotsClient.save_game("playerData", "player data for Animal Dash", jsonSaveData.to_utf8_buffer())
+				else: 
+					#$DebugLabel.text = $DebugLabel.text + "from g_l" 
+					updateCoins(currentPlayerCoins)
+					updateCharacter()
+					updateHiScore()
+					unauthenticatedUser = false
+					#$CoinsLabel.text = currentPlayerCoins
 	)
 	
 	SnapshotsClient.conflict_emitted.connect(
@@ -66,6 +78,9 @@ func _ready():
 	)
 	SnapshotsClient.game_saved.connect(
 		func(is_saved: bool, save_data_name: String, save_data_description: String):
+			if updatingAlphaUserData: 
+				SnapshotsClient.load_game("playerData", false); 
+				updatingAlphaUserData = false
 			if is_saved:
 				if !skipUpdateCharacter:
 					updateCharacter()
@@ -113,6 +128,12 @@ func _ready():
 		MobileAds.set_request_configuration(request_configuration)
 		#_create_ad_view()
 		#check_initialization_status()
+func updateLastScore(): 
+	$LastScore.text = str(LastScore.getLastScore())
+			
+func updateHiScore():
+	var score = int(savedData["highDistanceScore"])
+	$HiScore.text = "HighScore: " + str(score)
 	
 func check_initialization_status():
 	#$DebugLabel.text = $DebugLabel.text + "check init"
@@ -172,6 +193,9 @@ func _on_button_pressed():
 	$LockIcon.visible = false
 	$UnlockButton.visible = false
 	$BackgroundImage.visible = false
+	$HiScore.visible = false
+	$AnimalHiScore.visible = false
+	destroy_ad_view()
 	#remove_child($CharacterImage)
 	#remove_child($StartGame)
 	#remove_child($LeftButton)
@@ -205,7 +229,7 @@ func redoMainMenu():
 	print("recreating main menu")
 	if soundOn: 
 		$MenuMusic.play()
-	var menuElements = [$CharacterImage, $StartGame, $LeftButton, $RightButton, $GoogleSignIn, $TitleText, $Achievements, $SoundToggle, $CoinLabelSprite, $BackgroundImage]
+	var menuElements = [$CharacterImage, $StartGame, $LeftButton, $RightButton, $GoogleSignIn, $TitleText, $Achievements, $SoundToggle, $CoinLabelSprite, $BackgroundImage, $HiScore, $AnimalHiScore]
 	for element in menuElements: 
 		print("making element visible")
 		element.visible = true
@@ -215,6 +239,33 @@ func updateCharacter():
 	#$DebugLabel.text = $DebugLabel.text + " " + str(currentCharacter)
 	checkCharacterUnlock(currentCharacter)
 	changeBackground(currentCharacter)
+	if savedData: 
+		updateScore(currentCharacter)
+
+func updateScore(currentCharacter):
+	match currentCharacter: 
+		-1: 
+			currentCharacter = 4
+		-2: 
+			currentCharacter = 3
+		-3: 
+			currentCharacter = 2
+		-4: 
+			currentCharacter = 1
+	
+	var hiScore	
+	match currentCharacter: 
+		0: 
+			hiScore = int(savedData["highTigerScore"])
+		1: 
+			hiScore = int(savedData["highPandaScore"])
+		2: 
+			hiScore = int(savedData["highBearScore"])
+		3: 
+			hiScore = int(savedData["highBunnyScore"])
+		4: 
+			hiScore = int(savedData["highPigScore"])
+	$AnimalHiScore.text = "Animal HighScore: " + str(hiScore)
 	
 func changeBackground(currentCharacter): 
 	match currentCharacter: 
