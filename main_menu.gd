@@ -15,6 +15,9 @@ var unauthenticatedUser = true
 var skipUpdateCharacter = false
 var updatingAlphaUserData = false
 
+var onLoadingScreen = false
+var waitingForMainMenuReload = false
+
 var _ad_view : AdView
 
 @export var game_scene: PackedScene
@@ -63,7 +66,12 @@ func _ready():
 					updateCharacter()
 					updateHiScore()
 					unauthenticatedUser = false
-					#$CoinsLabel.text = currentPlayerCoins
+					if waitingForMainMenuReload: 
+						waitingForMainMenuReload = false
+						$LoadingAnimation.visible = false
+						$LoadingLabel.visible = false
+						redoMainMenu()
+						#$CoinsLabel.text = currentPlayerCoins
 	)
 	
 	SnapshotsClient.conflict_emitted.connect(
@@ -129,7 +137,7 @@ func _ready():
 		#_create_ad_view()
 		#check_initialization_status()
 func updateLastScore(): 
-	$LastScore.text = str(LastScore.getLastScore())
+	$LastScore.text = "Last Score: " + str(LastScore.getLastScore())
 			
 func updateHiScore():
 	var score = int(savedData["highDistanceScore"])
@@ -195,6 +203,7 @@ func _on_button_pressed():
 	$BackgroundImage.visible = false
 	$HiScore.visible = false
 	$AnimalHiScore.visible = false
+	$LastScore.visible = false
 	destroy_ad_view()
 	#remove_child($CharacterImage)
 	#remove_child($StartGame)
@@ -221,15 +230,21 @@ func updateCoins(amount):
 func _on_game_finished(): 
 	if soundOn: 
 		$HitSound.play()
-	redoMainMenu()
+	createPauseScreen()
 	SnapshotsClient.load_game("playerData")
 	print("on game finished")
+
+func createPauseScreen(): 
+	waitingForMainMenuReload = true
+	$LoadingAnimation.visible = true
+	$LoadingAnimation.play("Loading")
+	$LoadingLabel.visible = true
 	
 func redoMainMenu(): 
 	print("recreating main menu")
 	if soundOn: 
 		$MenuMusic.play()
-	var menuElements = [$CharacterImage, $StartGame, $LeftButton, $RightButton, $GoogleSignIn, $TitleText, $Achievements, $SoundToggle, $CoinLabelSprite, $BackgroundImage, $HiScore, $AnimalHiScore]
+	var menuElements = [$CharacterImage, $StartGame, $LeftButton, $RightButton, $GoogleSignIn, $TitleText, $Achievements, $SoundToggle, $CoinLabelSprite, $BackgroundImage, $HiScore, $AnimalHiScore, $LastScore]
 	for element in menuElements: 
 		print("making element visible")
 		element.visible = true

@@ -151,7 +151,6 @@ func game_over(coinsToAdd):
 		else: 
 			child.queue_free()
 	gamePaused = true
-	emit_signal("gameOver")
 
 func addNewHighScoreToSavedData(animalScore, totalScore): 
 	if GodotPlayGameServices.android_plugin: 
@@ -213,6 +212,8 @@ func _ready():
 			else: 
 				pass
 				#$DebugText.text = $DebugText.text + " unable to save game"
+			if gamePaused: 
+				emit_signal("gameOver")
 	)
 	
 	sound_coinCollect = $CoinSound
