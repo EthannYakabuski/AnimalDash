@@ -14,11 +14,15 @@ var savedData = ""
 var unauthenticatedUser = true
 var skipUpdateCharacter = false
 var updatingAlphaUserData = false
+var updatingUserCoinDataAfterRewardedAd = false
 
 var onLoadingScreen = false
 var waitingForMainMenuReload = false
 
 var _ad_view : AdView
+var _rewarded_ad : RewardedAd
+var _full_screen_content_callback : FullScreenContentCallback
+var on_user_earned_reward_listener := OnUserEarnedRewardListener.new()
 
 @export var game_scene: PackedScene
 @export var menu_scene: PackedScene
@@ -110,6 +114,20 @@ func _ready():
 			#$DebugLabel.text = $DebugLabel.text + "trying to load data "
 			SnapshotsClient.load_game("playerData", false)
 	)
+	
+	_full_screen_content_callback.on_ad_clicked = func() -> void:
+		print("on_ad_clicked")
+	_full_screen_content_callback.on_ad_dismissed_full_screen_content = func() -> void:
+		print("on_ad_dismissed_full_screen_content")
+	_full_screen_content_callback.on_ad_failed_to_show_full_screen_content = func(ad_error : AdError) -> void:
+		print("on_ad_failed_to_show_full_screen_content")
+	_full_screen_content_callback.on_ad_impression = func() -> void:
+		print("on_ad_impression")
+	_full_screen_content_callback.on_ad_showed_full_screen_content = func() -> void:
+		print("on_ad_showed_full_screen_content")
+		
+	on_user_earned_reward_listener.on_user_earned_reward = on_user_earned_reward
+		
 	updateCharacter()
 	menuMusic = $MenuMusic
 	#redoMainMenu() 
@@ -204,6 +222,7 @@ func _on_button_pressed():
 	$HiScore.visible = false
 	$AnimalHiScore.visible = false
 	$LastScore.visible = false
+	$WatchAd.visible = false
 	destroy_ad_view()
 	#remove_child($CharacterImage)
 	#remove_child($StartGame)
@@ -246,7 +265,7 @@ func redoMainMenu():
 	print("recreating main menu")
 	if soundOn: 
 		$MenuMusic.play()
-	var menuElements = [$CharacterImage, $StartGame, $LeftButton, $RightButton, $GoogleSignIn, $TitleText, $Achievements, $SoundToggle, $CoinLabelSprite, $BackgroundImage, $HiScore, $AnimalHiScore, $LastScore]
+	var menuElements = [$CharacterImage, $StartGame, $LeftButton, $RightButton, $GoogleSignIn, $TitleText, $Achievements, $SoundToggle, $CoinLabelSprite, $BackgroundImage, $HiScore, $AnimalHiScore, $LastScore, $WatchAd]
 	for element in menuElements: 
 		print("making element visible")
 		element.visible = true
@@ -428,3 +447,43 @@ func _on_unlock_button_pressed() -> void:
 	else: 
 		pass
 		#$DebugLabel.text = $DebugLabel.text + " ins. funds"
+
+
+func _on_watch_ad_pressed() -> void:
+	if _rewarded_ad: 
+		_rewarded_ad.destroy()
+		_rewarded_ad = null
+		
+	var unit_id = "ca-app-pub-3940256099942544/5224354917"
+	
+	var rewarded_ad_load_callback := RewardedAdLoadCallback.new()
+	
+	rewarded_ad_load_callback.on_ad_failed_to_load = func(adError: LoadAdError) -> void: 
+		print(adError.message)
+	
+	rewarded_ad_load_callback.on_ad_loaded = func(rewarded_ad: RewardedAd) -> void: 
+		print("rewarded ad loaded")
+		_rewarded_ad = rewarded_ad
+		_rewarded_ad.full_screen_content_callback = _full_screen_content_callback
+		_rewarded_ad.show(on_user_earned_reward_listener)
+		
+	RewardedAdLoader.new().load(unit_id, AdRequest.new(), rewarded_ad_load_callback)
+		
+		
+func on_user_earned_reward(rewarded_item : RewardedItem):
+	print("on_user_earned_reward, rewarded_item: rewarded", rewarded_item.amount, rewarded_item.type)
+	#once we are using an actual unit-id from admob, the rewarded_item.amount and rewarded_item.type values are set in the admob console
+	#for our case, we are rewarding 25 coins to the player and must save it to the user data
+	
+	#unlocks "Thank you for your support" achievement
+	AchievementsClient.unlock_achievement("CgkIuuKhlf8BEAIQGg")
+	var newCoins = int(savedData["coins"]) + 25
+	var newTotalCoins = int(savedData["totalCoins"]) + 25
+	var saveData = {"coins": newCoins, "playerUnlocks": savedData["playerUnlocks"], "highDistanceScore": int(savedData["highDistanceScore"]), "highTigerScore": int(savedData["highTigerScore"]), "highPandaScore": int(savedData["highPandaScore"]), "highBearScore": int(savedData["highBearScore"]), "highBunnyScore": int(savedData["highBunnyScore"]), "highPigScore": int(savedData["highPigScore"]), "totalDistance": int(savedData["totalDistance"]), "totalCoins": newTotalCoins}
+	var jsonSaveData = JSON.stringify(saveData)
+	savedData = saveData
+	updateCoins(newCoins)
+	waitingForMainMenuReload = false
+	SnapshotsClient.save_game("playerData", "player data for Animal Dash", jsonSaveData.to_utf8_buffer())
+		
+		

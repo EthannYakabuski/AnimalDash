@@ -217,6 +217,14 @@ offset_bottom = 477.0
 text = "LOADING..."
 label_settings = SubResource("LabelSettings_0se23")
 
+[node name="WatchAd" type="Button" parent="."]
+offset_left = 11.0
+offset_top = 411.0
+offset_right = 166.0
+offset_bottom = 472.0
+text = "Watch Ad
+25 coins"
+
 [connection signal="pressed" from="UnlockButton" to="." method="_on_unlock_button_pressed"]
 [connection signal="pressed" from="StartGame" to="." method="_on_button_pressed"]
 [connection signal="pressed" from="LeftButton" to="." method="_on_left_button_pressed"]
@@ -225,3 +233,4 @@ label_settings = SubResource("LabelSettings_0se23")
 [connection signal="pressed" from="Achievements" to="." method="_on_achievements_pressed"]
 [connection signal="pressed" from="SoundToggle" to="." method="_on_sound_toggle_pressed"]
 [connection signal="finished" from="MenuMusic" to="." method="_on_menu_music_finished"]
+[connection signal="pressed" from="WatchAd" to="." method="_on_watch_ad_pressed"]
