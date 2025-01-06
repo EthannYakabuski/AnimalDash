@@ -216,6 +216,8 @@ func _on_button_pressed():
 	add_child(game)
 	var characterName = characters[currentCharacter].replace("res://images/","").replace("_stand.png","").replace("_stand_base.png","")
 	game.call("_on_sound_toggled", soundOn)
+	game.call("setPaused", false)
+	game.gamePaused = false
 	game.call("prepareBackgroundSprite", characterName)
 	game.call("setCurrentData", savedData)
 	game.get_node("Player").call("_on_character_select", characterName)
@@ -248,6 +250,7 @@ func redoMainMenu():
 	for element in menuElements: 
 		print("making element visible")
 		element.visible = true
+	_create_ad_view()
 
 func updateCharacter(): 
 	print('updating character')

@@ -37,6 +37,8 @@ var isInAir = false
 var isDoubleJumping = false
 
 var isFamished = false
+var savingCoinData = false
+var savingGameOverData = false
 
 var currentCharacterString = ""
 
@@ -60,7 +62,7 @@ var spike_patterns = [
 var spikePointer = 0
 var currentPattern = 0
 var resolveSpikePattern = false
-var gamePaused = false
+@export var gamePaused = false
 var savedData
 
 var currentAnimalHighScore
@@ -152,6 +154,9 @@ func game_over(coinsToAdd):
 			child.queue_free()
 	gamePaused = true
 
+func setPaused(value): 
+	gamePaused = value
+
 func addNewHighScoreToSavedData(animalScore, totalScore): 
 	if GodotPlayGameServices.android_plugin: 
 		var saveData
@@ -187,6 +192,7 @@ func addNewHighScoreToSavedData(animalScore, totalScore):
 						saveData = {"coins": int(savedData["coins"]), "playerUnlocks": savedData["playerUnlocks"], "highDistanceScore": int(savedData["highDistanceScore"]), "highTigerScore": int(savedData["highTigerScore"]), "highPandaScore": int(savedData["highPandaScore"]), "highBearScore": int(savedData["highBearScore"]), "highBunnyScore": int(savedData["highBunnyScore"]), "highPigScore": points, "totalDistance": newTotalDistance, "totalCoins": int(savedData["totalCoins"])}
 		var jsonSaveData = JSON.stringify(saveData)
 		savedData = saveData
+		savingGameOverData = true
 		SnapshotsClient.save_game("playerData", "player data for Animal Dash", jsonSaveData.to_utf8_buffer())
 # Called when the node enters the scene tree for the first time.
 func _ready():
@@ -200,6 +206,7 @@ func _ready():
 	$Player.connect("land", _on_land)
 	#self.connect("foodcoincollision", _on_foodcoincollision)
 	self.connect("characterSelect", _on_characterSelect)
+	gamePaused = false
 	LeaderboardsClient.score_submitted.connect(
 		func refresh_score(is_submitted: bool, leaderboard_id: String):
 			pass
@@ -212,8 +219,17 @@ func _ready():
 			else: 
 				pass
 				#$DebugText.text = $DebugText.text + " unable to save game"
-			if gamePaused: 
+			if savingCoinData and not savingGameOverData: 
+				savingCoinData = false
+			elif not savingCoinData and savingGameOverData:
+				savingGameOverData = false 
 				emit_signal("gameOver")
+			elif savingCoinData and savingGameOverData:
+				print("player has immediately died after collecting a coin")
+				#callback to savingGameOverData will always be called after callback to savingCoinData
+				#which means savingCoinData should typically always finish before savingGameOverData
+				savingCoinData = false
+				#setting savingCoinData to false in this statement, should result in gameOver signal being emitted when savingGameOverData callback is reached
 	)
 	
 	sound_coinCollect = $CoinSound
@@ -427,6 +443,7 @@ func addCoinToSavedData():
 		var playerUnlocks = savedData["playerUnlocks"]
 		var saveData = {"coins": newCoins, "playerUnlocks": playerUnlocks, "highDistanceScore": int(savedData["highDistanceScore"]), "highTigerScore": int(savedData["highTigerScore"]), "highPandaScore": int(savedData["highPandaScore"]), "highBearScore": int(savedData["highBearScore"]), "highBunnyScore": int(savedData["highBunnyScore"]), "highPigScore": int(savedData["highPigScore"]), "totalDistance": int(savedData["totalDistance"]), "totalCoins": newTotalCoins}
 		var jsonSaveData = JSON.stringify(saveData)
+		savingCoinData = true
 		savedData = saveData
 		SnapshotsClient.save_game("playerData", "player data for Animal Dash", jsonSaveData.to_utf8_buffer())
 
