@@ -1,4 +1,4 @@
-[gd_scene load_steps=23 format=3 uid="uid://bou780e4w75un"]
+[gd_scene load_steps=24 format=3 uid="uid://bou780e4w75un"]
 
 [ext_resource type="Script" path="res://main_menu.gd" id="1_ao6ml"]
 [ext_resource type="PackedScene" uid="uid://checsqe14agle" path="res://background.tscn" id="2_32us4"]
@@ -18,19 +18,28 @@
 [ext_resource type="Texture2D" uid="uid://dxpiwwvp2iy4r" path="res://images/snowTiger_stand.png" id="16_wnna2"]
 [ext_resource type="Texture2D" uid="uid://cuy7p7d5qx4qh" path="res://images/snowTiger_jump_one.png" id="17_3kmqt"]
 
+[sub_resource type="LabelSettings" id="LabelSettings_n4dvs"]
+font_size = 34
+font_color = Color(0, 0, 0, 1)
+
 [sub_resource type="LabelSettings" id="LabelSettings_ai23m"]
 font_size = 23
 font_color = Color(0.901961, 0.431373, 0.839216, 1)
-outline_size = 3
-shadow_size = 5
+outline_size = 7
+outline_color = Color(0, 0, 0, 1)
+shadow_size = 7
 
 [sub_resource type="LabelSettings" id="LabelSettings_smo6i"]
 font_size = 23
 font_color = Color(0.901961, 0.431373, 0.839216, 1)
+outline_size = 7
+outline_color = Color(0, 0, 0, 1)
 
 [sub_resource type="LabelSettings" id="LabelSettings_dygsd"]
 font_size = 23
 font_color = Color(0.901961, 0.431373, 0.839216, 1)
+outline_size = 7
+outline_color = Color(0, 0, 0, 1)
 
 [sub_resource type="SpriteFrames" id="SpriteFrames_apnuh"]
 animations = [{
@@ -153,13 +162,14 @@ stream = ExtResource("10_krk4e")
 stream = ExtResource("11_8aal4")
 
 [node name="CoinsLabel" type="Label" parent="."]
-offset_left = 331.0
-offset_top = 17.0
-offset_right = 418.0
-offset_bottom = 50.0
+offset_left = 329.0
+offset_top = 11.0
+offset_right = 416.0
+offset_bottom = 58.0
 theme_override_colors/font_color = Color(0, 0, 0, 1)
 theme_override_font_sizes/font_size = 25
 text = "0"
+label_settings = SubResource("LabelSettings_n4dvs")
 horizontal_alignment = 1
 vertical_alignment = 1
 
@@ -182,7 +192,7 @@ offset_left = 15.0
 offset_top = 59.0
 offset_right = 206.0
 offset_bottom = 93.0
-text = "HighScore:"
+text = "Highscore:"
 label_settings = SubResource("LabelSettings_ai23m")
 
 [node name="AnimalHiScore" type="Label" parent="."]
@@ -190,7 +200,7 @@ offset_left = 14.0
 offset_top = 98.0
 offset_right = 165.0
 offset_bottom = 133.0
-text = "Animal HighScore:"
+text = "Animal Highscore:"
 label_settings = SubResource("LabelSettings_smo6i")
 
 [node name="LastScore" type="Label" parent="."]
@@ -198,7 +208,7 @@ offset_left = 15.0
 offset_top = 136.0
 offset_right = 156.0
 offset_bottom = 171.0
-text = "Last Score: "
+text = "Last score: "
 label_settings = SubResource("LabelSettings_dygsd")
 
 [node name="LoadingAnimation" type="AnimatedSprite2D" parent="."]

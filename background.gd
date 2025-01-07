@@ -83,7 +83,8 @@ func new_game():
 	$StartTimer.start()
 
 #called from main_menu before game launch
-func setCurrentData(currData): 
+func setCurrentData(currData):
+	if currData: 
 		savedData = currData
 		match currentCharacterString: 
 			"snowTiger": 

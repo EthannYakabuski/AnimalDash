@@ -115,16 +115,17 @@ func _ready():
 			SnapshotsClient.load_game("playerData", false)
 	)
 	
-	_full_screen_content_callback.on_ad_clicked = func() -> void:
-		print("on_ad_clicked")
-	_full_screen_content_callback.on_ad_dismissed_full_screen_content = func() -> void:
-		print("on_ad_dismissed_full_screen_content")
-	_full_screen_content_callback.on_ad_failed_to_show_full_screen_content = func(ad_error : AdError) -> void:
-		print("on_ad_failed_to_show_full_screen_content")
-	_full_screen_content_callback.on_ad_impression = func() -> void:
-		print("on_ad_impression")
-	_full_screen_content_callback.on_ad_showed_full_screen_content = func() -> void:
-		print("on_ad_showed_full_screen_content")
+	if _full_screen_content_callback: 
+		_full_screen_content_callback.on_ad_clicked = func() -> void:
+			print("on_ad_clicked")
+		_full_screen_content_callback.on_ad_dismissed_full_screen_content = func() -> void:
+			print("on_ad_dismissed_full_screen_content")
+		_full_screen_content_callback.on_ad_failed_to_show_full_screen_content = func(ad_error : AdError) -> void:
+			print("on_ad_failed_to_show_full_screen_content")
+		_full_screen_content_callback.on_ad_impression = func() -> void:
+			print("on_ad_impression")
+		_full_screen_content_callback.on_ad_showed_full_screen_content = func() -> void:
+			print("on_ad_showed_full_screen_content")
 		
 	on_user_earned_reward_listener.on_user_earned_reward = on_user_earned_reward
 		
@@ -155,11 +156,11 @@ func _ready():
 		#_create_ad_view()
 		#check_initialization_status()
 func updateLastScore(): 
-	$LastScore.text = "Last Score: " + str(LastScore.getLastScore())
+	$LastScore.text = "Last score: " + str(LastScore.getLastScore())
 			
 func updateHiScore():
 	var score = int(savedData["highDistanceScore"])
-	$HiScore.text = "HighScore: " + str(score)
+	$HiScore.text = "Highscore: " + str(score)
 	
 func check_initialization_status():
 	#$DebugLabel.text = $DebugLabel.text + "check init"
@@ -194,9 +195,10 @@ func _create_ad_view() -> void:
 	_ad_view.show()
 	#$DebugLabel.text = $DebugLabel.text + " aft load"
 	
-func destroy_ad_view(): 
-	_ad_view.destroy()
-	_ad_view = null
+func destroy_ad_view():
+	if _ad_view:  
+		_ad_view.destroy()
+		_ad_view = null
 		
 func _process(_delta):
 	pass
@@ -302,7 +304,7 @@ func updateScore(currentCharacter):
 			hiScore = int(savedData["highBunnyScore"])
 		4: 
 			hiScore = int(savedData["highPigScore"])
-	$AnimalHiScore.text = "Animal HighScore: " + str(hiScore)
+	$AnimalHiScore.text = "Animal Highscore: " + str(hiScore)
 	
 func changeBackground(currentCharacter): 
 	match currentCharacter: 
