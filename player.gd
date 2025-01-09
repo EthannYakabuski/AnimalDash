@@ -62,9 +62,34 @@ func createCharacterFrames(character_name):
 	animatedSprite.scale.y = 0.5
 	animatedSprite.connect("animation_finished", on_player_sprite_animation_finished)
 	animatedSprite.connect("animation_looped", on_player_sprite_animation_looped)
+	match character_name: 
+		"snowTiger": 
+			var collisionPolygonsInstance = preload("res://TigerSpriteCollision.tscn").instantiate()
+			collisionPolygonsInstance.scale.x = 0.55
+			collisionPolygonsInstance.scale.y = 0.55
+			$CollisionPolygons.polygon = collisionPolygonsInstance.polygon
+		"panda": 
+			var collisionPolygonsInstance = preload("res://PandaSpriteCollision.tscn").instantiate()
+			collisionPolygonsInstance.scale.x = 0.55
+			collisionPolygonsInstance.scale.y = 0.55
+			$CollisionPolygons.polygon = collisionPolygonsInstance.polygon
+		"bear": 
+			var collisionPolygonsInstance = preload("res://BearSpriteCollision.tscn").instantiate()
+			collisionPolygonsInstance.scale.x = 0.55
+			collisionPolygonsInstance.scale.y = 0.55
+			$CollisionPolygons.polygon = collisionPolygonsInstance.polygon
+		"bunny": 
+			var collisionPolygonsInstance = preload("res://BunnySpriteCollision.tscn").instantiate()
+			collisionPolygonsInstance.scale.x = 0.55
+			collisionPolygonsInstance.scale.y = 0.55
+			$CollisionPolygons.polygon = collisionPolygonsInstance.polygon
+		"pig": 
+			var collisionPolygonsInstance = preload("res://PigSpriteCollision.tscn").instantiate()
+			collisionPolygonsInstance.scale.x = 0.55
+			collisionPolygonsInstance.scale.y = 0.55
+			$CollisionPolygons.polygon = collisionPolygonsInstance.polygon
 	return animatedSprite
 	
-
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta):
 	var velocity
@@ -88,7 +113,8 @@ func _process(delta):
 	
 	if (Input.is_action_just_pressed("jump") && jumped < 2 || isJumping):
 		velocity = Vector2.ZERO
-		velocity.y -= 400
+		#velocity.y -= 400
+		velocity.y -= 300
 		energy = energy - 2.5
 		#velocity = velocity.normalized() * speed
 		previousVelocity = velocity

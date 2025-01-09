@@ -69,6 +69,7 @@ func _ready():
 					updateCoins(currentPlayerCoins)
 					updateCharacter()
 					updateHiScore()
+					redoMainMenu()
 					unauthenticatedUser = false
 					if waitingForMainMenuReload: 
 						waitingForMainMenuReload = false
@@ -131,9 +132,13 @@ func _ready():
 		
 	updateCharacter()
 	menuMusic = $MenuMusic
-	#redoMainMenu() 
-	if soundOn: 
-		menuMusic.play()
+	
+	
+	#redoMainMenu()
+	
+	#not needed here anymore now that redoMainMenu is called after loading screen on app launch 
+	#if soundOn: 
+		#menuMusic.play()
 	if not GodotPlayGameServices.android_plugin: 
 		print("play game services not found")
 		#$TitleText.text = $TitleText.text + "Play game services not found"
@@ -155,6 +160,12 @@ func _ready():
 		MobileAds.set_request_configuration(request_configuration)
 		#_create_ad_view()
 		#check_initialization_status()
+		
+	#skips loading screen for godot emulated device for testing purposes
+	if GodotPlayGameServices.android_plugin: 
+		clearScreen(true)
+		createPauseScreen()
+	
 func updateLastScore(): 
 	$LastScore.text = "Last score: " + str(LastScore.getLastScore())
 			
@@ -208,32 +219,9 @@ func _on_button_pressed():
 	$MenuMusic.stop()
 	if soundOn: 
 		$DashClick.play()
-	$CharacterImage.visible = false
-	$StartGame.visible = false
-	$LeftButton.visible = false
-	$RightButton.visible = false
-	$GoogleSignIn.visible = false
-	$TitleText.visible = false
-	$Achievements.visible = false
-	$SoundToggle.visible = false
-	$CoinLabelSprite.visible = false
-	$CoinsLabel.visible = false
-	$LockIcon.visible = false
-	$UnlockButton.visible = false
-	$BackgroundImage.visible = false
-	$HiScore.visible = false
-	$AnimalHiScore.visible = false
-	$LastScore.visible = false
-	$WatchAd.visible = false
+	clearScreen(false)
 	destroy_ad_view()
-	#remove_child($CharacterImage)
-	#remove_child($StartGame)
-	#remove_child($LeftButton)
-	#remove_child($RightButton)
 	var game = game_scene.instantiate()
-	#get_tree().current_scene.queue_free()
-	#get_tree().root.add_child(game)
-	#get_tree().current_scene = game
 	add_child(game)
 	var characterName = characters[currentCharacter].replace("res://images/","").replace("_stand.png","").replace("_stand_base.png","")
 	game.call("_on_sound_toggled", soundOn)
@@ -256,6 +244,28 @@ func _on_game_finished():
 	createPauseScreen()
 	SnapshotsClient.load_game("playerData")
 	print("on game finished")
+
+func clearScreen(googleVisible): 
+	$CharacterImage.visible = false
+	$StartGame.visible = false
+	$LeftButton.visible = false
+	$RightButton.visible = false
+	if googleVisible:
+		$GoogleSignIn.visible = true
+	else: 
+		$GoogleSignIn.visible = false
+	$TitleText.visible = false
+	$Achievements.visible = false
+	$SoundToggle.visible = false
+	$CoinLabelSprite.visible = false
+	$CoinsLabel.visible = false
+	$LockIcon.visible = false
+	$UnlockButton.visible = false
+	$BackgroundImage.visible = false
+	$HiScore.visible = false
+	$AnimalHiScore.visible = false
+	$LastScore.visible = false
+	$WatchAd.visible = false
 
 func createPauseScreen(): 
 	waitingForMainMenuReload = true
@@ -350,7 +360,9 @@ func checkCharacterUnlock(currentCharacter):
 	if isCharacterUnlocked == false: 
 		$LockIcon.visible = true
 		$UnlockButton.visible = true
-		$StartGame.visible = false
+		#toggles off for local emulated testing on godot
+		if GodotPlayGameServices.android_plugin: 
+			$StartGame.visible = false
 	else: 
 		$LockIcon.visible = false
 		$UnlockButton.visible = false
