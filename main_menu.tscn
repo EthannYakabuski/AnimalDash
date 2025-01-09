@@ -129,11 +129,18 @@ offset_right = 712.0
 offset_bottom = 50.0
 text = "Google"
 
+[node name="LeaderboardButton" type="Button" parent="."]
+offset_left = 594.0
+offset_top = 108.0
+offset_right = 711.0
+offset_bottom = 150.0
+text = "Leaderboards"
+
 [node name="Achievements" type="Button" parent="."]
-offset_left = 595.0
-offset_top = 59.0
-offset_right = 712.0
-offset_bottom = 101.0
+offset_left = 594.0
+offset_top = 58.0
+offset_right = 711.0
+offset_bottom = 100.0
 text = "Achievements"
 
 [node name="SoundToggle" type="TextureButton" parent="."]
@@ -240,6 +247,7 @@ text = "Watch Ad
 [connection signal="pressed" from="LeftButton" to="." method="_on_left_button_pressed"]
 [connection signal="pressed" from="RightButton" to="." method="_on_right_button_pressed"]
 [connection signal="pressed" from="GoogleSignIn" to="." method="_on_google_sign_in_pressed"]
+[connection signal="pressed" from="LeaderboardButton" to="." method="_on_leaderboard_button_pressed"]
 [connection signal="pressed" from="Achievements" to="." method="_on_achievements_pressed"]
 [connection signal="pressed" from="SoundToggle" to="." method="_on_sound_toggle_pressed"]
 [connection signal="finished" from="MenuMusic" to="." method="_on_menu_music_finished"]

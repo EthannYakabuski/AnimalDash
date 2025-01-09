@@ -250,6 +250,7 @@ func clearScreen(googleVisible):
 	$StartGame.visible = false
 	$LeftButton.visible = false
 	$RightButton.visible = false
+	$LeaderboardButton.visible = false
 	if googleVisible:
 		$GoogleSignIn.visible = true
 	else: 
@@ -277,7 +278,7 @@ func redoMainMenu():
 	print("recreating main menu")
 	if soundOn: 
 		$MenuMusic.play()
-	var menuElements = [$CharacterImage, $StartGame, $LeftButton, $RightButton, $GoogleSignIn, $TitleText, $Achievements, $SoundToggle, $CoinLabelSprite, $BackgroundImage, $HiScore, $AnimalHiScore, $LastScore, $WatchAd]
+	var menuElements = [$CharacterImage, $StartGame, $LeftButton, $RightButton, $GoogleSignIn, $TitleText, $Achievements, $SoundToggle, $CoinLabelSprite, $BackgroundImage, $HiScore, $AnimalHiScore, $LastScore, $WatchAd, $LeaderboardButton]
 	for element in menuElements: 
 		print("making element visible")
 		element.visible = true
@@ -501,3 +502,5 @@ func on_user_earned_reward(rewarded_item : RewardedItem):
 	SnapshotsClient.save_game("playerData", "player data for Animal Dash", jsonSaveData.to_utf8_buffer())
 		
 		
+func _on_leaderboard_button_pressed() -> void:
+	LeaderboardsClient.show_all_leaderboards()
