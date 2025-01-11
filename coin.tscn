@@ -29,6 +29,7 @@ position = Vector2(360.5, 239.5)
 scale = Vector2(35.85, 23.95)
 
 [node name="CoinCollision" type="CollisionPolygon2D" parent="."]
+position = Vector2(1, 1)
 polygon = PackedVector2Array(743, 114, 740, 138, 750, 157, 768, 165, 786, 164, 802, 153, 811, 133, 804, 109, 787, 97, 768, 95, 749, 103)
 
 [connection signal="body_entered" from="." to="." method="_on_body_entered"]

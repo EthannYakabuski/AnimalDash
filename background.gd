@@ -403,13 +403,15 @@ func _on_coin_timer_timeout():
 	print("coin spawned")
 	var coin = coin_scene.instantiate()
 	coin.add_to_group("Coin")
-	var rando = randf_range(40,200)
-	coin.get_node("CoinSprite").position.y = rando
-	#coin.get_node("CoinCollision").position.y = rando
+	var rando = randf_range(-20,40)
+	coin.position.y = rando
+	#var collisionPosition = coin.get_node("CoinCollision").position.y
+	#var newCollisionPosition = collisionPosition - rando
+	#coin.get_node("CoinCollision").position.y = newCollisionPosition
 	coinArray.push_back(coin)
 	
 	var coin_loc = $CoinPath/CoinPathFollow
-	coin_loc.progress_ratio = randf()
+	#coin_loc.progress_ratio = randf()
 	
 	var velocity = Vector2(-350, 0.0)
 	var direction = 2*PI
@@ -515,8 +517,8 @@ func _on_food_timer_timeout():
 	print("food spawned")	
 	food.add_to_group("Food"); 
 	var rando = randf_range(40,200)
-	food.get_node("FoodSprite").position.y = rando
-	food.get_node("FoodCollision").position.y = rando
+	food.position.y = rando
+	#food.get_node("FoodCollision").position.y = rando
 	foodArray.push_back(food);
 	
 	var food_loc = $Foodpath/FoodPathFollow

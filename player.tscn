@@ -7,6 +7,6 @@ script = ExtResource("1_3vx8m")
 metadata/_edit_group_ = true
 
 [node name="CollisionPolygons" type="CollisionPolygon2D" parent="."]
-scale = Vector2(0.55, 0.55)
+scale = Vector2(0.5, 0.5)
 
 [connection signal="body_entered" from="." to="." method="_on_body_entered"]

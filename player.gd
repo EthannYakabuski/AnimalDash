@@ -92,6 +92,7 @@ func createCharacterFrames(character_name):
 	
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta):
+	#print(delta)
 	var velocity
 	gravity = 50000
 	if previousVelocity: 
