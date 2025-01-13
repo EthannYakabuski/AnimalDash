@@ -498,6 +498,7 @@ func on_user_earned_reward(rewarded_item : RewardedItem):
 	AchievementsClient.unlock_achievement("CgkIuuKhlf8BEAIQGg")
 	var newCoins = int(savedData["coins"]) + 25
 	var newTotalCoins = int(savedData["totalCoins"]) + 25
+	LeaderboardsClient.submit_score("CgkIuuKhlf8BEAIQFw", newTotalCoins)
 	var saveData = {"coins": newCoins, "playerUnlocks": savedData["playerUnlocks"], "highDistanceScore": int(savedData["highDistanceScore"]), "highTigerScore": int(savedData["highTigerScore"]), "highPandaScore": int(savedData["highPandaScore"]), "highBearScore": int(savedData["highBearScore"]), "highBunnyScore": int(savedData["highBunnyScore"]), "highPigScore": int(savedData["highPigScore"]), "totalDistance": int(savedData["totalDistance"]), "totalCoins": newTotalCoins}
 	var jsonSaveData = JSON.stringify(saveData)
 	savedData = saveData
