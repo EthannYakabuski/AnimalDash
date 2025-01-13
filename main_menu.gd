@@ -14,6 +14,7 @@ var savedData = ""
 var unauthenticatedUser = true
 var skipUpdateCharacter = false
 var updatingAlphaUserData = false
+var updatingBrandNewPlayerData = false
 var updatingUserCoinDataAfterRewardedAd = false
 
 var onLoadingScreen = false
@@ -45,6 +46,7 @@ func _ready():
 				var jsonSaveData = JSON.stringify(saveData)
 				var parsedData = JSON.parse_string(jsonSaveData)
 				savedData = parsedData
+				updatingBrandNewPlayerData = true
 				SnapshotsClient.save_game("playerData", "player data for Animal Dash", jsonSaveData.to_utf8_buffer())
 				#$DebugLabel.text = $DebugLabel.text + "here1"
 			else: 
@@ -52,6 +54,7 @@ func _ready():
 				var parsedData = JSON.parse_string(currentData)
 				savedData = parsedData
 				updatingAlphaUserData = false
+				updatingBrandNewPlayerData = false
 				var currentPlayerCoins = parsedData["coins"]
 				if currentPlayerCoins == null: 
 					print("error on player coins")
@@ -91,9 +94,10 @@ func _ready():
 	)
 	SnapshotsClient.game_saved.connect(
 		func(is_saved: bool, save_data_name: String, save_data_description: String):
-			if updatingAlphaUserData: 
+			if updatingAlphaUserData or updatingBrandNewPlayerData: 
 				SnapshotsClient.load_game("playerData", false); 
 				updatingAlphaUserData = false
+				updatingBrandNewPlayerData = false
 			if is_saved:
 				if !skipUpdateCharacter:
 					updateCharacter()
