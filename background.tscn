@@ -47,9 +47,9 @@ base_font = SubResource("SystemFont_34dpl")
 
 [sub_resource type="LabelSettings" id="LabelSettings_irf5v"]
 font = SubResource("FontVariation_6n8k2")
-font_size = 30
+font_size = 35
 font_color = Color(0.901961, 0.431373, 0.839216, 1)
-outline_size = 3
+outline_size = 7
 outline_color = Color(0.0196078, 0.0196078, 0.0196078, 1)
 shadow_size = 5
 

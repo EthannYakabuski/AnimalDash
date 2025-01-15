@@ -1,15 +1,12 @@
-[gd_scene load_steps=3 format=3 uid="uid://h0fryho40mr0"]
+[gd_scene load_steps=2 format=3 uid="uid://h0fryho40mr0"]
 
 [ext_resource type="Script" path="res://player.gd" id="1_3vx8m"]
-
-[sub_resource type="CircleShape2D" id="CircleShape2D_sx04a"]
-radius = 59.0085
 
 [node name="Player" type="Area2D"]
 script = ExtResource("1_3vx8m")
 metadata/_edit_group_ = true
 
-[node name="PlayerHitBox" type="CollisionShape2D" parent="."]
-shape = SubResource("CircleShape2D_sx04a")
+[node name="CollisionPolygons" type="CollisionPolygon2D" parent="."]
+scale = Vector2(0.5, 0.5)
 
 [connection signal="body_entered" from="." to="." method="_on_body_entered"]

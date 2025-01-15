@@ -1,4 +1,4 @@
-[gd_scene load_steps=15 format=3 uid="uid://bou780e4w75un"]
+[gd_scene load_steps=24 format=3 uid="uid://bou780e4w75un"]
 
 [ext_resource type="Script" path="res://main_menu.gd" id="1_ao6ml"]
 [ext_resource type="PackedScene" uid="uid://checsqe14agle" path="res://background.tscn" id="2_32us4"]
@@ -14,6 +14,50 @@
 [ext_resource type="AudioStream" uid="uid://0wic0hpgjtph" path="res://sounds/leftClick.wav" id="10_krk4e"]
 [ext_resource type="AudioStream" uid="uid://b64m35wtl0sji" path="res://sounds/dash.wav" id="11_8aal4"]
 [ext_resource type="Texture2D" uid="uid://dqibi56mi8pgb" path="res://images/Coingood.png" id="12_ihqi1"]
+[ext_resource type="Script" path="res://ad_banner.gd" id="15_2o17a"]
+[ext_resource type="Texture2D" uid="uid://dxpiwwvp2iy4r" path="res://images/snowTiger_stand.png" id="16_wnna2"]
+[ext_resource type="Texture2D" uid="uid://cuy7p7d5qx4qh" path="res://images/snowTiger_jump_one.png" id="17_3kmqt"]
+
+[sub_resource type="LabelSettings" id="LabelSettings_n4dvs"]
+font_size = 28
+font_color = Color(0, 0, 0, 1)
+
+[sub_resource type="LabelSettings" id="LabelSettings_ai23m"]
+font_size = 23
+font_color = Color(0.901961, 0.431373, 0.839216, 1)
+outline_size = 7
+outline_color = Color(0, 0, 0, 1)
+shadow_size = 7
+
+[sub_resource type="LabelSettings" id="LabelSettings_smo6i"]
+font_size = 23
+font_color = Color(0.901961, 0.431373, 0.839216, 1)
+outline_size = 7
+outline_color = Color(0, 0, 0, 1)
+
+[sub_resource type="LabelSettings" id="LabelSettings_dygsd"]
+font_size = 23
+font_color = Color(0.901961, 0.431373, 0.839216, 1)
+outline_size = 7
+outline_color = Color(0, 0, 0, 1)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_apnuh"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("16_wnna2")
+}, {
+"duration": 1.0,
+"texture": ExtResource("17_3kmqt")
+}],
+"loop": true,
+"name": &"Loading",
+"speed": 5.0
+}]
+
+[sub_resource type="LabelSettings" id="LabelSettings_0se23"]
+font_size = 61
+font_color = Color(0, 0, 0, 1)
 
 [node name="MainMenu" type="Node"]
 script = ExtResource("1_ao6ml")
@@ -48,10 +92,10 @@ offset_bottom = 443.0
 text = "Unlock: 300"
 
 [node name="StartGame" type="Button" parent="."]
-offset_left = 292.0
-offset_top = 384.0
-offset_right = 440.0
-offset_bottom = 444.0
+offset_left = 290.0
+offset_top = 351.0
+offset_right = 438.0
+offset_bottom = 411.0
 text = "Dash"
 
 [node name="LeftButton" type="TextureButton" parent="."]
@@ -85,11 +129,18 @@ offset_right = 712.0
 offset_bottom = 50.0
 text = "Google"
 
+[node name="LeaderboardButton" type="Button" parent="."]
+offset_left = 594.0
+offset_top = 108.0
+offset_right = 711.0
+offset_bottom = 150.0
+text = "Leaderboards"
+
 [node name="Achievements" type="Button" parent="."]
-offset_left = 595.0
-offset_top = 59.0
-offset_right = 712.0
-offset_bottom = 101.0
+offset_left = 594.0
+offset_top = 58.0
+offset_right = 711.0
+offset_bottom = 100.0
 text = "Achievements"
 
 [node name="SoundToggle" type="TextureButton" parent="."]
@@ -118,13 +169,14 @@ stream = ExtResource("10_krk4e")
 stream = ExtResource("11_8aal4")
 
 [node name="CoinsLabel" type="Label" parent="."]
-offset_left = 331.0
-offset_top = 17.0
-offset_right = 418.0
-offset_bottom = 50.0
+offset_left = 351.0
+offset_top = 12.0
+offset_right = 438.0
+offset_bottom = 59.0
 theme_override_colors/font_color = Color(0, 0, 0, 1)
 theme_override_font_sizes/font_size = 25
 text = "0"
+label_settings = SubResource("LabelSettings_n4dvs")
 horizontal_alignment = 1
 vertical_alignment = 1
 
@@ -135,15 +187,68 @@ texture = ExtResource("12_ihqi1")
 
 [node name="DebugLabel" type="Label" parent="."]
 offset_left = 12.0
-offset_top = 452.0
+offset_top = 413.0
 offset_right = 712.0
 offset_bottom = 475.0
+
+[node name="AdBanner" type="Node2D" parent="."]
+script = ExtResource("15_2o17a")
+
+[node name="HiScore" type="Label" parent="."]
+offset_left = 15.0
+offset_top = 59.0
+offset_right = 206.0
+offset_bottom = 93.0
+text = "Highscore:"
+label_settings = SubResource("LabelSettings_ai23m")
+
+[node name="AnimalHiScore" type="Label" parent="."]
+offset_left = 14.0
+offset_top = 98.0
+offset_right = 165.0
+offset_bottom = 133.0
+text = "Animal Highscore:"
+label_settings = SubResource("LabelSettings_smo6i")
+
+[node name="LastScore" type="Label" parent="."]
+offset_left = 15.0
+offset_top = 136.0
+offset_right = 156.0
+offset_bottom = 171.0
+text = "Last score: "
+label_settings = SubResource("LabelSettings_dygsd")
+
+[node name="LoadingAnimation" type="AnimatedSprite2D" parent="."]
+visible = false
+position = Vector2(352, 235)
+scale = Vector2(0.7, 0.7)
+sprite_frames = SubResource("SpriteFrames_apnuh")
+animation = &"Loading"
+
+[node name="LoadingLabel" type="Label" parent="."]
+visible = false
+offset_left = 206.0
+offset_top = 373.0
+offset_right = 533.0
+offset_bottom = 477.0
+text = "LOADING..."
+label_settings = SubResource("LabelSettings_0se23")
+
+[node name="WatchAd" type="Button" parent="."]
+offset_left = 11.0
+offset_top = 411.0
+offset_right = 166.0
+offset_bottom = 472.0
+text = "Watch Ad
+25 coins"
 
 [connection signal="pressed" from="UnlockButton" to="." method="_on_unlock_button_pressed"]
 [connection signal="pressed" from="StartGame" to="." method="_on_button_pressed"]
 [connection signal="pressed" from="LeftButton" to="." method="_on_left_button_pressed"]
 [connection signal="pressed" from="RightButton" to="." method="_on_right_button_pressed"]
 [connection signal="pressed" from="GoogleSignIn" to="." method="_on_google_sign_in_pressed"]
+[connection signal="pressed" from="LeaderboardButton" to="." method="_on_leaderboard_button_pressed"]
 [connection signal="pressed" from="Achievements" to="." method="_on_achievements_pressed"]
 [connection signal="pressed" from="SoundToggle" to="." method="_on_sound_toggle_pressed"]
 [connection signal="finished" from="MenuMusic" to="." method="_on_menu_music_finished"]
+[connection signal="pressed" from="WatchAd" to="." method="_on_watch_ad_pressed"]

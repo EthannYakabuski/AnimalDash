@@ -30,6 +30,7 @@ scale = Vector2(37.2, 25)
 
 [node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="."]
 position = Vector2(789, 448)
+scale = Vector2(0.8, 0.8)
 polygon = PackedVector2Array(0, -41, 46, 18, -46, 18)
 
 [connection signal="body_entered" from="." to="." method="_on_body_entered"]

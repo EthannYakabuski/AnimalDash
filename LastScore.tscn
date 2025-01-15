@@ -1,0 +1,6 @@
+[gd_scene load_steps=2 format=3 uid="uid://bcskiqnmutk4l"]
+
+[ext_resource type="Script" path="res://LastScore.gd" id="1_jhaa5"]
+
+[node name="Node" type="Node"]
+script = ExtResource("1_jhaa5")

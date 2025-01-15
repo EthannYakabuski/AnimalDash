@@ -27,6 +27,8 @@ var sound_doubleJump
 var sound_hit
 var sound_land
 
+var newTotalCoins
+
 var lastFlashFrame
 var isFlashing = false
 
@@ -35,6 +37,8 @@ var isInAir = false
 var isDoubleJumping = false
 
 var isFamished = false
+var savingCoinData = false
+var savingGameOverData = false
 
 var currentCharacterString = ""
 
@@ -58,8 +62,11 @@ var spike_patterns = [
 var spikePointer = 0
 var currentPattern = 0
 var resolveSpikePattern = false
-var gamePaused = false
+@export var gamePaused = false
 var savedData
+
+var currentAnimalHighScore
+var totalHighScore
 
 var soundOn = true
 
@@ -75,16 +82,70 @@ func new_game():
 
 	$StartTimer.start()
 
-func setCurrentData(currData): 
+#called from main_menu before game launch
+func setCurrentData(currData):
+	if currData: 
 		savedData = currData
+		match currentCharacterString: 
+			"snowTiger": 
+				currentAnimalHighScore = int(savedData["highTigerScore"])
+			"panda": 
+				currentAnimalHighScore = int(savedData["highPandaScore"])
+			"bear": 
+				currentAnimalHighScore = int(savedData["highBearScore"])
+			"bunny": 
+				currentAnimalHighScore = int(savedData["highBunnyScore"])
+			"pig": 
+				currentAnimalHighScore = int(savedData["highPigScore"])
+		totalHighScore = int(savedData["highDistanceScore"])
+		newTotalCoins = int(savedData["totalCoins"])
 
-func game_over(coinsToAdd):
+func game_over(coinsToAdd): 
+	var updateHighScore = false
+	var updateTotalScore = false
+	if points > currentAnimalHighScore: 
+		updateHighScore = true
+	if points > totalHighScore: 
+		updateTotalScore = true
+		
+	if updateHighScore and updateTotalScore: 
+		addNewHighScoreToSavedData(true, true)
+	elif updateHighScore:
+		addNewHighScoreToSavedData(true, false)
+	elif not updateHighScore and not updateTotalScore: 
+		addNewHighScoreToSavedData(false, false)
+		
+	var newTotalDistance = int(savedData["totalDistance"]) + points
+	#submits added score to new total distance leaderboard
+	LeaderboardsClient.submit_score("CgkIuuKhlf8BEAIQGA", newTotalDistance)
+	
+	#unlocks marathon achievement
+	if newTotalDistance >= 10000: 
+		AchievementsClient.unlock_achievement("CgkIuuKhlf8BEAIQGQ")
+	
+	#if gathered at least one coin this game, submit score to totalCoin leaderboard
+	if newTotalCoins and newTotalCoins > 0: 
+		LeaderboardsClient.submit_score("CgkIuuKhlf8BEAIQFw", newTotalCoins)
+	
 	if LeaderboardsClient: 
+		match currentCharacterString: 
+			"snowTiger": 
+				LeaderboardsClient.submit_score("CgkIuuKhlf8BEAIQFg", int(points))
+			"panda": 
+				LeaderboardsClient.submit_score("CgkIuuKhlf8BEAIQEg", int(points))
+			"bear": 
+				LeaderboardsClient.submit_score("CgkIuuKhlf8BEAIQEw", int(points))
+			"bunny": 
+				LeaderboardsClient.submit_score("CgkIuuKhlf8BEAIQFA", int(points))
+			"pig": 
+				LeaderboardsClient.submit_score("CgkIuuKhlf8BEAIQFQ", int(points))
+				
 		LeaderboardsClient.submit_score("CgkIuuKhlf8BEAIQAg", int(points))
 		LeaderboardsClient.submit_score("CgkIuuKhlf8BEAIQCQ", int(coinsCollected)) 
 	$SpikeTimer.stop()
 	$CoinTimer.stop()
 	$FoodTimer.stop()
+	LastScore.setLastScore(points)
 	for child in get_children():
 		if child is Timer:
 			print("nothing")
@@ -93,8 +154,47 @@ func game_over(coinsToAdd):
 		else: 
 			child.queue_free()
 	gamePaused = true
-	emit_signal("gameOver")
-	
+
+func setPaused(value): 
+	gamePaused = value
+
+func addNewHighScoreToSavedData(animalScore, totalScore): 
+	if GodotPlayGameServices.android_plugin: 
+		var saveData
+		var newTotalDistance = int(savedData["totalDistance"]) + points
+		if not animalScore and not totalScore:
+			saveData = {"coins": int(savedData["coins"]), "playerUnlocks": savedData["playerUnlocks"], "highDistanceScore": int(savedData["highDistanceScore"]), "highTigerScore": int(savedData["highTigerScore"]), "highPandaScore": int(savedData["highPandaScore"]), "highBearScore": int(savedData["highBearScore"]), "highBunnyScore": int(savedData["highBunnyScore"]), "highPigScore": int(savedData["highPigScore"]), "totalDistance": newTotalDistance, "totalCoins": int(savedData["totalCoins"])}
+		else: 
+			match currentCharacterString: 
+				"snowTiger": 
+					if totalScore: 
+						saveData = {"coins": int(savedData["coins"]), "playerUnlocks": savedData["playerUnlocks"], "highDistanceScore": points, "highTigerScore": points, "highPandaScore": int(savedData["highPandaScore"]), "highBearScore": int(savedData["highBearScore"]), "highBunnyScore": int(savedData["highBunnyScore"]), "highPigScore": int(savedData["highPigScore"]), "totalDistance": newTotalDistance, "totalCoins": int(savedData["totalCoins"])}
+					else: 
+						saveData = {"coins": int(savedData["coins"]), "playerUnlocks": savedData["playerUnlocks"], "highDistanceScore": int(savedData["highDistanceScore"]), "highTigerScore": points, "highPandaScore": int(savedData["highPandaScore"]), "highBearScore": int(savedData["highBearScore"]), "highBunnyScore": int(savedData["highBunnyScore"]), "highPigScore": int(savedData["highPigScore"]), "totalDistance": newTotalDistance, "totalCoins": int(savedData["totalCoins"])}
+				"panda": 
+					if totalScore: 
+						saveData = {"coins": int(savedData["coins"]), "playerUnlocks": savedData["playerUnlocks"], "highDistanceScore": points, "highTigerScore": int(savedData["highTigerScore"]), "highPandaScore": points, "highBearScore": int(savedData["highBearScore"]), "highBunnyScore": int(savedData["highBunnyScore"]), "highPigScore": int(savedData["highPigScore"]), "totalDistance": newTotalDistance, "totalCoins": int(savedData["totalCoins"])}					
+					else: 
+						saveData = {"coins": int(savedData["coins"]), "playerUnlocks": savedData["playerUnlocks"], "highDistanceScore": int(savedData["highDistanceScore"]), "highTigerScore": int(savedData["highTigerScore"]), "highPandaScore": points, "highBearScore": int(savedData["highBearScore"]), "highBunnyScore": int(savedData["highBunnyScore"]), "highPigScore": int(savedData["highPigScore"]), "totalDistance": newTotalDistance, "totalCoins": int(savedData["totalCoins"])}
+				"bear": 
+					if totalScore: 
+						saveData = {"coins": int(savedData["coins"]), "playerUnlocks": savedData["playerUnlocks"], "highDistanceScore": points, "highTigerScore": int(savedData["highTigerScore"]), "highPandaScore": int(savedData["highPandaScore"]), "highBearScore": points, "highBunnyScore": int(savedData["highBunnyScore"]), "highPigScore": int(savedData["highPigScore"]), "totalDistance": newTotalDistance, "totalCoins": int(savedData["totalCoins"])}					
+					else: 
+						saveData = {"coins": int(savedData["coins"]), "playerUnlocks": savedData["playerUnlocks"], "highDistanceScore": int(savedData["highDistanceScore"]), "highTigerScore": int(savedData["highTigerScore"]), "highPandaScore": int(savedData["highPandaScore"]), "highBearScore": points, "highBunnyScore": int(savedData["highBunnyScore"]), "highPigScore": int(savedData["highPigScore"]), "totalDistance": newTotalDistance, "totalCoins": int(savedData["totalCoins"])}
+				"bunny":
+					if totalScore: 
+						saveData = {"coins": int(savedData["coins"]), "playerUnlocks": savedData["playerUnlocks"], "highDistanceScore": points, "highTigerScore": int(savedData["highTigerScore"]), "highPandaScore": int(savedData["highPandaScore"]), "highBearScore": int(savedData["highBearScore"]), "highBunnyScore": points, "highPigScore": int(savedData["highPigScore"]), "totalDistance": newTotalDistance, "totalCoins": int(savedData["totalCoins"])}					
+					else: 
+						saveData = {"coins": int(savedData["coins"]), "playerUnlocks": savedData["playerUnlocks"], "highDistanceScore": int(savedData["highDistanceScore"]), "highTigerScore": int(savedData["highTigerScore"]), "highPandaScore": int(savedData["highPandaScore"]), "highBearScore": int(savedData["highBearScore"]), "highBunnyScore": points, "highPigScore": int(savedData["highPigScore"]), "totalDistance": newTotalDistance, "totalCoins": int(savedData["totalCoins"])}
+				"pig": 
+					if totalScore: 
+						saveData = {"coins": int(savedData["coins"]), "playerUnlocks": savedData["playerUnlocks"], "highDistanceScore": points, "highTigerScore": int(savedData["highTigerScore"]), "highPandaScore": int(savedData["highPandaScore"]), "highBearScore": int(savedData["highBearScore"]), "highBunnyScore": int(savedData["highBunnyScore"]), "highPigScore": points, "totalDistance": newTotalDistance, "totalCoins": int(savedData["totalCoins"])}				
+					else: 
+						saveData = {"coins": int(savedData["coins"]), "playerUnlocks": savedData["playerUnlocks"], "highDistanceScore": int(savedData["highDistanceScore"]), "highTigerScore": int(savedData["highTigerScore"]), "highPandaScore": int(savedData["highPandaScore"]), "highBearScore": int(savedData["highBearScore"]), "highBunnyScore": int(savedData["highBunnyScore"]), "highPigScore": points, "totalDistance": newTotalDistance, "totalCoins": int(savedData["totalCoins"])}
+		var jsonSaveData = JSON.stringify(saveData)
+		savedData = saveData
+		savingGameOverData = true
+		SnapshotsClient.save_game("playerData", "player data for Animal Dash", jsonSaveData.to_utf8_buffer())
 # Called when the node enters the scene tree for the first time.
 func _ready():
 	$Score.text = str(0)
@@ -107,6 +207,7 @@ func _ready():
 	$Player.connect("land", _on_land)
 	#self.connect("foodcoincollision", _on_foodcoincollision)
 	self.connect("characterSelect", _on_characterSelect)
+	gamePaused = false
 	LeaderboardsClient.score_submitted.connect(
 		func refresh_score(is_submitted: bool, leaderboard_id: String):
 			pass
@@ -119,6 +220,17 @@ func _ready():
 			else: 
 				pass
 				#$DebugText.text = $DebugText.text + " unable to save game"
+			if savingCoinData and not savingGameOverData: 
+				savingCoinData = false
+			elif not savingCoinData and savingGameOverData:
+				savingGameOverData = false 
+				emit_signal("gameOver")
+			elif savingCoinData and savingGameOverData:
+				print("player has immediately died after collecting a coin")
+				#callback to savingGameOverData will always be called after callback to savingCoinData
+				#which means savingCoinData should typically always finish before savingGameOverData
+				savingCoinData = false
+				#setting savingCoinData to false in this statement, should result in gameOver signal being emitted when savingGameOverData callback is reached
 	)
 	
 	sound_coinCollect = $CoinSound
@@ -291,13 +403,15 @@ func _on_coin_timer_timeout():
 	print("coin spawned")
 	var coin = coin_scene.instantiate()
 	coin.add_to_group("Coin")
-	var rando = randf_range(40,200)
-	coin.get_node("CoinSprite").position.y = rando
-	#coin.get_node("CoinCollision").position.y = rando
+	var rando = randf_range(-20,40)
+	coin.position.y = rando
+	#var collisionPosition = coin.get_node("CoinCollision").position.y
+	#var newCollisionPosition = collisionPosition - rando
+	#coin.get_node("CoinCollision").position.y = newCollisionPosition
 	coinArray.push_back(coin)
 	
 	var coin_loc = $CoinPath/CoinPathFollow
-	coin_loc.progress_ratio = randf()
+	#coin_loc.progress_ratio = randf()
 	
 	var velocity = Vector2(-350, 0.0)
 	var direction = 2*PI
@@ -328,9 +442,11 @@ func _on_collect():
 func addCoinToSavedData():
 	if GodotPlayGameServices.android_plugin: 
 		var newCoins = int(savedData["coins"]) + 1
+		newTotalCoins = int(savedData["totalCoins"]) + 1
 		var playerUnlocks = savedData["playerUnlocks"]
-		var saveData = {"coins": newCoins, "playerUnlocks": playerUnlocks}
+		var saveData = {"coins": newCoins, "playerUnlocks": playerUnlocks, "highDistanceScore": int(savedData["highDistanceScore"]), "highTigerScore": int(savedData["highTigerScore"]), "highPandaScore": int(savedData["highPandaScore"]), "highBearScore": int(savedData["highBearScore"]), "highBunnyScore": int(savedData["highBunnyScore"]), "highPigScore": int(savedData["highPigScore"]), "totalDistance": int(savedData["totalDistance"]), "totalCoins": newTotalCoins}
 		var jsonSaveData = JSON.stringify(saveData)
+		savingCoinData = true
 		savedData = saveData
 		SnapshotsClient.save_game("playerData", "player data for Animal Dash", jsonSaveData.to_utf8_buffer())
 
@@ -401,8 +517,8 @@ func _on_food_timer_timeout():
 	print("food spawned")	
 	food.add_to_group("Food"); 
 	var rando = randf_range(40,200)
-	food.get_node("FoodSprite").position.y = rando
-	food.get_node("FoodCollision").position.y = rando
+	food.position.y = rando
+	#food.get_node("FoodCollision").position.y = rando
 	foodArray.push_back(food);
 	
 	var food_loc = $Foodpath/FoodPathFollow
