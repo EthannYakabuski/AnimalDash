@@ -94,7 +94,7 @@ func createCharacterFrames(character_name):
 func _process(delta):
 	#print(delta)
 	var velocity
-	gravity = 50000
+	gravity = 35000
 	if previousVelocity: 
 		velocity = previousVelocity
 	else: 
