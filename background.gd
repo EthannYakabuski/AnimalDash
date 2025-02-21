@@ -73,7 +73,9 @@ var soundOn = true
 func new_game(): 
 	score = 0
 	$Player.position = $StartPosition.position
-	
+	if LastScore.getLastScore() == 0:
+		$JumpPrompt.animation = "Click"
+		$JumpPrompt.play()
 	#var background_layer = $Parallax_Background/parallax_lay_one
 	#var backgroundSprite = $Parallax_Background/parallax_lay_one/layone_sprite
 	
@@ -197,6 +199,7 @@ func addNewHighScoreToSavedData(animalScore, totalScore):
 		SnapshotsClient.save_game("playerData", "player data for Animal Dash", jsonSaveData.to_utf8_buffer())
 # Called when the node enters the scene tree for the first time.
 func _ready():
+	randomize()
 	$Score.text = str(0)
 	#var screen_size = get_viewport_rect().size
 	$Player.connect("hit", _on_hit)
@@ -466,6 +469,8 @@ func _on_doubleJump():
 	
 func _on_jump():
 	print("on jump in main")
+	$JumpPrompt.stop()
+	$JumpPrompt.visible = false
 	if soundOn: 
 		sound_jump.play()
 		

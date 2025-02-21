@@ -25,6 +25,8 @@ var _rewarded_ad : RewardedAd
 var _full_screen_content_callback : FullScreenContentCallback
 var on_user_earned_reward_listener := OnUserEarnedRewardListener.new()
 
+var tips = ["Tap twice to double jump", "Collect food to restore energy", "Coins give you bonus score!", "Jump conservatively to save your energy", "Keep an eye on your energy meter!"]
+
 @export var game_scene: PackedScene
 @export var menu_scene: PackedScene
 @export var achievements_scene: PackedScene
@@ -35,6 +37,7 @@ var _sign_in_retries := 1
 func _ready():
 	#var deviceId = OS.get_unique_id()
 	#$DebugLabel.text = $DebugLabel.text + deviceId
+	randomize()
 	SnapshotsClient.game_loaded.connect(
 		func(snapshot: SnapshotsClient.Snapshot):
 			updateLastScore()
@@ -73,11 +76,14 @@ func _ready():
 					updateCharacter()
 					updateHiScore()
 					redoMainMenu()
+					var tipNumber = randi() % 4
+					$MainMenuTipLabel.text = tips[tipNumber]
 					unauthenticatedUser = false
 					if waitingForMainMenuReload: 
 						waitingForMainMenuReload = false
 						$LoadingAnimation.visible = false
 						$LoadingLabel.visible = false
+						$TipLabel.visible = false
 						redoMainMenu()
 						#$CoinsLabel.text = currentPlayerCoins
 	)
@@ -271,18 +277,23 @@ func clearScreen(googleVisible):
 	$AnimalHiScore.visible = false
 	$LastScore.visible = false
 	$WatchAd.visible = false
+	$MainMenuTipLabel.visible = false
 
 func createPauseScreen(): 
 	waitingForMainMenuReload = true
 	$LoadingAnimation.visible = true
 	$LoadingAnimation.play("Loading")
 	$LoadingLabel.visible = true
+	$TipLabel.visible = true
+	var tipNumber = randi() % 4
+	$TipLabel.text = tips[tipNumber]
+	await get_tree().create_time(1.5).timeout
 	
 func redoMainMenu(): 
 	print("recreating main menu")
 	if soundOn: 
 		$MenuMusic.play()
-	var menuElements = [$CharacterImage, $StartGame, $LeftButton, $RightButton, $GoogleSignIn, $TitleText, $Achievements, $SoundToggle, $CoinLabelSprite, $BackgroundImage, $HiScore, $AnimalHiScore, $LastScore, $WatchAd, $LeaderboardButton]
+	var menuElements = [$CharacterImage, $StartGame, $LeftButton, $RightButton, $GoogleSignIn, $TitleText, $Achievements, $SoundToggle, $CoinLabelSprite, $BackgroundImage, $HiScore, $AnimalHiScore, $LastScore, $WatchAd, $LeaderboardButton, $MainMenuTipLabel]
 	for element in menuElements: 
 		print("making element visible")
 		element.visible = true
