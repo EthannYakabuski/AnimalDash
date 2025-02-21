@@ -76,6 +76,8 @@ func new_game():
 	if LastScore.getLastScore() == 0:
 		$JumpPrompt.animation = "Click"
 		$JumpPrompt.play()
+	else: 
+		$JumpPrompt.visible = false
 	#var background_layer = $Parallax_Background/parallax_lay_one
 	#var backgroundSprite = $Parallax_Background/parallax_lay_one/layone_sprite
 	

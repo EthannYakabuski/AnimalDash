@@ -253,6 +253,7 @@ offset_bottom = 206.0
 text = "Tap twice to double jump"
 label_settings = SubResource("LabelSettings_k4dd7")
 horizontal_alignment = 1
+autowrap_mode = 2
 
 [node name="LoadingLabel" type="Label" parent="."]
 visible = false
