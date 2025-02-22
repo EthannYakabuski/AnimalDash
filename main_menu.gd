@@ -208,7 +208,7 @@ func _create_ad_view() -> void:
 		#$DebugLabel.text = $DebugLabel.text + load_ad_error.message
 		
 	#$DebugLabel.text = $DebugLabel.text + " inside create"
-	var unit_id = "ca-app-pub-7719473349082950/4510102013"
+	var unit_id = "ca-app-pub-7719473349082950/5710507193"
 
 	_ad_view = AdView.new(unit_id, AdSize.BANNER, AdPosition.Values.BOTTOM_RIGHT)
 	var ad_request = AdRequest.new()
@@ -484,7 +484,7 @@ func _on_watch_ad_pressed() -> void:
 		_rewarded_ad.destroy()
 		_rewarded_ad = null
 		
-	var unit_id = "ca-app-pub-3940256099942544/5224354917"
+	var unit_id = "ca-app-pub-7719473349082950/4510102013"
 	
 	var rewarded_ad_load_callback := RewardedAdLoadCallback.new()
 	
