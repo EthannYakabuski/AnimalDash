@@ -1,4 +1,4 @@
-[gd_scene load_steps=24 format=3 uid="uid://bou780e4w75un"]
+[gd_scene load_steps=26 format=3 uid="uid://bou780e4w75un"]
 
 [ext_resource type="Script" path="res://main_menu.gd" id="1_ao6ml"]
 [ext_resource type="PackedScene" uid="uid://checsqe14agle" path="res://background.tscn" id="2_32us4"]
@@ -54,6 +54,15 @@ animations = [{
 "name": &"Loading",
 "speed": 5.0
 }]
+
+[sub_resource type="LabelSettings" id="LabelSettings_33y0p"]
+font_size = 18
+font_color = Color(0.901961, 0.431373, 0.839216, 1)
+outline_size = 7
+outline_color = Color(0, 0, 0, 1)
+
+[sub_resource type="LabelSettings" id="LabelSettings_k4dd7"]
+font_size = 37
 
 [sub_resource type="LabelSettings" id="LabelSettings_0se23"]
 font_size = 61
@@ -224,6 +233,27 @@ position = Vector2(352, 235)
 scale = Vector2(0.7, 0.7)
 sprite_frames = SubResource("SpriteFrames_apnuh")
 animation = &"Loading"
+
+[node name="MainMenuTipLabel" type="Label" parent="."]
+offset_left = 13.0
+offset_top = 317.0
+offset_right = 248.0
+offset_bottom = 376.0
+theme_override_font_sizes/font_size = 20
+label_settings = SubResource("LabelSettings_33y0p")
+autowrap_mode = 2
+
+[node name="TipLabel" type="Label" parent="."]
+visible = false
+modulate = Color(0, 0, 0, 1)
+offset_left = 2.0
+offset_top = 66.0
+offset_right = 717.0
+offset_bottom = 206.0
+text = "Tap twice to double jump"
+label_settings = SubResource("LabelSettings_k4dd7")
+horizontal_alignment = 1
+autowrap_mode = 2
 
 [node name="LoadingLabel" type="Label" parent="."]
 visible = false

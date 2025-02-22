@@ -1,4 +1,4 @@
-[gd_scene load_steps=27 format=3 uid="uid://checsqe14agle"]
+[gd_scene load_steps=31 format=3 uid="uid://checsqe14agle"]
 
 [ext_resource type="PackedScene" uid="uid://h0fryho40mr0" path="res://player.tscn" id="1_bfbfr"]
 [ext_resource type="Script" path="res://background.gd" id="1_ulvn5"]
@@ -20,6 +20,9 @@
 [ext_resource type="AudioStream" uid="uid://chpa5urjsbrq3" path="res://sounds/doublejump.wav" id="14_dkb00"]
 [ext_resource type="AudioStream" uid="uid://cjci3olbl0px7" path="res://sounds/hit.wav" id="15_mwnra"]
 [ext_resource type="AudioStream" uid="uid://dcrx8n5qk5080" path="res://sounds/baselineKickin.wav" id="16_1vhei"]
+[ext_resource type="Texture2D" uid="uid://0a40kbxcuu4c" path="res://images/finger.png" id="21_0mijy"]
+[ext_resource type="Texture2D" uid="uid://5jg8nc0asfdo" path="res://images/fingerClick.png" id="22_dyysv"]
+[ext_resource type="Texture2D" uid="uid://cg4kousollumd" path="res://images/fingerFinishClick.png" id="23_rtnsa"]
 
 [sub_resource type="Curve2D" id="Curve2D_gqxnl"]
 _data = {
@@ -52,6 +55,23 @@ font_color = Color(0.901961, 0.431373, 0.839216, 1)
 outline_size = 7
 outline_color = Color(0.0196078, 0.0196078, 0.0196078, 1)
 shadow_size = 5
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_4iatd"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("21_0mijy")
+}, {
+"duration": 1.0,
+"texture": ExtResource("22_dyysv")
+}, {
+"duration": 1.0,
+"texture": ExtResource("23_rtnsa")
+}],
+"loop": true,
+"name": &"Click",
+"speed": 5.0
+}]
 
 [node name="Background" type="Node2D"]
 script = ExtResource("1_ulvn5")
@@ -170,6 +190,15 @@ offset_top = 103.0
 offset_right = 706.0
 offset_bottom = 138.0
 theme_override_colors/font_color = Color(0, 0, 0, 1)
+
+[node name="JumpPrompt" type="AnimatedSprite2D" parent="."]
+position = Vector2(298, 117)
+scale = Vector2(0.145, 0.145)
+sprite_frames = SubResource("SpriteFrames_4iatd")
+animation = &"Click"
+frame = 2
+frame_progress = 0.0764345
+speed_scale = 0.85
 
 [connection signal="foodcoincollision" from="." to="." method="_on_foodcoincollision"]
 [connection signal="body_entered" from="Player" to="." method="_on_player_body_entered"]
