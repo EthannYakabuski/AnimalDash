@@ -265,6 +265,7 @@ text = "LOADING..."
 label_settings = SubResource("LabelSettings_0se23")
 
 [node name="WatchAd" type="Button" parent="."]
+visible = false
 offset_left = 11.0
 offset_top = 411.0
 offset_right = 166.0
