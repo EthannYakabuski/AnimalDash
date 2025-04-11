@@ -1,15 +1,18 @@
-[gd_scene load_steps=26 format=3 uid="uid://bou780e4w75un"]
+[gd_scene load_steps=29 format=3 uid="uid://bou780e4w75un"]
 
 [ext_resource type="Script" path="res://main_menu.gd" id="1_ao6ml"]
 [ext_resource type="PackedScene" uid="uid://checsqe14agle" path="res://background.tscn" id="2_32us4"]
 [ext_resource type="PackedScene" uid="uid://bdamtbrpkjtu1" path="res://achievements.tscn" id="3_ap3ca"]
+[ext_resource type="Texture2D" uid="uid://n75okfrrg1mv" path="res://images/achievements.png" id="4_joy4s"]
 [ext_resource type="Texture2D" uid="uid://crnyy3aybyxy5" path="res://images/snowTiger_backgroundClouds.png" id="4_k6d80"]
 [ext_resource type="Texture2D" uid="uid://vhp6t48hdbkn" path="res://images/lockIcon.png" id="4_soimu"]
-[ext_resource type="Texture2D" uid="uid://b416mjk6ofs8d" path="res://leftArrowFinal.png" id="4_xmicy"]
-[ext_resource type="Texture2D" uid="uid://6m4jdx7gbthh" path="res://rightArrowFinal.png" id="5_krq6j"]
+[ext_resource type="Texture2D" uid="uid://bx3ra0q88duj5" path="res://leftArrow.png" id="6_lkuxm"]
 [ext_resource type="Texture2D" uid="uid://pvkextrk6u70" path="res://images/audioOn.png" id="6_rq66x"]
 [ext_resource type="AudioStream" uid="uid://b0yp34l32s8k5" path="res://sounds/pianoMainMenu.wav" id="7_5f7ut"]
+[ext_resource type="Texture2D" uid="uid://dopglohvb2f6d" path="res://rightArrow.png" id="7_lbx3i"]
+[ext_resource type="Texture2D" uid="uid://ok8hn6oa1eb0" path="res://images/leaderboards.png" id="8_3twn4"]
 [ext_resource type="AudioStream" uid="uid://cjci3olbl0px7" path="res://sounds/hit.wav" id="8_4ytqn"]
+[ext_resource type="Texture2D" uid="uid://bdvi6v655lk3l" path="res://googleSignIn.png" id="8_ctlpq"]
 [ext_resource type="AudioStream" uid="uid://dn08ykdw0qply" path="res://sounds/rightClick.wav" id="9_5ac5k"]
 [ext_resource type="AudioStream" uid="uid://0wic0hpgjtph" path="res://sounds/leftClick.wav" id="10_krk4e"]
 [ext_resource type="AudioStream" uid="uid://b64m35wtl0sji" path="res://sounds/dash.wav" id="11_8aal4"]
@@ -108,20 +111,20 @@ offset_bottom = 411.0
 text = "Dash"
 
 [node name="LeftButton" type="TextureButton" parent="."]
-offset_left = 45.0
-offset_top = 144.0
-offset_right = 1069.0
-offset_bottom = 1168.0
+offset_left = 71.0
+offset_top = 185.0
+offset_right = 1095.0
+offset_bottom = 1209.0
 scale = Vector2(0.2, 0.2)
-texture_normal = ExtResource("4_xmicy")
+texture_normal = ExtResource("6_lkuxm")
 
 [node name="RightButton" type="TextureButton" parent="."]
-offset_left = 464.0
-offset_top = 146.0
-offset_right = 1488.0
-offset_bottom = 1170.0
+offset_left = 455.0
+offset_top = 185.0
+offset_right = 1479.0
+offset_bottom = 1209.0
 scale = Vector2(0.2, 0.2)
-texture_normal = ExtResource("5_krq6j")
+texture_normal = ExtResource("7_lbx3i")
 
 [node name="ActiveSprite" type="Sprite2D" parent="."]
 
@@ -131,32 +134,34 @@ offset_top = 400.0
 offset_right = 267.0
 offset_bottom = 423.0
 
-[node name="GoogleSignIn" type="Button" parent="."]
-offset_left = 617.0
-offset_top = 8.0
-offset_right = 712.0
-offset_bottom = 50.0
-text = "Google"
+[node name="GoogleSignIn" type="TextureButton" parent="."]
+offset_left = 663.0
+offset_top = 13.0
+offset_right = 703.0
+offset_bottom = 53.0
+texture_normal = ExtResource("8_ctlpq")
 
-[node name="LeaderboardButton" type="Button" parent="."]
-offset_left = 594.0
-offset_top = 108.0
-offset_right = 711.0
-offset_bottom = 150.0
-text = "Leaderboards"
+[node name="LeaderboardButton" type="TextureButton" parent="."]
+offset_left = 599.0
+offset_top = 5.0
+offset_right = 1623.0
+offset_bottom = 1029.0
+scale = Vector2(0.055, 0.055)
+texture_normal = ExtResource("8_3twn4")
 
-[node name="Achievements" type="Button" parent="."]
-offset_left = 594.0
-offset_top = 58.0
-offset_right = 711.0
-offset_bottom = 100.0
-text = "Achievements"
+[node name="Achievements" type="TextureButton" parent="."]
+offset_left = 543.0
+offset_top = 7.0
+offset_right = 1567.0
+offset_bottom = 1031.0
+scale = Vector2(0.055, 0.055)
+texture_normal = ExtResource("4_joy4s")
 
 [node name="SoundToggle" type="TextureButton" parent="."]
-offset_left = 12.0
-offset_top = 9.0
-offset_right = 60.0
-offset_bottom = 57.0
+offset_left = 492.0
+offset_top = 14.0
+offset_right = 534.0
+offset_bottom = 56.0
 texture_normal = ExtResource("6_rq66x")
 ignore_texture_size = true
 stretch_mode = 0
@@ -195,19 +200,19 @@ scale = Vector2(0.06, 0.06)
 texture = ExtResource("12_ihqi1")
 
 [node name="DebugLabel" type="Label" parent="."]
-offset_left = 12.0
-offset_top = 413.0
-offset_right = 712.0
-offset_bottom = 475.0
+offset_left = 11.0
+offset_top = 412.0
+offset_right = 711.0
+offset_bottom = 474.0
 
 [node name="AdBanner" type="Node2D" parent="."]
 script = ExtResource("15_2o17a")
 
 [node name="HiScore" type="Label" parent="."]
-offset_left = 15.0
-offset_top = 59.0
-offset_right = 206.0
-offset_bottom = 93.0
+offset_left = 14.0
+offset_top = 62.0
+offset_right = 205.0
+offset_bottom = 96.0
 text = "Highscore:"
 label_settings = SubResource("LabelSettings_ai23m")
 

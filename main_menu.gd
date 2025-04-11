@@ -173,7 +173,7 @@ func _ready():
 		
 	#skips loading screen for godot emulated device for testing purposes
 	if GodotPlayGameServices.android_plugin: 
-		clearScreen(true)
+		clearScreen(false)
 		createPauseScreen()
 	
 func updateLastScore(): 
@@ -293,7 +293,7 @@ func redoMainMenu():
 	print("recreating main menu")
 	if soundOn: 
 		$MenuMusic.play()
-	var menuElements = [$CharacterImage, $StartGame, $LeftButton, $RightButton, $GoogleSignIn, $TitleText, $Achievements, $SoundToggle, $CoinLabelSprite, $BackgroundImage, $HiScore, $AnimalHiScore, $LastScore, $LeaderboardButton, $MainMenuTipLabel]
+	var menuElements = [$CharacterImage, $StartGame, $LeftButton, $RightButton, $TitleText, $Achievements, $SoundToggle, $CoinLabelSprite, $BackgroundImage, $HiScore, $AnimalHiScore, $LastScore, $LeaderboardButton, $MainMenuTipLabel]
 	for element in menuElements: 
 		print("making element visible")
 		element.visible = true
@@ -434,6 +434,7 @@ func isSignedInListener(status):
 	#$TitleText.text = "logged in: " + status
 
 func _on_achievements_pressed() -> void:
+	print("loading achievements")
 	if AchievementsClient: 
 		#$TitleText.text = "Achievements client found" 
 		AchievementsClient.load_achievements(true)
@@ -509,7 +510,7 @@ func _on_watch_ad_pressed() -> void:
 		
 func on_user_earned_reward(rewarded_item : RewardedItem):
 	print("on_user_earned_reward, rewarded_item: rewarded", rewarded_item.amount, rewarded_item.type)
-	#once we are using an actual unit-id from admob, the rewarded_item.amount and rewarded_item.type values are set in the admob console
+	#once we are using an actual unit-id from admob, the $lerewarded_item.amount and rewarded_item.type values are set in the admob console
 	#for our case, we are rewarding 25 coins to the player and must save it to the user data
 	$WatchAd.visibile = false
 	#unlocks "Thank you for your support" achievement
@@ -526,4 +527,5 @@ func on_user_earned_reward(rewarded_item : RewardedItem):
 		
 		
 func _on_leaderboard_button_pressed() -> void:
+	print("loading leaderboards")
 	LeaderboardsClient.show_all_leaderboards()
