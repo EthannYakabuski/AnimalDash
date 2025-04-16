@@ -288,17 +288,25 @@ func createPauseScreen():
 	$LoadingLabel.visible = true
 	$TipLabel.visible = true
 	var tipNumber = randi() % 4
-	$TipLabel.text = tips[tipNumber]
+	#$TipLabel.text = tips[tipNumber]
 	await get_tree().create_time(1.5).timeout
 	
 func redoMainMenu(): 
 	print("recreating main menu")
-	if soundOn: 
+	if soundOn:
 		$MenuMusic.play()
-	var menuElements = [$CharacterImage, $StartGame, $LeftButton, $RightButton, $TitleText, $Achievements, $SoundToggle, $CoinLabelSprite, $BackgroundImage, $HiScore, $AnimalHiScore, $LastScore, $LeaderboardButton, $MainMenuTipLabel, $ScoreDropDown]
+	var menuElements = [$CharacterImage, $StartGame, $LeftButton, $RightButton, $TitleText, $Achievements, $SoundToggle, $CoinLabelSprite, $BackgroundImage, $LeaderboardButton, $MainMenuTipLabel, $ScoreDropDown]
 	for element in menuElements: 
 		print("making element visible")
 		element.visible = true
+	if scoresAreVisible:
+		$HiScore.visible = true
+		$AnimalHiScore.visible = true
+		$LastScore.visible = true
+	else: 
+		$HiScore.visible = false
+		$AnimalHiScore.visible = false
+		$LastScore.visible = false
 	_create_ad_view()
 	attemptToLoadRewardedAd()
 	
