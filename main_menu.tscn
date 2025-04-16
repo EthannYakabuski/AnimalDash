@@ -1,4 +1,4 @@
-[gd_scene load_steps=29 format=3 uid="uid://bou780e4w75un"]
+[gd_scene load_steps=30 format=3 uid="uid://bou780e4w75un"]
 
 [ext_resource type="Script" path="res://main_menu.gd" id="1_ao6ml"]
 [ext_resource type="PackedScene" uid="uid://checsqe14agle" path="res://background.tscn" id="2_32us4"]
@@ -20,6 +20,7 @@
 [ext_resource type="Script" path="res://ad_banner.gd" id="15_2o17a"]
 [ext_resource type="Texture2D" uid="uid://dxpiwwvp2iy4r" path="res://images/snowTiger_stand.png" id="16_wnna2"]
 [ext_resource type="Texture2D" uid="uid://cuy7p7d5qx4qh" path="res://images/snowTiger_jump_one.png" id="17_3kmqt"]
+[ext_resource type="Texture2D" uid="uid://ck0p2jg0ll85g" path="res://images/hamburger.png" id="19_l6o0n"]
 
 [sub_resource type="LabelSettings" id="LabelSettings_n4dvs"]
 font_size = 28
@@ -208,7 +209,16 @@ offset_bottom = 474.0
 [node name="AdBanner" type="Node2D" parent="."]
 script = ExtResource("15_2o17a")
 
+[node name="ScoreDropDown" type="TextureButton" parent="."]
+offset_left = 17.0
+offset_top = 9.0
+offset_right = 1041.0
+offset_bottom = 1033.0
+scale = Vector2(0.045, 0.045)
+texture_normal = ExtResource("19_l6o0n")
+
 [node name="HiScore" type="Label" parent="."]
+visible = false
 offset_left = 14.0
 offset_top = 62.0
 offset_right = 205.0
@@ -217,6 +227,7 @@ text = "Highscore:"
 label_settings = SubResource("LabelSettings_ai23m")
 
 [node name="AnimalHiScore" type="Label" parent="."]
+visible = false
 offset_left = 14.0
 offset_top = 98.0
 offset_right = 165.0
@@ -225,6 +236,7 @@ text = "Animal Highscore:"
 label_settings = SubResource("LabelSettings_smo6i")
 
 [node name="LastScore" type="Label" parent="."]
+visible = false
 offset_left = 15.0
 offset_top = 136.0
 offset_right = 156.0
@@ -287,4 +299,5 @@ text = "Watch Ad
 [connection signal="pressed" from="Achievements" to="." method="_on_achievements_pressed"]
 [connection signal="pressed" from="SoundToggle" to="." method="_on_sound_toggle_pressed"]
 [connection signal="finished" from="MenuMusic" to="." method="_on_menu_music_finished"]
+[connection signal="pressed" from="ScoreDropDown" to="." method="_on_score_drop_down_pressed"]
 [connection signal="pressed" from="WatchAd" to="." method="_on_watch_ad_pressed"]

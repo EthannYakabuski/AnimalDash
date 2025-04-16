@@ -19,6 +19,7 @@ var updatingUserCoinDataAfterRewardedAd = false
 
 var onLoadingScreen = false
 var waitingForMainMenuReload = false
+var scoresAreVisible = false
 
 var _ad_view : AdView
 var _rewarded_ad : RewardedAd
@@ -278,6 +279,7 @@ func clearScreen(googleVisible):
 	$LastScore.visible = false
 	$WatchAd.visible = false
 	$MainMenuTipLabel.visible = false
+	$ScoreDropDown.visible = false
 
 func createPauseScreen(): 
 	waitingForMainMenuReload = true
@@ -293,7 +295,7 @@ func redoMainMenu():
 	print("recreating main menu")
 	if soundOn: 
 		$MenuMusic.play()
-	var menuElements = [$CharacterImage, $StartGame, $LeftButton, $RightButton, $TitleText, $Achievements, $SoundToggle, $CoinLabelSprite, $BackgroundImage, $HiScore, $AnimalHiScore, $LastScore, $LeaderboardButton, $MainMenuTipLabel]
+	var menuElements = [$CharacterImage, $StartGame, $LeftButton, $RightButton, $TitleText, $Achievements, $SoundToggle, $CoinLabelSprite, $BackgroundImage, $HiScore, $AnimalHiScore, $LastScore, $LeaderboardButton, $MainMenuTipLabel, $ScoreDropDown]
 	for element in menuElements: 
 		print("making element visible")
 		element.visible = true
@@ -529,3 +531,18 @@ func on_user_earned_reward(rewarded_item : RewardedItem):
 func _on_leaderboard_button_pressed() -> void:
 	print("loading leaderboards")
 	LeaderboardsClient.show_all_leaderboards()
+
+
+func _on_score_drop_down_pressed() -> void:
+	print("score toggle pressed")
+	if scoresAreVisible: 
+		$HiScore.visible = false
+		$AnimalHiScore.visible = false
+		$LastScore.visible = false
+		scoresAreVisible = false
+	else: 
+		$HiScore.visible = true
+		$AnimalHiScore.visible = true
+		$LastScore.visible = true
+		scoresAreVisible = true
+	
