@@ -19,6 +19,7 @@ var updatingUserCoinDataAfterRewardedAd = false
 
 var onLoadingScreen = false
 var waitingForMainMenuReload = false
+var scoresAreVisible = false
 
 var _ad_view : AdView
 var _rewarded_ad : RewardedAd
@@ -173,7 +174,7 @@ func _ready():
 		
 	#skips loading screen for godot emulated device for testing purposes
 	if GodotPlayGameServices.android_plugin: 
-		clearScreen(true)
+		clearScreen(false)
 		createPauseScreen()
 	
 func updateLastScore(): 
@@ -278,6 +279,7 @@ func clearScreen(googleVisible):
 	$LastScore.visible = false
 	$WatchAd.visible = false
 	$MainMenuTipLabel.visible = false
+	$ScoreDropDown.visible = false
 
 func createPauseScreen(): 
 	waitingForMainMenuReload = true
@@ -286,18 +288,49 @@ func createPauseScreen():
 	$LoadingLabel.visible = true
 	$TipLabel.visible = true
 	var tipNumber = randi() % 4
-	$TipLabel.text = tips[tipNumber]
+	#$TipLabel.text = tips[tipNumber]
 	await get_tree().create_time(1.5).timeout
 	
 func redoMainMenu(): 
 	print("recreating main menu")
-	if soundOn: 
+	if soundOn:
 		$MenuMusic.play()
-	var menuElements = [$CharacterImage, $StartGame, $LeftButton, $RightButton, $GoogleSignIn, $TitleText, $Achievements, $SoundToggle, $CoinLabelSprite, $BackgroundImage, $HiScore, $AnimalHiScore, $LastScore, $WatchAd, $LeaderboardButton, $MainMenuTipLabel]
+	var menuElements = [$CharacterImage, $StartGame, $LeftButton, $RightButton, $TitleText, $Achievements, $SoundToggle, $CoinLabelSprite, $BackgroundImage, $LeaderboardButton, $MainMenuTipLabel, $ScoreDropDown]
 	for element in menuElements: 
 		print("making element visible")
 		element.visible = true
+	if scoresAreVisible:
+		$HiScore.visible = true
+		$AnimalHiScore.visible = true
+		$LastScore.visible = true
+	else: 
+		$HiScore.visible = false
+		$AnimalHiScore.visible = false
+		$LastScore.visible = false
 	_create_ad_view()
+	attemptToLoadRewardedAd()
+	
+func attemptToLoadRewardedAd(): 
+	print("attempting to load rewarded ad for user")
+	if _rewarded_ad: 
+		_rewarded_ad.destroy()
+		_rewarded_ad = null
+		
+	var unit_id = "ca-app-pub-7719473349082950/4510102013"
+	
+	var rewarded_ad_load_callback := RewardedAdLoadCallback.new()
+	
+	rewarded_ad_load_callback.on_ad_failed_to_load = func(adError: LoadAdError) -> void: 
+		print(adError.message)
+	
+	rewarded_ad_load_callback.on_ad_loaded = func(rewarded_ad: RewardedAd) -> void: 
+		print("rewarded ad loaded")
+		_rewarded_ad = rewarded_ad
+		_rewarded_ad.full_screen_content_callback = _full_screen_content_callback
+		$WatchAd.visible = true
+		
+	RewardedAdLoader.new().load(unit_id, AdRequest.new(), rewarded_ad_load_callback)
+	
 
 func updateCharacter(): 
 	print('updating character')
@@ -411,6 +444,7 @@ func isSignedInListener(status):
 	#$TitleText.text = "logged in: " + status
 
 func _on_achievements_pressed() -> void:
+	print("loading achievements")
 	if AchievementsClient: 
 		#$TitleText.text = "Achievements client found" 
 		AchievementsClient.load_achievements(true)
@@ -481,30 +515,14 @@ func _on_unlock_button_pressed() -> void:
 
 func _on_watch_ad_pressed() -> void:
 	if _rewarded_ad: 
-		_rewarded_ad.destroy()
-		_rewarded_ad = null
-		
-	var unit_id = "ca-app-pub-7719473349082950/4510102013"
-	
-	var rewarded_ad_load_callback := RewardedAdLoadCallback.new()
-	
-	rewarded_ad_load_callback.on_ad_failed_to_load = func(adError: LoadAdError) -> void: 
-		print(adError.message)
-	
-	rewarded_ad_load_callback.on_ad_loaded = func(rewarded_ad: RewardedAd) -> void: 
-		print("rewarded ad loaded")
-		_rewarded_ad = rewarded_ad
-		_rewarded_ad.full_screen_content_callback = _full_screen_content_callback
 		_rewarded_ad.show(on_user_earned_reward_listener)
-		
-	RewardedAdLoader.new().load(unit_id, AdRequest.new(), rewarded_ad_load_callback)
 		
 		
 func on_user_earned_reward(rewarded_item : RewardedItem):
 	print("on_user_earned_reward, rewarded_item: rewarded", rewarded_item.amount, rewarded_item.type)
-	#once we are using an actual unit-id from admob, the rewarded_item.amount and rewarded_item.type values are set in the admob console
+	#once we are using an actual unit-id from admob, the $lerewarded_item.amount and rewarded_item.type values are set in the admob console
 	#for our case, we are rewarding 25 coins to the player and must save it to the user data
-	
+	$WatchAd.visibile = false
 	#unlocks "Thank you for your support" achievement
 	AchievementsClient.unlock_achievement("CgkIuuKhlf8BEAIQGg")
 	var newCoins = int(savedData["coins"]) + 25
@@ -519,4 +537,20 @@ func on_user_earned_reward(rewarded_item : RewardedItem):
 		
 		
 func _on_leaderboard_button_pressed() -> void:
+	print("loading leaderboards")
 	LeaderboardsClient.show_all_leaderboards()
+
+
+func _on_score_drop_down_pressed() -> void:
+	print("score toggle pressed")
+	if scoresAreVisible: 
+		$HiScore.visible = false
+		$AnimalHiScore.visible = false
+		$LastScore.visible = false
+		scoresAreVisible = false
+	else: 
+		$HiScore.visible = true
+		$AnimalHiScore.visible = true
+		$LastScore.visible = true
+		scoresAreVisible = true
+	
